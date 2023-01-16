@@ -3,9 +3,14 @@
 
 /* Structs */
 
+const int TYPE_WALL = 1;
+const int TYPE_BLANK = 0;
+
 struct block {
     int y;
     int x;
+	int type;
+	char symbol;
 };
 
 struct map {

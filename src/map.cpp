@@ -4,7 +4,7 @@
 
 /* Methods */
 
-void add_block(map *map, int y, int x) {
+void add_block(map *map, int y, int x, int type, char symbol) {
     // check if block already exists in map
     int i = 0;
     bool found = false;
@@ -17,7 +17,7 @@ void add_block(map *map, int y, int x) {
 
     // add block if not already in map
     if (!found) {
-        block new_block = {y, x};
+        block new_block = {y, x, type, symbol};
         map -> blocks[map -> num_blocks] = new_block;
         map -> num_blocks++;
     }
@@ -26,10 +26,5 @@ void add_block(map *map, int y, int x) {
 map *create_map() {
     map *new_map = new map;
 
-    add_block(new_map, 4, 5);
-    add_block(new_map, 4, 6);
-    add_block(new_map, 4, 7);
-    add_block(new_map, 4, 8);
-    
     return new_map;
 }

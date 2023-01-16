@@ -32,7 +32,7 @@ WINDOW *create_game_window(
 void display_map(WINDOW *win, map *map) {
     for (int i = 0; i < map -> num_blocks; i++) {
         block current_block = (map -> blocks)[i];
-        mvwaddch(win, current_block.y, current_block.x, '=');
+        mvwaddch(win, current_block.y, current_block.x, current_block.symbol);
     }
 
     refresh();
