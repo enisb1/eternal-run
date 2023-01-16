@@ -23,8 +23,33 @@ void add_block(map *map, int y, int x, int type, char symbol) {
     }
 }
 
+void add_hor_passage(map *map, int y, int x1, int x2) {
+	// Precondition: x1 and x2 should not be out of bounds and x1<x2
+	// 0 < x1&&x2 < 60 && x1<x2
+	add_block(map, y, x1, TYPE_WALL, '|');
+	add_block(map, y, x2, TYPE_WALL, '|');
+
+	for (int i = x1+1; i < x2; i++) {
+		add_block(map, y, i, TYPE_BLANK, ' ');
+	}
+}
+
+void add_ver_passage(map *map, int y1, int y2, int x) {
+	// Precondition: y1 and y2 should not be out of bounds and y1<y2
+	// 0 < y1&&y2 < 20 && y1<y2
+	add_block(map, y1, x, TYPE_WALL, '-');
+	add_block(map, y2, x, TYPE_WALL, '-');
+
+	for (int i = y1+1; i < y2; i++) {
+		add_block(map, i, x, TYPE_BLANK, ' ');
+	}
+}
+
 map *create_map() {
     map *new_map = new map;
+
+    add_hor_passage(new_map, 19, 3, 9);
+    add_ver_passage(new_map, 3, 7, 59);
 
     return new_map;
 }
