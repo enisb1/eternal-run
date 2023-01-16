@@ -29,10 +29,29 @@ WINDOW *create_game_window(
     return new_win;
 }
 
+char getChar(int type) {
+	char retChar;
+
+	switch (type) {
+	case 1:
+		retChar = ' ';
+		break;
+	case 2:
+		retChar = ' ';
+		break;
+	case 3:
+		retChar = '#';
+		break;
+	}
+
+	return retChar;
+}
+
 void display_map(WINDOW *win, map *map) {
     for (int i = 0; i < map -> num_blocks; i++) {
         block current_block = (map -> blocks)[i];
-        mvwaddch(win, current_block.y, current_block.x, current_block.symbol);
+        char symbol = getChar(current_block.type);
+        mvwaddch(win, current_block.y, current_block.x, symbol);
     }
 
     refresh();

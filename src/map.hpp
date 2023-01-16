@@ -3,18 +3,18 @@
 
 /* Structs */
 
-const int TYPE_WALL = 1;
-const int TYPE_BLANK = 0;
+const int type_wall = 3;
+const int type_exit = 2;
+const int type_entrance = 1;
 
 struct block {
     int y;
     int x;
 	int type;
-	char symbol;
 };
 
 struct map {
-    block blocks[100];
+    block blocks[200];
     int num_blocks;
 };
 
