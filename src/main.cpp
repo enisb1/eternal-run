@@ -23,6 +23,9 @@ int main() {
     initscr();
     cbreak();
 
+    // sets cursor state to invisible
+    curs_set(0);
+
     // create windows
     strcpy(title, "LEVEL 1");
 
