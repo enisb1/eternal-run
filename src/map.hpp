@@ -3,9 +3,9 @@
 
 /* Structs */
 
-const int type_wall = 3;
-const int type_exit = 2;
-const int type_entrance = 1;
+const int TYPE_WALL = 3;
+const int TYPE_EXIT = 2;
+const int TYPE_ENTRANCE = 1;
 
 struct block {
     int y;
@@ -14,7 +14,7 @@ struct block {
 };
 
 struct map {
-    block blocks[200];
+    block blocks[600];
     int num_blocks;
 };
 

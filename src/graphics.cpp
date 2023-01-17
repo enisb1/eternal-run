@@ -21,7 +21,7 @@ WINDOW *create_game_window(
         (stdscr_maxy - game_win_height) / 2,     
         (stdscr_maxx - (game_win_width + info_win_width)) / 2
     );
-    box(new_win, 0, 0);
+    wborder(new_win, '#', '#', '#', '#', '#', '#', '#', '#');
 
     refresh();
     wrefresh(new_win);
