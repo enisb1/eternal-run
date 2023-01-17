@@ -22,6 +22,13 @@ int main() {
     // start ncurses
     initscr();
     cbreak();
+    
+    // start colors
+    if (has_colors()) start_color();
+
+    init_pair(WALL_PAIR, COLOR_WHITE, COLOR_CYAN);
+    init_pair(RED_PAIR, COLOR_RED, 0);
+    init_pair(YELLOW_PAIR, COLOR_YELLOW, 0);
 
     // sets cursor state to invisible
     curs_set(0);

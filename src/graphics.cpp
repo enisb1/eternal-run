@@ -16,12 +16,16 @@ WINDOW *create_game_window(
     int stdscr_maxy, stdscr_maxx;
     getmaxyx(stdscr, stdscr_maxy, stdscr_maxx);
 
+    int game_win_begy = (stdscr_maxy - game_win_height) / 2;
+    int game_win_begx = (stdscr_maxx - (game_win_width + info_win_width)) / 2 - 2;
+
     WINDOW *new_win = newwin(
         game_win_height, game_win_width, 
-        (stdscr_maxy - game_win_height) / 2,     
-        (stdscr_maxx - (game_win_width + info_win_width)) / 2
+        game_win_begy, game_win_begx
     );
-    box(new_win, 0, 0);
+    wattron(new_win, COLOR_PAIR(WALL_PAIR));
+    wborder(new_win, '#', '#', '#', '#', '#', '#', '#', '#');
+    wattroff(new_win, COLOR_PAIR(WALL_PAIR));
 
     refresh();
     wrefresh(new_win);
@@ -32,7 +36,21 @@ WINDOW *create_game_window(
 void display_map(WINDOW *win, map *map) {
     for (int i = 0; i < map -> num_blocks; i++) {
         block current_block = (map -> blocks)[i];
-        mvwaddch(win, current_block.y, current_block.x, '=');
+
+        wmove(win, current_block.y, current_block.x);
+        switch (current_block.type) {
+            case TYPE_ENTRANCE:
+                waddch(win, ' ');
+                break;
+            case TYPE_EXIT:
+                waddch(win, ' ');
+                break;
+            case TYPE_WALL:
+                wattron(win, COLOR_PAIR(WALL_PAIR));
+                waddch(win, '#');
+                wattroff(win, COLOR_PAIR(WALL_PAIR));
+                break;
+        }
     }
 
     refresh();
@@ -53,8 +71,13 @@ void refresh_stats(
         int life, 
         int money
     ) {
+    wattron(info_win, COLOR_PAIR(RED_PAIR));
     mvwprintw(info_win, 3, 2, "LIFE: %d", life);
+    wattroff(info_win, COLOR_PAIR(RED_PAIR));
+    
+    wattron(info_win, COLOR_PAIR(YELLOW_PAIR));
     mvwprintw(info_win, 4, 2, "MONEY: %d", money);
+    wattron(info_win, COLOR_PAIR(YELLOW_PAIR));
 
     refresh();
     wrefresh(info_win);
@@ -74,13 +97,12 @@ WINDOW *create_info_window(
 
     int info_win_begy = game_win_begy;
     int info_win_begx = game_win_maxx + 
-        (stdscr_maxx - (game_win_width + info_win_width)) / 2;
+        (stdscr_maxx - (game_win_width + info_win_width)) / 2 + 2;
 
     // create stats window
     WINDOW *new_win = newwin(
         game_win_height, info_win_width,
-        info_win_begy,
-        info_win_begx
+        info_win_begy, info_win_begx
     );
     box(new_win, 0, 0);
 

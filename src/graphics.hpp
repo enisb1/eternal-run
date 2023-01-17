@@ -7,6 +7,12 @@
 
 #include "map.hpp"
 
+/* Vars */
+
+const int WALL_PAIR = 1;
+const int RED_PAIR = 2;
+const int YELLOW_PAIR = 3;
+
 /* Game window */
 
 // create and return the window for the game
