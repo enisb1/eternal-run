@@ -39,16 +39,21 @@ void display_map(WINDOW *win, map *map) {
 
         wmove(win, current_block.y, current_block.x);
         switch (current_block.type) {
+            case TYPE_WALL:
+                wattron(win, COLOR_PAIR(WALL_PAIR));
+                waddch(win, '#');
+                wattroff(win, COLOR_PAIR(WALL_PAIR));
+                break;
+            case TYPE_COIN:
+                wattron(win, COLOR_PAIR(YELLOW_PAIR));
+                waddch(win, '*');
+                wattroff(win, COLOR_PAIR(YELLOW_PAIR));
+                break;
             case TYPE_ENTRANCE:
                 waddch(win, ' ');
                 break;
             case TYPE_EXIT:
                 waddch(win, ' ');
-                break;
-            case TYPE_WALL:
-                wattron(win, COLOR_PAIR(WALL_PAIR));
-                waddch(win, '#');
-                wattroff(win, COLOR_PAIR(WALL_PAIR));
                 break;
         }
     }

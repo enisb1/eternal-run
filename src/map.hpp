@@ -6,6 +6,7 @@
 const int TYPE_ENTRANCE = 1;
 const int TYPE_EXIT = 2;
 const int TYPE_WALL = 3;
+const int TYPE_COIN = 4;
 
 struct block {
     int y;
@@ -14,7 +15,7 @@ struct block {
 };
 
 struct map {
-    block blocks[200];
+    block blocks[400];
     int num_blocks;
 };
 
