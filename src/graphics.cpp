@@ -34,6 +34,11 @@ WINDOW *create_game_window(
 }
 
 void display_map(WINDOW *win, map *map) {
+    wclear(win);
+    wattron(win, COLOR_PAIR(WALL_PAIR));
+    wborder(win, '#', '#', '#', '#', '#', '#', '#', '#');
+    wattroff(win, COLOR_PAIR(WALL_PAIR));
+
     for (int i = 0; i < map -> num_blocks; i++) {
         block current_block = (map -> blocks)[i];
 

@@ -15,7 +15,7 @@ struct block {
 };
 
 struct map {
-    block blocks[400];
+    block blocks[500];
     int num_blocks;
 };
 
@@ -24,6 +24,7 @@ struct map {
 // add a block to a map
 void add_block(map *map, int y, int x);
 
-map *create_map();
+// create maps for the game and put them inside an array
+void create_maps(map *maps[]);
 
 #endif

@@ -52,8 +52,9 @@ int main() {
     refresh_title(info_win, title);
     refresh_stats(info_win, life, money);
 
-    map *map1 = create_map();
-    display_map(game_win, map1);
+    map *maps[6];
+    create_maps(maps);
+    display_map(game_win, maps[2]);
 
     getch();
     endwin();
