@@ -42,6 +42,9 @@ char getChar(int type) {
 	case 3:
 		retChar = '#';
 		break;
+	case 4:
+		retChar = '*';
+		break;
 	}
 
 	return retChar;

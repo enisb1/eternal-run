@@ -147,6 +147,38 @@ map *create_map1() {
 	add_blocks_horizontally(new_map, 14, 53, 54, TYPE_WALL);
 	add_blocks_horizontally(new_map, 17, 53, 54, TYPE_WALL);
 
+	// Coins
+	add_block(new_map, 7, 3, TYPE_COIN);
+	add_block(new_map, 12, 3, TYPE_COIN);
+	add_block(new_map, 4, 32, TYPE_COIN);
+	add_block(new_map, 6, 33, TYPE_COIN);
+	add_block(new_map, 8, 33, TYPE_COIN);
+	add_block(new_map, 6, 28, TYPE_COIN);
+	add_block(new_map, 8, 28, TYPE_COIN);
+	add_block(new_map, 4, 29, TYPE_COIN);
+	add_block(new_map, 10, 32, TYPE_COIN);
+	add_block(new_map, 10, 29, TYPE_COIN);
+	add_block(new_map, 16, 26, TYPE_COIN);
+	add_block(new_map, 16, 41, TYPE_COIN);
+	add_block(new_map, 18, 6, TYPE_COIN);
+	add_block(new_map, 16, 7, TYPE_COIN);
+	add_block(new_map, 12, 9, TYPE_COIN);
+	add_block(new_map, 12, 21, TYPE_COIN);
+	add_block(new_map, 12, 28, TYPE_COIN);
+	add_block(new_map, 12, 33, TYPE_COIN);
+	add_block(new_map, 12, 40, TYPE_COIN);
+	add_block(new_map, 8, 9, TYPE_COIN);
+	add_block(new_map, 8, 14, TYPE_COIN);
+	add_block(new_map, 1, 6, TYPE_COIN);
+	add_block(new_map, 1, 16, TYPE_COIN);
+	add_block(new_map, 1, 30, TYPE_COIN);
+	add_block(new_map, 1, 45, TYPE_COIN);
+	add_block(new_map, 1, 54, TYPE_COIN);
+	add_block(new_map, 8, 51, TYPE_COIN);
+	add_block(new_map, 5, 57, TYPE_COIN);
+	add_block(new_map, 18, 56, TYPE_COIN);
+	add_block(new_map, 17, 51, TYPE_COIN);
+
     return new_map;
 }
 
