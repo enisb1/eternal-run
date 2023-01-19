@@ -23,8 +23,10 @@ struct map {
 // add a block to a map
 void add_block(map *map, int y, int x);
 
-map *create_map();
-
 map *create_map1();
+
+map *create_map2();
+
+map *create_map3();
 
 #endif
