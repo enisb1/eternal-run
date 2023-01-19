@@ -243,7 +243,7 @@ void create_maps(map *maps[]) {
     add_block(map2, 8, 54, TYPE_COIN);
     add_block(map2, 7, 22, TYPE_COIN);
 
-    /* Map 2 */
+    /* Map 3 */
     map *map3 = new map;
 
     // add entrance and exit
@@ -288,10 +288,6 @@ void create_maps(map *maps[]) {
 
     add_block(map3, 4, 9, TYPE_WALL);
     add_block(map3, 4, 10, TYPE_WALL);
-    
-    /* add_blocks_horizontally(map3, 1, 1, 7, TYPE_WALL);
-    add_blocks_horizontally(map3, 2, 1, 4, TYPE_WALL);
-    add_blocks_horizontally(map3, 3, 1, 2, TYPE_WALL); */
 
     // right
     add_blocks_vertically(map3, 6, 16, 33, TYPE_WALL);
@@ -335,8 +331,393 @@ void create_maps(map *maps[]) {
     add_block(map3, 1, 58, TYPE_COIN);
     add_block(map3, 3, 30, TYPE_COIN);
 
+	/* Map 4 */
+	map *map4 = new map;
+	
+    // Entrance and exit
+	add_blocks_vertically(map4, 9, 10, 0, TYPE_ENTRANCE);
+	add_blocks_vertically(map4, 9, 10, 59, TYPE_EXIT);
+
+	// Walls
+	// Left
+	add_blocks_vertically(map4, 0, 8, 1, TYPE_WALL);
+	add_blocks_vertically(map4, 11, 20, 1, TYPE_WALL);
+
+	add_blocks_vertically(map4, 2, 13, 4, TYPE_WALL);
+	add_blocks_vertically(map4, 2, 13, 5, TYPE_WALL);
+
+	add_blocks_horizontally(map4, 2, 5, 11, TYPE_WALL);
+	add_blocks_horizontally(map4, 3, 5, 11, TYPE_WALL);
+	add_blocks_vertically(map4, 4, 7, 8, TYPE_WALL);
+	add_blocks_vertically(map4, 4, 7, 9, TYPE_WALL);
+
+	add_blocks_horizontally(map4, 15, 4, 8, TYPE_WALL);
+	add_block(map4, 16, 6, TYPE_WALL);
+	add_blocks_horizontally(map4, 17, 4, 8, TYPE_WALL);
+
+	add_blocks_horizontally(map4, 13, 8, 13, TYPE_WALL);
+	add_blocks_vertically(map4, 9, 12, 10, TYPE_WALL);
+	add_blocks_vertically(map4, 9, 12, 11, TYPE_WALL);
+
+	add_blocks_vertically(map4, 15, 18, 11, TYPE_WALL);
+	add_blocks_vertically(map4, 15, 18, 12, TYPE_WALL);
+	add_blocks_vertically(map4, 15, 18, 13, TYPE_WALL);
+
+	add_blocks_vertically(map4, 2, 3, 15, TYPE_WALL);
+	add_blocks_vertically(map4, 2, 3, 16, TYPE_WALL);
+	add_blocks_vertically(map4, 2, 3, 17, TYPE_WALL);
+	add_blocks_vertically(map4, 2, 3, 18, TYPE_WALL);
+	add_blocks_horizontally(map4, 4, 13, 20, TYPE_WALL);
+	add_blocks_horizontally(map4, 5, 13, 20, TYPE_WALL);
+	add_blocks_horizontally(map4, 6, 13, 20, TYPE_WALL);
+
+	add_blocks_horizontally(map4, 9, 14, 20, TYPE_WALL);
+	add_blocks_horizontally(map4, 10, 14, 20, TYPE_WALL);
+	add_blocks_horizontally(map4, 11, 14, 20, TYPE_WALL);
+	add_blocks_horizontally(map4, 8, 16, 18, TYPE_WALL);
+
+	// Center
+	add_blocks_vertically(map4, 5, 9, 29, TYPE_WALL);
+	add_blocks_vertically(map4, 4, 10, 30, TYPE_WALL);
+	add_blocks_vertically(map4, 4, 10, 31, TYPE_WALL);
+	add_blocks_vertically(map4, 5, 9, 32, TYPE_WALL);
+	add_blocks_horizontally(map4, 3, 23, 38, TYPE_WALL);
+	add_blocks_horizontally(map4, 11, 23, 38, TYPE_WALL);
+
+	add_blocks_horizontally(map4, 5, 33, 35, TYPE_WALL);
+	add_blocks_horizontally(map4, 9, 33, 35, TYPE_WALL);
+	add_block(map4, 6, 35, TYPE_WALL);
+	add_block(map4, 8, 35, TYPE_WALL);
+	add_blocks_vertically(map4, 4, 6, 38, TYPE_WALL);
+	add_blocks_vertically(map4, 8, 10, 38, TYPE_WALL);
+
+	add_blocks_horizontally(map4, 5, 26, 28, TYPE_WALL);
+	add_blocks_horizontally(map4, 9, 26, 28, TYPE_WALL);
+	add_block(map4, 6, 26, TYPE_WALL);
+	add_block(map4, 8, 26, TYPE_WALL);
+	add_blocks_vertically(map4, 4, 6, 23, TYPE_WALL);
+	add_blocks_vertically(map4, 8, 10, 23, TYPE_WALL);
+
+	// Center top
+	add_block(map4, 1, 25, TYPE_WALL);
+	add_block(map4, 2, 30, TYPE_WALL);
+	add_block(map4, 1, 36, TYPE_WALL);
+
+	// Center bottom
+	add_blocks_horizontally(map4, 13, 16, 48, TYPE_WALL);
+	add_blocks_horizontally(map4, 14, 16, 48, TYPE_WALL);
+	add_block(map4, 15, 20, TYPE_WALL);
+	add_block(map4, 15, 28, TYPE_WALL);
+	add_block(map4, 15, 36, TYPE_WALL);
+	add_block(map4, 15, 44, TYPE_WALL);
+	add_block(map4, 16, 24, TYPE_WALL);
+	add_block(map4, 16, 32, TYPE_WALL);
+	add_blocks_horizontally(map4, 17, 16, 48, TYPE_WALL);
+	add_blocks_horizontally(map4, 18, 16, 48, TYPE_WALL);
+
+	// Right
+	add_blocks_vertically(map4, 3, 11, 41, TYPE_WALL);
+	add_blocks_vertically(map4, 3, 11, 42, TYPE_WALL);
+	add_blocks_vertically(map4, 2, 11, 43, TYPE_WALL);
+	add_blocks_vertically(map4, 2, 11, 44, TYPE_WALL);
+	add_blocks_vertically(map4, 2, 11, 45, TYPE_WALL);
+	add_blocks_vertically(map4, 2, 11, 46, TYPE_WALL);
+	add_blocks_vertically(map4, 2, 11, 47, TYPE_WALL);
+	add_blocks_vertically(map4, 3, 7, 48, TYPE_WALL);
+	add_blocks_vertically(map4, 3, 7, 49, TYPE_WALL);
+
+	add_blocks_vertically(map4, 2, 12, 53, TYPE_WALL);
+	add_blocks_vertically(map4, 2, 12, 54, TYPE_WALL);
+	add_blocks_vertically(map4, 2, 10, 55, TYPE_WALL);
+	add_blocks_vertically(map4, 9, 12, 56, TYPE_WALL);
+	add_blocks_vertically(map4, 2, 10, 52, TYPE_WALL);
+	add_blocks_vertically(map4, 9, 12, 51, TYPE_WALL);
+
+
+	add_blocks_horizontally(map4, 15, 51, 56, TYPE_WALL);
+	add_blocks_horizontally(map4, 16, 51, 56, TYPE_WALL);
+	add_blocks_horizontally(map4, 14, 53, 54, TYPE_WALL);
+	add_blocks_horizontally(map4, 17, 53, 54, TYPE_WALL);
+
+	// Coins
+	add_block(map4, 7, 3, TYPE_COIN);
+	add_block(map4, 12, 3, TYPE_COIN);
+	add_block(map4, 4, 32, TYPE_COIN);
+	add_block(map4, 6, 33, TYPE_COIN);
+	add_block(map4, 8, 33, TYPE_COIN);
+	add_block(map4, 6, 28, TYPE_COIN);
+	add_block(map4, 8, 28, TYPE_COIN);
+	add_block(map4, 4, 29, TYPE_COIN);
+	add_block(map4, 10, 32, TYPE_COIN);
+	add_block(map4, 10, 29, TYPE_COIN);
+	add_block(map4, 16, 26, TYPE_COIN);
+	add_block(map4, 16, 41, TYPE_COIN);
+	add_block(map4, 18, 6, TYPE_COIN);
+	add_block(map4, 16, 7, TYPE_COIN);
+	add_block(map4, 12, 9, TYPE_COIN);
+	add_block(map4, 12, 21, TYPE_COIN);
+	add_block(map4, 12, 28, TYPE_COIN);
+	add_block(map4, 12, 33, TYPE_COIN);
+	add_block(map4, 12, 40, TYPE_COIN);
+	add_block(map4, 8, 9, TYPE_COIN);
+	add_block(map4, 8, 14, TYPE_COIN);
+	add_block(map4, 1, 6, TYPE_COIN);
+	add_block(map4, 1, 16, TYPE_COIN);
+	add_block(map4, 1, 30, TYPE_COIN);
+	add_block(map4, 1, 45, TYPE_COIN);
+	add_block(map4, 1, 54, TYPE_COIN);
+	add_block(map4, 8, 51, TYPE_COIN);
+	add_block(map4, 5, 57, TYPE_COIN);
+	add_block(map4, 18, 56, TYPE_COIN);
+	add_block(map4, 17, 51, TYPE_COIN);
+
+	/* Map 5 */
+	map *map5 = new map;
+
+	// Entrance and exit
+	add_blocks_vertically(map5, 9, 10, 0, TYPE_ENTRANCE);
+	add_blocks_vertically(map5, 9, 10, 59, TYPE_EXIT);
+
+	// Walls
+	// Left
+	add_blocks_vertically(map5, 2, 5, 3, TYPE_WALL);
+	add_blocks_vertically(map5, 2, 5, 4, TYPE_WALL);
+	add_blocks_horizontally(map5, 2, 4, 8, TYPE_WALL);
+	add_blocks_horizontally(map5, 3, 4, 8, TYPE_WALL);
+
+	add_blocks_horizontally(map5, 5, 7, 10, TYPE_WALL);
+	add_blocks_horizontally(map5, 6, 7, 10, TYPE_WALL);
+	add_blocks_vertically(map5, 2, 6, 11, TYPE_WALL);
+	add_blocks_vertically(map5, 2, 6, 12, TYPE_WALL);
+
+	add_blocks_vertically(map5, 2, 6, 15, TYPE_WALL);
+	add_blocks_vertically(map5, 2, 6, 16, TYPE_WALL);
+	add_blocks_vertically(map5, 2, 6, 17, TYPE_WALL);
+
+	add_blocks_horizontally(map5, 2, 18, 27, TYPE_WALL);
+	add_blocks_horizontally(map5, 3, 18, 27, TYPE_WALL);
+
+	add_blocks_vertically(map5, 8, 16, 3, TYPE_WALL);
+	add_blocks_vertically(map5, 8, 16, 4, TYPE_WALL);
+	add_block(map5, 10, 5, TYPE_WALL);
+	add_block(map5, 14, 5, TYPE_WALL);
+
+	add_blocks_vertically(map5, 8, 16, 8, TYPE_WALL);
+	add_blocks_vertically(map5, 8, 16, 9, TYPE_WALL);
+	add_block(map5, 8, 10, TYPE_WALL);
+	add_block(map5, 10, 10, TYPE_WALL);
+	add_block(map5, 15, 10, TYPE_WALL);
+
+	add_blocks_vertically(map5, 8, 16, 13, TYPE_WALL);
+	add_blocks_vertically(map5, 8, 16, 14, TYPE_WALL);
+	add_blocks_vertically(map5, 8, 15, 15, TYPE_WALL);
+	add_blocks_vertically(map5, 8, 15, 16, TYPE_WALL);
+	add_blocks_vertically(map5, 8, 16, 17, TYPE_WALL);
+	add_block(map5, 11, 12, TYPE_WALL);
+	add_block(map5, 12, 12, TYPE_WALL);
+	add_block(map5, 13, 12, TYPE_WALL);
+
+	add_blocks_horizontally(map5, 18, 3, 17, TYPE_WALL);
+
+	// Center
+	add_blocks_horizontally(map5, 9, 20, 24, TYPE_WALL);
+	add_blocks_horizontally(map5, 10, 20, 24, TYPE_WALL);
+	add_blocks_horizontally(map5, 11, 20, 24, TYPE_WALL);
+	add_blocks_vertically(map5, 5, 15, 25, TYPE_WALL);
+	add_blocks_vertically(map5, 5, 15, 26, TYPE_WALL);
+	add_blocks_vertically(map5, 5, 15, 27, TYPE_WALL);
+	add_blocks_vertically(map5, 9, 11, 28, TYPE_WALL);
+	add_blocks_vertically(map5, 9, 11, 29, TYPE_WALL);
+
+	add_blocks_horizontally(map5, 9, 37, 41, TYPE_WALL);
+	add_blocks_horizontally(map5, 10, 37, 41, TYPE_WALL);
+	add_blocks_horizontally(map5, 11, 37, 41, TYPE_WALL);
+	add_blocks_vertically(map5, 9, 11, 32, TYPE_WALL);
+	add_blocks_vertically(map5, 9, 11, 33, TYPE_WALL);
+	add_blocks_vertically(map5, 5, 15, 34, TYPE_WALL);
+	add_blocks_vertically(map5, 5, 15, 35, TYPE_WALL);
+	add_blocks_vertically(map5, 5, 15, 36, TYPE_WALL);
+
+	add_blocks_vertically(map5, 5, 7, 30, TYPE_WALL);
+	add_blocks_vertically(map5, 5, 7, 31, TYPE_WALL);
+
+	add_blocks_vertically(map5, 13, 15, 30, TYPE_WALL);
+	add_blocks_vertically(map5, 13, 15, 31, TYPE_WALL);
+
+	add_blocks_vertically(map5, 13, 17, 20, TYPE_WALL);
+	add_blocks_vertically(map5, 13, 17, 21, TYPE_WALL);
+	add_blocks_vertically(map5, 13, 17, 22, TYPE_WALL);
+
+	add_blocks_vertically(map5, 13, 17, 39, TYPE_WALL);
+	add_blocks_vertically(map5, 13, 17, 40, TYPE_WALL);
+	add_blocks_vertically(map5, 13, 17, 41, TYPE_WALL);
+
+	add_blocks_vertically(map5, 5, 7, 20, TYPE_WALL);
+	add_blocks_vertically(map5, 5, 7, 21, TYPE_WALL);
+	add_blocks_vertically(map5, 5, 7, 22, TYPE_WALL);
+
+	add_blocks_vertically(map5, 5, 7, 39, TYPE_WALL);
+	add_blocks_vertically(map5, 5, 7, 40, TYPE_WALL);
+	add_blocks_vertically(map5, 5, 7, 41, TYPE_WALL);
+
+	// Center top
+	add_blocks_horizontally(map5, 2, 30, 35, TYPE_WALL);
+	add_blocks_horizontally(map5, 3, 30, 41, TYPE_WALL);
+
+	// Center bottom
+	add_blocks_horizontally(map5, 17, 25, 36, TYPE_WALL);
+	add_blocks_horizontally(map5, 18, 25, 36, TYPE_WALL);
+
+	// Right
+	add_blocks_horizontally(map5, 1, 38, 44, TYPE_WALL);
+
+	add_blocks_horizontally(map5, 3, 44, 45, TYPE_WALL);
+
+	add_blocks_vertically(map5, 2, 5, 56, TYPE_WALL);
+	add_blocks_vertically(map5, 2, 5, 55, TYPE_WALL);
+	add_blocks_horizontally(map5, 2, 51, 54, TYPE_WALL);
+	add_blocks_horizontally(map5, 3, 51, 54, TYPE_WALL);
+
+	add_blocks_vertically(map5, 2, 6, 48, TYPE_WALL);
+	add_blocks_vertically(map5, 2, 6, 47, TYPE_WALL);
+	add_blocks_horizontally(map5, 5, 49, 52, TYPE_WALL);
+	add_blocks_horizontally(map5, 6, 49, 52, TYPE_WALL);
+
+	add_blocks_vertically(map5, 5, 9, 44, TYPE_WALL);
+	add_blocks_vertically(map5, 5, 9, 45, TYPE_WALL);
+	add_blocks_vertically(map5, 5, 9, 46, TYPE_WALL);
+	add_blocks_horizontally(map5, 8, 47, 52, TYPE_WALL);
+	add_blocks_horizontally(map5, 9, 47, 52, TYPE_WALL);
+
+	add_blocks_vertically(map5, 7, 12, 55, TYPE_WALL);
+	add_blocks_vertically(map5, 7, 12, 56, TYPE_WALL);
+	add_blocks_horizontally(map5, 11, 44, 56, TYPE_WALL);
+	add_blocks_horizontally(map5, 12, 44, 56, TYPE_WALL);
+
+	add_blocks_horizontally(map5, 14, 44, 45, TYPE_WALL);
+	add_blocks_horizontally(map5, 14, 55, 56, TYPE_WALL);
+
+	add_blocks_horizontally(map5, 14, 48, 52, TYPE_WALL);
+	add_blocks_horizontally(map5, 15, 48, 52, TYPE_WALL);
+	add_blocks_horizontally(map5, 16, 44, 56, TYPE_WALL);
+	add_blocks_horizontally(map5, 17, 44, 56, TYPE_WALL);
+
+	/* Map 6 */
+	map *map6 = new map;
+
+	// Entrance and exit
+	add_blocks_vertically(map6, 9, 10, 0, TYPE_ENTRANCE);
+	add_blocks_vertically(map6, 9, 10, 59, TYPE_EXIT);
+
+	// Left
+	add_blocks_horizontally(map6, 2, 3, 8, TYPE_WALL);
+	add_blocks_horizontally(map6, 3, 3, 8, TYPE_WALL);
+	add_blocks_vertically(map6, 4, 6, 7, TYPE_WALL);
+	add_blocks_vertically(map6, 4, 6, 8, TYPE_WALL);
+	add_blocks_horizontally(map6, 5, 9, 15, TYPE_WALL);
+	add_blocks_horizontally(map6, 6, 9, 15, TYPE_WALL);
+
+	add_blocks_horizontally(map6, 2, 11, 15, TYPE_WALL);
+	add_blocks_horizontally(map6, 3, 11, 15, TYPE_WALL);
+
+	add_blocks_horizontally(map6, 8, 3, 19, TYPE_WALL);
+	add_blocks_horizontally(map6, 9, 3, 19, TYPE_WALL);
+	add_blocks_horizontally(map6, 10, 3, 19, TYPE_WALL);
+	add_blocks_horizontally(map6, 11, 3, 19, TYPE_WALL);
+	add_blocks_vertically(map6, 5, 7, 3, TYPE_WALL);
+	add_blocks_vertically(map6, 5, 7, 4, TYPE_WALL);
+
+	add_blocks_horizontally(map6, 13, 3, 13, TYPE_WALL);
+	add_blocks_horizontally(map6, 14, 3, 13, TYPE_WALL);
+	add_blocks_vertically(map6, 15, 16, 12, TYPE_WALL);
+	add_blocks_vertically(map6, 15, 16, 13, TYPE_WALL);
+	add_blocks_horizontally(map6, 15, 14, 19, TYPE_WALL);
+	add_blocks_horizontally(map6, 16, 14, 19, TYPE_WALL);
+
+	add_blocks_horizontally(map6, 13, 16, 19, TYPE_WALL);
+
+	add_blocks_horizontally(map6, 18, 3, 14, TYPE_WALL);
+	add_blocks_horizontally(map6, 17, 3, 9, TYPE_WALL);
+	add_blocks_horizontally(map6, 16, 3, 8, TYPE_WALL);
+
+	// Center (from top to bottom)
+	add_blocks_horizontally(map6, 2, 18, 25, TYPE_WALL);
+	add_block(map6, 3, 19, TYPE_WALL);
+	add_block(map6, 4, 22, TYPE_WALL);
+	add_blocks_horizontally(map6, 5, 18, 24, TYPE_WALL);
+	add_blocks_horizontally(map6, 6, 18, 24, TYPE_WALL);
+	add_blocks_horizontally(map6, 3, 25, 29, TYPE_WALL);
+	add_blocks_horizontally(map6, 4, 25, 29, TYPE_WALL);
+
+	add_blocks_vertically(map6, 2, 6, 30, TYPE_WALL);
+	add_blocks_horizontally(map6, 2, 31, 38, TYPE_WALL);
+	add_blocks_horizontally(map6, 6, 31, 38, TYPE_WALL);
+	add_block(map6, 3, 38, TYPE_WALL);
+	add_block(map6, 5, 38, TYPE_WALL);
+	add_block(map6, 4, 32, TYPE_WALL);
+	add_block(map6, 4, 35, TYPE_WALL);
+
+	add_blocks_horizontally(map6, 10, 22, 38, TYPE_WALL);
+	add_blocks_horizontally(map6, 11, 22, 38, TYPE_WALL);
+	add_blocks_vertically(map6, 8, 9, 22, TYPE_WALL);
+	add_blocks_vertically(map6, 8, 9, 23, TYPE_WALL);
+	add_blocks_vertically(map6, 8, 9, 24, TYPE_WALL);
+	add_blocks_vertically(map6, 8, 9, 36, TYPE_WALL);
+	add_blocks_vertically(map6, 8, 9, 37, TYPE_WALL);
+	add_blocks_vertically(map6, 8, 9, 38, TYPE_WALL);
+
+	add_blocks_horizontally(map6, 8, 27, 33, TYPE_WALL);
+	add_blocks_vertically(map6, 6, 7, 27, TYPE_WALL);
+
+	add_blocks_horizontally(map6, 13, 22, 38, TYPE_WALL);
+	add_blocks_horizontally(map6, 14, 22, 38, TYPE_WALL);
+	add_blocks_vertically(map6, 15, 16, 22, TYPE_WALL);
+	add_blocks_vertically(map6, 15, 16, 23, TYPE_WALL);
+	add_blocks_vertically(map6, 15, 16, 24, TYPE_WALL);
+	add_blocks_vertically(map6, 15, 16, 36, TYPE_WALL);
+	add_blocks_vertically(map6, 15, 16, 37, TYPE_WALL);
+	add_blocks_vertically(map6, 15, 16, 38, TYPE_WALL);
+
+	add_blocks_horizontally(map6, 18, 17, 43, TYPE_WALL);
+	add_blocks_horizontally(map6, 16, 27, 33, TYPE_WALL);
+	add_blocks_horizontally(map6, 17, 27, 33, TYPE_WALL);
+
+	// Right
+	add_blocks_horizontally(map6, 2, 41, 50, TYPE_WALL);
+	add_blocks_horizontally(map6, 3, 41, 50, TYPE_WALL);
+	add_blocks_horizontally(map6, 4, 50, 55, TYPE_WALL);
+	add_blocks_horizontally(map6, 5, 41, 50, TYPE_WALL);
+	add_blocks_horizontally(map6, 6, 41, 50, TYPE_WALL);
+	add_blocks_vertically(map6, 2, 3, 55, TYPE_WALL);
+	add_blocks_vertically(map6, 5, 6, 55, TYPE_WALL);
+	add_blocks_horizontally(map6, 2, 53, 54, TYPE_WALL);
+	add_blocks_horizontally(map6, 6, 53, 54, TYPE_WALL);
+
+	add_blocks_horizontally(map6, 8, 41, 47, TYPE_WALL);
+	add_blocks_horizontally(map6, 9, 41, 47, TYPE_WALL);
+	add_blocks_horizontally(map6, 10, 41, 47, TYPE_WALL);
+	add_blocks_horizontally(map6, 11, 41, 47, TYPE_WALL);
+
+	add_blocks_horizontally(map6, 8, 50, 56, TYPE_WALL);
+	add_blocks_horizontally(map6, 9, 50, 56, TYPE_WALL);
+	add_blocks_horizontally(map6, 10, 50, 56, TYPE_WALL);
+	add_blocks_horizontally(map6, 11, 50, 56, TYPE_WALL);
+
+	add_blocks_horizontally(map6, 13, 41, 56, TYPE_WALL);
+	add_blocks_horizontally(map6, 14, 41, 56, TYPE_WALL);
+	add_blocks_horizontally(map6, 15, 41, 56, TYPE_WALL);
+	add_blocks_horizontally(map6, 16, 46, 52, TYPE_WALL);
+	add_blocks_horizontally(map6, 17, 46, 52, TYPE_WALL);
+
+	add_blocks_horizontally(map6, 17, 55, 56, TYPE_WALL);
+
+	add_blocks_horizontally(map6, 17, 41, 42, TYPE_WALL);
+
     /* Create array of maps */
     maps[0] = map1;
     maps[1] = map2;
     maps[2] = map3;
+    maps[3] = map4;
+    maps[4] = map5;
+    maps[5] = map6;
 }

@@ -33,6 +33,9 @@ int main() {
     // sets cursor state to invisible
     curs_set(0);
 
+    // sets cursor state to invisible
+    curs_set(0);
+
     // create windows
     strcpy(title, "LEVEL 1");
 
@@ -54,7 +57,7 @@ int main() {
 
     map *maps[6];
     create_maps(maps);
-    display_map(game_win, maps[2]);
+    display_map(game_win, maps[4]);
 
     getch();
     endwin();
