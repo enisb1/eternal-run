@@ -25,4 +25,6 @@ void add_block(map *map, int y, int x);
 
 map *create_map();
 
+map *create_map1();
+
 #endif
