@@ -407,6 +407,54 @@ void create_maps(map *maps[]) {
     add_block(map3, 1, 1, TYPE_COIN);
     add_block(map3, 1, 58, TYPE_COIN);
     add_block(map3, 3, 30, TYPE_COIN);
+    add_block(map3, 17, 2, TYPE_COIN);
+    add_block(map3, 13, 9, TYPE_COIN);
+    add_block(map3, 14, 3, TYPE_COIN);
+    add_block(map3, 15, 7, TYPE_COIN);
+    add_block(map3, 17, 57, TYPE_COIN);
+    add_block(map3, 13, 50, TYPE_COIN);
+    add_block(map3, 14, 56, TYPE_COIN);
+    add_block(map3, 15, 52, TYPE_COIN);
+
+    add_block(map3, 18, 15, TYPE_COIN);
+    add_block(map3, 18, 28, TYPE_COIN);
+    add_block(map3, 13, 27, TYPE_COIN);
+    add_block(map3, 8, 28, TYPE_COIN);
+	
+    add_block(map3, 18, 44, TYPE_COIN);
+    add_block(map3, 18, 31, TYPE_COIN);
+    add_block(map3, 13, 32, TYPE_COIN);
+    add_block(map3, 8, 31, TYPE_COIN);
+	
+    add_block(map3, 16, 22, TYPE_COIN);
+    add_block(map3, 16, 37, TYPE_COIN);
+
+    add_block(map3, 12, 23, TYPE_COIN);
+    add_block(map3, 12, 36, TYPE_COIN);
+	
+    add_block(map3, 5, 23, TYPE_COIN);
+    add_block(map3, 3, 21, TYPE_COIN);
+    add_block(map3, 5, 36, TYPE_COIN);
+    add_block(map3, 3, 38, TYPE_COIN);
+	
+    add_block(map3, 1, 10, TYPE_COIN);
+    add_block(map3, 2, 5, TYPE_COIN);
+    add_block(map3, 3, 7, TYPE_COIN);
+    add_block(map3, 4, 3, TYPE_COIN);
+    add_block(map3, 5, 5, TYPE_COIN);
+    add_block(map3, 6, 1, TYPE_COIN);
+	add_block(map3, 1, 49, TYPE_COIN);
+    add_block(map3, 2, 54, TYPE_COIN);
+    add_block(map3, 3, 52, TYPE_COIN);
+    add_block(map3, 4, 56, TYPE_COIN);
+    add_block(map3, 5, 54, TYPE_COIN);
+    add_block(map3, 6, 58, TYPE_COIN);
+    add_block(map3, 7, 10, TYPE_COIN);
+    add_block(map3, 7, 49, TYPE_COIN);
+    add_block(map3, 4, 16, TYPE_COIN);
+    add_block(map3, 4, 43, TYPE_COIN);
+	
+    add_block(map3, 3, 29, TYPE_COIN);
 
 	/* Map 4 */
 	map *map4 = new map;
