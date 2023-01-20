@@ -57,7 +57,7 @@ int main() {
 
     map *maps[6];
     create_maps(maps);
-    display_map(game_win, maps[2]);
+    display_map(game_win, maps[0]);
 
     getch();
     endwin();

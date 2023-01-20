@@ -39,11 +39,10 @@ void add_blocks_horizontally(map *map, int y, int x1, int x2, int type) {
 	}
 }
 
-void create_maps(map *maps[]) {
-    /* Map 1 */
-    map *map1 = new map;
+map *create_map1() {
+	map *map1 = new map;
 
-    // add entrance and exit
+	// add entrance and exit
     add_blocks_vertically(map1, 2, 4, 0, TYPE_ENTRANCE);
     add_blocks_vertically(map1, 2, 4, 59, TYPE_EXIT);
     
@@ -175,10 +174,32 @@ void create_maps(map *maps[]) {
     add_block(map1, 6, 34, TYPE_COIN);
     add_block(map1, 9, 34, TYPE_COIN);
 
-    /* Map 2 */
-    map *map2 = new map;
+    add_block(map1, 1, 10, TYPE_COIN);
+    add_block(map1, 2, 5, TYPE_COIN);
+    add_block(map1, 4, 7, TYPE_COIN);
+    add_block(map1, 5, 3, TYPE_COIN);
+    add_block(map1, 7, 2, TYPE_COIN);
+    add_block(map1, 10, 2, TYPE_COIN);
+    add_block(map1, 13, 1, TYPE_COIN);
 
-    // add entrance and exit
+	add_block(map1, 1, 49, TYPE_COIN);
+    add_block(map1, 2, 54, TYPE_COIN);
+    add_block(map1, 4, 52, TYPE_COIN);
+    add_block(map1, 5, 56, TYPE_COIN);
+    add_block(map1, 7, 57, TYPE_COIN);
+    add_block(map1, 10, 57, TYPE_COIN);
+    add_block(map1, 13, 58, TYPE_COIN);
+	
+    add_block(map1, 13, 25, TYPE_COIN);
+    add_block(map1, 13, 34, TYPE_COIN);
+
+	return map1;
+}
+
+map *create_map2() {
+	map *map2 = new map;
+
+	// add entrance and exit
     add_blocks_vertically(map2, 16, 17, 0, TYPE_ENTRANCE);
     add_blocks_vertically(map2, 16, 17, 59, TYPE_EXIT);
 
@@ -320,10 +341,13 @@ void create_maps(map *maps[]) {
     add_block(map2, 8, 54, TYPE_COIN);
     add_block(map2, 7, 22, TYPE_COIN);
 
-    /* Map 3 */
-    map *map3 = new map;
+	return map2;
+}
 
-    // add entrance and exit
+map *create_map3() {
+	map *map3 = new map;
+
+	// add entrance and exit
     add_blocks_horizontally(map3, 19, 3, 6, TYPE_ENTRANCE);
     add_blocks_horizontally(map3, 19, 53, 56, TYPE_EXIT);
 
@@ -456,10 +480,13 @@ void create_maps(map *maps[]) {
 	
     add_block(map3, 3, 29, TYPE_COIN);
 
-	/* Map 4 */
+	return map3;
+}
+
+map *create_map4() {
 	map *map4 = new map;
-	
-    // Entrance and exit
+
+	// Entrance and exit
 	add_blocks_vertically(map4, 9, 10, 0, TYPE_ENTRANCE);
 	add_blocks_vertically(map4, 9, 10, 59, TYPE_EXIT);
 
@@ -613,8 +640,10 @@ void create_maps(map *maps[]) {
 	add_block(map4, 4, 6, TYPE_COIN);
 	add_block(map4, 4, 11, TYPE_COIN);
 
+	return map4;
+}
 
-	/* Map 5 */
+map *create_map5() {
 	map *map5 = new map;
 
 	// Entrance and exit
@@ -791,7 +820,10 @@ void create_maps(map *maps[]) {
 	add_block(map5, 2, 37, TYPE_COIN);
 	add_block(map5, 1, 10, TYPE_COIN);
 
-	/* Map 6 */
+	return map5;
+}
+
+map *create_map6() {
 	map *map6 = new map;
 
 	// Entrance and exit
@@ -953,6 +985,17 @@ void create_maps(map *maps[]) {
 	add_block(map6, 5, 54, TYPE_COIN);
 	add_block(map6, 3, 54, TYPE_COIN);
 	add_block(map6, 7, 52, TYPE_COIN);
+
+	return map6;
+}
+
+void create_maps(map *maps[]) {
+    map *map1 = create_map1();
+    map *map2 = create_map2();
+    map *map3 = create_map3();
+	map *map4 = create_map4();
+	map *map5 = create_map5();
+	map *map6 = create_map6();
 
     /* Create array of maps */
     maps[0] = map1;
