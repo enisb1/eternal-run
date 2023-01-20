@@ -470,6 +470,24 @@ void create_maps(map *maps[]) {
 	add_block(map4, 5, 57, TYPE_COIN);
 	add_block(map4, 18, 56, TYPE_COIN);
 	add_block(map4, 17, 51, TYPE_COIN);
+	add_block(map4, 14, 52, TYPE_COIN);
+	add_block(map4, 14, 55, TYPE_COIN);
+	add_block(map4, 10, 57, TYPE_COIN);
+	add_block(map4, 12, 48, TYPE_COIN);
+	add_block(map4, 4, 51, TYPE_COIN);
+	add_block(map4, 14, 52, TYPE_COIN);
+	add_block(map4, 18, 15, TYPE_COIN);
+	add_block(map4, 15, 32, TYPE_COIN);
+	add_block(map4, 15, 46, TYPE_COIN);
+	add_block(map4, 15, 21, TYPE_COIN);
+	add_block(map4, 3, 40, TYPE_COIN);
+	add_block(map4, 7, 40, TYPE_COIN);
+	add_block(map4, 7, 21, TYPE_COIN);
+	add_block(map4, 3, 19, TYPE_COIN);
+	add_block(map4, 14, 15, TYPE_COIN);
+	add_block(map4, 4, 6, TYPE_COIN);
+	add_block(map4, 4, 11, TYPE_COIN);
+
 
 	/* Map 5 */
 	map *map5 = new map;
@@ -480,8 +498,8 @@ void create_maps(map *maps[]) {
 
 	// Walls
 	// Left
-	add_blocks_vertically(map5, 2, 5, 3, TYPE_WALL);
-	add_blocks_vertically(map5, 2, 5, 4, TYPE_WALL);
+	add_blocks_vertically(map5, 2, 6, 3, TYPE_WALL);
+	add_blocks_vertically(map5, 2, 6, 4, TYPE_WALL);
 	add_blocks_horizontally(map5, 2, 4, 8, TYPE_WALL);
 	add_blocks_horizontally(map5, 3, 4, 8, TYPE_WALL);
 
@@ -606,7 +624,7 @@ void create_maps(map *maps[]) {
 	add_block(map5, 9, 2, TYPE_COIN);
 	add_block(map5, 9, 57, TYPE_COIN);
 	add_block(map5, 1, 1, TYPE_COIN);
-	add_block(map5, 1, 16, TYPE_COIN);
+	add_block(map5, 1, 19, TYPE_COIN);
 	add_block(map5, 1, 28, TYPE_COIN);
 	add_block(map5, 1, 58, TYPE_COIN);
 	add_block(map5, 18, 58, TYPE_COIN);
@@ -638,6 +656,15 @@ void create_maps(map *maps[]) {
 	add_block(map5, 12, 28, TYPE_COIN);
 	add_block(map5, 12, 33, TYPE_COIN);
 	add_block(map5, 4, 33, TYPE_COIN);
+	add_block(map5, 18, 48, TYPE_COIN);
+	add_block(map5, 13, 50, TYPE_COIN);
+	add_block(map5, 7, 47, TYPE_COIN);
+	add_block(map5, 4, 5, TYPE_COIN);
+	add_block(map5, 17, 11, TYPE_COIN);
+	add_block(map5, 10, 12, TYPE_COIN);
+	add_block(map5, 7, 14, TYPE_COIN);
+	add_block(map5, 2, 37, TYPE_COIN);
+	add_block(map5, 1, 10, TYPE_COIN);
 
 	/* Map 6 */
 	map *map6 = new map;
@@ -727,6 +754,7 @@ void create_maps(map *maps[]) {
 	add_blocks_horizontally(map6, 6, 41, 50, TYPE_WALL);
 	add_blocks_vertically(map6, 2, 3, 55, TYPE_WALL);
 	add_blocks_vertically(map6, 5, 6, 55, TYPE_WALL);
+	add_blocks_vertically(map6, 2, 6, 56, TYPE_WALL);
 	add_blocks_horizontally(map6, 2, 53, 54, TYPE_WALL);
 	add_blocks_horizontally(map6, 6, 53, 54, TYPE_WALL);
 
@@ -749,6 +777,57 @@ void create_maps(map *maps[]) {
 	add_blocks_horizontally(map6, 17, 55, 56, TYPE_WALL);
 
 	add_blocks_horizontally(map6, 17, 41, 42, TYPE_WALL);
+
+	// Coins
+	add_block(map6, 10, 2, TYPE_COIN);
+	add_block(map6, 10, 57, TYPE_COIN);
+	add_block(map6, 1, 3, TYPE_COIN);
+	add_block(map6, 1, 58, TYPE_COIN);
+	add_block(map6, 18, 58, TYPE_COIN);
+	add_block(map6, 18, 1, TYPE_COIN);
+	add_block(map6, 17, 10, TYPE_COIN);
+	add_block(map6, 17, 26, TYPE_COIN);
+	add_block(map6, 15, 30, TYPE_COIN);
+	add_block(map6, 17, 34, TYPE_COIN);
+	add_block(map6, 12, 30, TYPE_COIN);
+	add_block(map6, 12, 36, TYPE_COIN);
+	add_block(map6, 12, 24, TYPE_COIN);
+	add_block(map6, 9, 30, TYPE_COIN);
+	add_block(map6, 7, 28, TYPE_COIN);
+	add_block(map6, 9, 35, TYPE_COIN);
+	add_block(map6, 9, 25, TYPE_COIN);
+	add_block(map6, 7, 5, TYPE_COIN);
+	add_block(map6, 7, 15, TYPE_COIN);
+	add_block(map6, 4, 9, TYPE_COIN);
+	add_block(map6, 10, 20, TYPE_COIN);
+	add_block(map6, 14, 14, TYPE_COIN);
+	add_block(map6, 12, 17, TYPE_COIN);
+	add_block(map6, 10, 2, TYPE_COIN);
+	add_block(map6, 10, 39, TYPE_COIN);
+	add_block(map6, 10, 48, TYPE_COIN);
+	add_block(map6, 12, 54, TYPE_COIN);
+	add_block(map6, 12, 43, TYPE_COIN);
+	add_block(map6, 18, 44, TYPE_COIN);
+	add_block(map6, 18, 51, TYPE_COIN);
+	add_block(map6, 17, 18, TYPE_COIN);
+	add_block(map6, 12, 8, TYPE_COIN);
+	add_block(map6, 16, 53, TYPE_COIN);
+	add_block(map6, 5, 57, TYPE_COIN);
+	add_block(map6, 4, 49, TYPE_COIN);
+	add_block(map6, 1, 44, TYPE_COIN);
+	add_block(map6, 4, 40, TYPE_COIN);
+	add_block(map6, 4, 36, TYPE_COIN);
+	add_block(map6, 4, 33, TYPE_COIN);
+	add_block(map6, 4, 24, TYPE_COIN);
+	add_block(map6, 4, 20, TYPE_COIN);
+	add_block(map6, 1, 18, TYPE_COIN);
+	add_block(map6, 2, 29, TYPE_COIN);
+	add_block(map6, 2, 26, TYPE_COIN);
+	add_block(map6, 1, 34, TYPE_COIN);
+	add_block(map6, 7, 43, TYPE_COIN);
+	add_block(map6, 5, 54, TYPE_COIN);
+	add_block(map6, 3, 54, TYPE_COIN);
+	add_block(map6, 7, 52, TYPE_COIN);
 
     /* Create array of maps */
     maps[0] = map1;

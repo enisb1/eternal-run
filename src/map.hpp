@@ -15,7 +15,7 @@ struct block {
 };
 
 struct map {
-    block blocks[600];
+    block blocks[650];
     int num_blocks;
 };
 
