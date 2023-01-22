@@ -4,23 +4,18 @@
 
 /* Methods */
 
+map *new_map() {
+	map *new_map = new map;
+
+	for (int row = 0; row < 20; row++) {
+		for (int col = 0; col < 60; col++) {
+			(new_map -> blocks)[row][col] = TYPE_EMPTY;
+		}
+	}
+}
+
 void add_block(map *map, int y, int x, int type) {
-    // check if block already exists in map
-    int i = 0;
-    bool found = false;
-
-    while (i < map -> num_blocks && !found) {
-        if ((map -> blocks)[i].y == y && (map -> blocks)[i].x == x)
-            found = true;
-        else i++;
-    }
-
-    // add block if not already in map
-    if (!found) {
-        block new_block = {y, x, type};
-        map -> blocks[map -> num_blocks] = new_block;
-        map -> num_blocks++;
-    }
+	(map -> blocks)[y][x] = type;
 }
 
 void add_blocks_vertically(map *map, int y1, int y2, int x, int type) {
@@ -40,7 +35,7 @@ void add_blocks_horizontally(map *map, int y, int x1, int x2, int type) {
 }
 
 map *create_map1() {
-	map *map1 = new map;
+	map *map1 = new_map();
 
 	// add entrance and exit
     add_blocks_vertically(map1, 2, 4, 0, TYPE_ENTRANCE);
@@ -197,7 +192,7 @@ map *create_map1() {
 }
 
 map *create_map2() {
-	map *map2 = new map;
+	map *map2 = new_map();
 
 	// add entrance and exit
     add_blocks_vertically(map2, 16, 17, 0, TYPE_ENTRANCE);
@@ -345,7 +340,7 @@ map *create_map2() {
 }
 
 map *create_map3() {
-	map *map3 = new map;
+	map *map3 = new_map();
 
 	// add entrance and exit
     add_blocks_horizontally(map3, 19, 3, 6, TYPE_ENTRANCE);
@@ -484,7 +479,7 @@ map *create_map3() {
 }
 
 map *create_map4() {
-	map *map4 = new map;
+	map *map4 = new_map();
 
 	// Entrance and exit
 	add_blocks_vertically(map4, 9, 10, 0, TYPE_ENTRANCE);
@@ -644,7 +639,7 @@ map *create_map4() {
 }
 
 map *create_map5() {
-	map *map5 = new map;
+	map *map5 = new_map();
 
 	// Entrance and exit
 	add_blocks_vertically(map5, 9, 10, 0, TYPE_ENTRANCE);
@@ -824,7 +819,7 @@ map *create_map5() {
 }
 
 map *create_map6() {
-	map *map6 = new map;
+	map *map6 = new_map();
 
 	// Entrance and exit
 	add_blocks_vertically(map6, 9, 10, 0, TYPE_ENTRANCE);

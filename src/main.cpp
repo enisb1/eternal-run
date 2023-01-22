@@ -56,8 +56,8 @@ int main() {
     create_maps(maps);
     
     showSplashScreen(game_win);
-    display_map(game_win, maps[0]);
 
+    display_map(game_win, maps[0]);
     refresh_title(info_win, title);
     refresh_stats(info_win, life, money);
 
