@@ -22,6 +22,9 @@ WINDOW *create_game_window(
     int info_win_width
 );
 
+// show splash screen in a window
+void showSplashScreen(WINDOW *win);
+
 // display map in a window
 void display_map(WINDOW *win, map *map);
 

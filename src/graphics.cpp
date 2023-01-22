@@ -33,34 +33,94 @@ WINDOW *create_game_window(
     return new_win;
 }
 
-void display_map(WINDOW *win, map *map) {
+void showSplashScreen(WINDOW *win) {
     wclear(win);
     wattron(win, COLOR_PAIR(WALL_PAIR));
     wborder(win, '#', '#', '#', '#', '#', '#', '#', '#');
     wattroff(win, COLOR_PAIR(WALL_PAIR));
 
-    for (int i = 0; i < map -> num_blocks; i++) {
-        block current_block = (map -> blocks)[i];
+    // print game name
 
-        wmove(win, current_block.y, current_block.x);
-        switch (current_block.type) {
-            case TYPE_WALL:
-                wattron(win, COLOR_PAIR(WALL_PAIR));
-                waddch(win, '#');
-                wattroff(win, COLOR_PAIR(WALL_PAIR));
-                break;
-            case TYPE_COIN:
-                wattron(win, COLOR_PAIR(YELLOW_PAIR));
-                waddch(win, '*');
-                wattroff(win, COLOR_PAIR(YELLOW_PAIR));
-                break;
-            case TYPE_ENTRANCE:
-                waddch(win, ' ');
-                break;
-            case TYPE_EXIT:
-                waddch(win, ' ');
-                break;
+    // print "Premi un tasto per giocare" and wait for an input
+    unsigned const int BLINK_PERIOD = 60;
+    unsigned int tick = 0;
+    int visible = 0;
+    int exit_splash_screen = 0;
+    while (!exit_splash_screen) {
+        char c = wgetch(win);
+        
+        // if char entered exit the loop, otherwise blink the text
+        if (c != -1) exit_splash_screen = 1;
+        else if (tick == BLINK_PERIOD) {
+            if (visible == 0) {
+                mvwprintw(win, 13, 23, "Premi un tasto");
+                visible = 1;
+            } else {
+                mvwprintw(win, 13, 23, "              ");
+                visible = 0;
+            }
+
+            refresh();
+            wrefresh(win);
         }
+
+        if (tick >= BLINK_PERIOD) tick = 0;
+        else tick++;
+
+        napms(10);
+    }
+}
+
+void display_map(WINDOW *win, map *map) {
+    // display the map with an animation
+    int offset = 17;
+
+    unsigned int tick = 0;
+    const unsigned int ANIM_PERIOD = 10;
+
+    while (offset >= 0) {
+        if (tick == ANIM_PERIOD) {
+            wclear(win);
+            wattron(win, COLOR_PAIR(WALL_PAIR));
+            wborder(win, '#', '#', '#', '#', '#', '#', '#', '#');
+            wattroff(win, COLOR_PAIR(WALL_PAIR));
+
+            for (int i = 0; i < map -> num_blocks; i++) {
+                block current_block = (map -> blocks)[i];
+
+                if (current_block.y + offset < 19) {
+                    wmove(win, current_block.y + offset, current_block.x);
+                    switch (current_block.type) {
+                        case TYPE_WALL:
+                            wattron(win, COLOR_PAIR(WALL_PAIR));
+                            waddch(win, '#');
+                            wattroff(win, COLOR_PAIR(WALL_PAIR));
+                            break;
+                        case TYPE_COIN:
+                            wattron(win, COLOR_PAIR(YELLOW_PAIR));
+                            waddch(win, '*');
+                            wattroff(win, COLOR_PAIR(YELLOW_PAIR));
+                            break;
+                        case TYPE_ENTRANCE:
+                            waddch(win, ' ');
+                            break;
+                        case TYPE_EXIT:
+                            waddch(win, ' ');
+                            break;
+                    }
+                }
+            }
+
+            refresh();
+            wrefresh(win);
+
+            offset--;
+        }
+
+        if (tick >= ANIM_PERIOD) tick = 0;
+        else tick++;
+
+        napms(1);
     }
 
     refresh();

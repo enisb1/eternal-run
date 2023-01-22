@@ -21,6 +21,7 @@ int money = 0;
 int main() {
     // start ncurses
     initscr();
+    noecho();
     cbreak();
     
     // start colors
@@ -29,9 +30,6 @@ int main() {
     init_pair(WALL_PAIR, COLOR_WHITE, COLOR_BLUE);
     init_pair(RED_PAIR, COLOR_RED, 0);
     init_pair(YELLOW_PAIR, COLOR_YELLOW, 0);
-
-    // sets cursor state to invisible
-    curs_set(0);
 
     // sets cursor state to invisible
     curs_set(0);
@@ -51,16 +49,21 @@ int main() {
         info_win_width
     );
 
-    // refresh info and create first map
+    wtimeout(game_win, 0);
+
+    // create the 6 maps
+    map *maps[6];
+    create_maps(maps);
+    
+    showSplashScreen(game_win);
+    display_map(game_win, maps[0]);
+
     refresh_title(info_win, title);
     refresh_stats(info_win, life, money);
 
-    map *maps[6];
-    create_maps(maps);
-    display_map(game_win, maps[0]);
+    while (1) {
 
-    getch();
-    endwin();
+    }
 
     return 0;
 }
