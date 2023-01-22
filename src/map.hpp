@@ -3,11 +3,11 @@
 
 /* Structs */
 
-const int TYPE_EMPTY = -1;
-const int TYPE_ENTRANCE = 1;
-const int TYPE_EXIT = 2;
-const int TYPE_WALL = 3;
-const int TYPE_COIN = 4;
+const int EMPTY_BLOCK = -1;
+const int ENTRANCE_BLOCK = 1;
+const int EXIT_BLOCK = 2;
+const int WALL_BLOCK = 3;
+const int COIN_BLOCK = 4;
 
 struct map {
     int blocks[20][60];

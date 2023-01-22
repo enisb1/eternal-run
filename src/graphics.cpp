@@ -23,9 +23,7 @@ WINDOW *create_game_window(
         game_win_height, game_win_width, 
         game_win_begy, game_win_begx
     );
-    wattron(new_win, COLOR_PAIR(WALL_PAIR));
-    wborder(new_win, '#', '#', '#', '#', '#', '#', '#', '#');
-    wattroff(new_win, COLOR_PAIR(WALL_PAIR));
+    box(new_win, 0, 0);
 
     refresh();
     wrefresh(new_win);
@@ -35,9 +33,7 @@ WINDOW *create_game_window(
 
 void showSplashScreen(WINDOW *win) {
     wclear(win);
-    wattron(win, COLOR_PAIR(WALL_PAIR));
-    wborder(win, '#', '#', '#', '#', '#', '#', '#', '#');
-    wattroff(win, COLOR_PAIR(WALL_PAIR));
+    box(win, 0, 0);
 
     // print game name
 
@@ -64,6 +60,7 @@ void showSplashScreen(WINDOW *win) {
             wrefresh(win);
         }
 
+        // increment tick
         if (tick >= BLINK_PERIOD) tick = 0;
         else tick++;
 
@@ -84,25 +81,29 @@ void display_map(WINDOW *win, map *map) {
 
     while (row >= 0) {
         if (tick == ANIM_PERIOD) {
+            // display current row
             for (int col = 0; col < 60; col++) {
                 wmove(win, row, col);
-                switch ((map -> blocks)[row][col]) {
-                    case TYPE_WALL:
-                        wattron(win, COLOR_PAIR(WALL_PAIR));
-                        waddch(win, '#');
-                        wattroff(win, COLOR_PAIR(WALL_PAIR));
-                        break;
-                    case TYPE_COIN:
-                        wattron(win, COLOR_PAIR(YELLOW_PAIR));
-                        waddch(win, '*');
-                        wattroff(win, COLOR_PAIR(YELLOW_PAIR));
-                        break;
-                    case TYPE_ENTRANCE:
-                        waddch(win, ' ');
-                        break;
-                    case TYPE_EXIT:
-                        waddch(win, ' ');
-                        break;
+                int current_block = (map -> blocks)[row][col];
+                if (current_block != EMPTY_BLOCK) {
+                    switch (current_block) {
+                        case WALL_BLOCK:
+                            wattron(win, COLOR_PAIR(WALL_PAIR));
+                            waddch(win, '#');
+                            wattroff(win, COLOR_PAIR(WALL_PAIR));
+                            break;
+                        case COIN_BLOCK:
+                            wattron(win, COLOR_PAIR(YELLOW_PAIR));
+                            waddch(win, '*');
+                            wattroff(win, COLOR_PAIR(YELLOW_PAIR));
+                            break;
+                        case ENTRANCE_BLOCK:
+                            waddch(win, ' ');
+                            break;
+                        case EXIT_BLOCK:
+                            waddch(win, ' ');
+                            break;
+                    }
                 }
             }
 
@@ -112,6 +113,7 @@ void display_map(WINDOW *win, map *map) {
             row--;
         }
 
+        // increment tick
         if (tick >= ANIM_PERIOD) tick = 0;
         else tick++;
 
