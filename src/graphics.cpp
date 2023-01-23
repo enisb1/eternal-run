@@ -9,15 +9,14 @@
 
 WINDOW *create_game_window(
         int game_win_height, 
-        int game_win_width, 
-        int info_win_width
-    ) {
+        int game_win_width
+) {
     // create game window by centering it in terminal
     int stdscr_maxy, stdscr_maxx;
     getmaxyx(stdscr, stdscr_maxy, stdscr_maxx);
 
     int game_win_begy = (stdscr_maxy - game_win_height) / 2;
-    int game_win_begx = (stdscr_maxx - (game_win_width + info_win_width)) / 2 - 2;
+    int game_win_begx = (stdscr_maxx - game_win_width) / 2;
 
     WINDOW *new_win = newwin(
         game_win_height, game_win_width, 
@@ -31,7 +30,26 @@ WINDOW *create_game_window(
     return new_win;
 }
 
-void showSplashScreen(WINDOW *win) {
+void move_game_window(
+    WINDOW *game_win, 
+    int game_win_height, 
+    int game_win_width, 
+    int info_win_width
+) {
+    wclear(game_win);
+    wrefresh(game_win);
+
+    int stdscr_maxy, stdscr_maxx;
+    getmaxyx(stdscr, stdscr_maxy, stdscr_maxx);
+
+    int game_win_begy = (stdscr_maxy - game_win_height) / 2;
+    int game_win_begx = (stdscr_maxx - (game_win_width + info_win_width)) / 2 - 2;
+
+    mvwin(game_win, game_win_begy, game_win_begx);
+    wrefresh(game_win);
+}
+
+void show_splash_screen(WINDOW *win) {
     wclear(win);
     box(win, 0, 0);
 

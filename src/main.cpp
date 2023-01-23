@@ -34,19 +34,10 @@ int main() {
     // sets cursor state to invisible
     curs_set(0);
 
-    // create windows
-    strcpy(title, "LEVEL 1");
-
+    // create game window
     WINDOW *game_win = create_game_window(
         game_win_height, 
-        game_win_width, 
-        info_win_width
-    );
-    WINDOW *info_win = create_info_window(
-        game_win,
-        game_win_height, 
-        game_win_width, 
-        info_win_width
+        game_win_width
     );
 
     wtimeout(game_win, 0);
@@ -55,15 +46,30 @@ int main() {
     map *maps[6];
     create_maps(maps);
     
-    showSplashScreen(game_win);
+    show_splash_screen(game_win);
+
+    // start game
+    move_game_window(
+        game_win,
+        game_win_height, 
+        game_win_width, 
+        info_win_width
+    );
+
+    WINDOW *info_win = create_info_window(
+        game_win,
+        game_win_height, 
+        game_win_width, 
+        info_win_width
+    );
 
     display_map(game_win, maps[0]);
+    
+    strcpy(title, "LEVEL 1");
     refresh_title(info_win, title);
     refresh_stats(info_win, life, money);
 
-    while (1) {
-
-    }
+    while (1);
 
     return 0;
 }

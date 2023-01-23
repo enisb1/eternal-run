@@ -18,12 +18,19 @@ const int YELLOW_PAIR = 3;
 // create and return the window for the game
 WINDOW *create_game_window(
     int game_win_height, 
+    int game_win_width
+);
+
+// move the game win by centering it and info win in terminal
+void move_game_window(
+    WINDOW *game_win,
+    int game_win_height, 
     int game_win_width, 
     int info_win_width
 );
 
 // show splash screen in a window
-void showSplashScreen(WINDOW *win);
+void show_splash_screen(WINDOW *win);
 
 // display map in a window
 void display_map(WINDOW *win, map *map);
