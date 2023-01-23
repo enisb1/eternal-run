@@ -126,8 +126,8 @@ void display_map(WINDOW *win, map *map) {
 
 /* Info window */
 
-void refresh_title(WINDOW *info_win, char *title) {
-    mvwprintw(info_win, 1, 2, "%s", title);
+void refresh_title(WINDOW *info_win, int level) {
+    mvwprintw(info_win, 1, 2, "LEVEL %d", level);
 
     refresh();
     wrefresh(info_win);

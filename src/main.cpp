@@ -2,6 +2,8 @@
 
 #include <ncursesw/ncurses.h>
 #include <cstring>
+#include <ctime>
+#include <cstdlib>
 
 #include "graphics.hpp"
 #include "map.hpp"
@@ -12,14 +14,28 @@ const int game_win_height = 20;
 const int game_win_width = 60;
 const int info_win_width = 18;
 
-char title[25];
+int level = 1;
 int life = 3;
 int money = 0;
+int currentMapIndex = 0;
+
+/* Methods */
+
+void loadNextLevel(WINDOW *info_win, WINDOW *game_win, map *maps[]) {
+	level++;
+	refresh_title(info_win, level);
+
+	int nextMapIndex = rand()%6;
+	while (nextMapIndex == currentMapIndex) nextMapIndex = rand()%6;
+	currentMapIndex = nextMapIndex;
+
+	display_map(game_win, maps[currentMapIndex]);
+}
 
 /* Main method */
 
 int main() {
-    // start ncurses
+	// start ncurses
     initscr();
     noecho();
     cbreak();
@@ -33,9 +49,6 @@ int main() {
 
     // sets cursor state to invisible
     curs_set(0);
-
-    // create windows
-    strcpy(title, "LEVEL 1");
 
     WINDOW *game_win = create_game_window(
         game_win_height, 
@@ -54,11 +67,15 @@ int main() {
     // create the 6 maps
     map *maps[6];
     create_maps(maps);
+
+    // set a random number to map index
+    srand(time(0));
+    currentMapIndex = rand()%6;
     
     showSplashScreen(game_win);
 
-    display_map(game_win, maps[0]);
-    refresh_title(info_win, title);
+    display_map(game_win, maps[currentMapIndex]);
+    refresh_title(info_win, level);
     refresh_stats(info_win, life, money);
 
     while (1) {

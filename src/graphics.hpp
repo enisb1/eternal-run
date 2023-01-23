@@ -31,7 +31,7 @@ void display_map(WINDOW *win, map *map);
 /* Info window */
 
 // refresh the text that shows the title of the game
-void refresh_title(WINDOW *info_win, char *title);
+void refresh_title(WINDOW *info_win, int level);
 
 // refresh the text that shows the stats of the game
 void refresh_stats(
