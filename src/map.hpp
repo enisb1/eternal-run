@@ -3,6 +3,12 @@
 
 /* Structs */
 
+struct coin {
+	int y;
+	int x; 
+	coin *next;	
+};
+
 const int EMPTY_BLOCK = -1;
 const int ENTRANCE_BLOCK = 1;
 const int EXIT_BLOCK = 2;
@@ -17,5 +23,8 @@ struct map {
 
 // create maps for the game and put them inside an array
 void create_maps(map *maps[]);
+
+// create coins lists for each map and put them inside an array 
+void create_coins_lists(coin *cLists[]);
 
 #endif

@@ -68,7 +68,7 @@ void showSplashScreen(WINDOW *win) {
     }
 }
 
-void display_map(WINDOW *win, map *map) {
+void display_map(WINDOW *win, map *map, coin *cHead) {
     wclear(win);
     wattron(win, COLOR_PAIR(WALL_PAIR));
     wborder(win, '#', '#', '#', '#', '#', '#', '#', '#');
@@ -92,11 +92,6 @@ void display_map(WINDOW *win, map *map) {
                             waddch(win, '#');
                             wattroff(win, COLOR_PAIR(WALL_PAIR));
                             break;
-                        case COIN_BLOCK:
-                            wattron(win, COLOR_PAIR(YELLOW_PAIR));
-                            waddch(win, '*');
-                            wattroff(win, COLOR_PAIR(YELLOW_PAIR));
-                            break;
                         case ENTRANCE_BLOCK:
                             waddch(win, ' ');
                             break;
@@ -119,6 +114,15 @@ void display_map(WINDOW *win, map *map) {
 
         napms(1);
     }
+
+    coin *iterator = cHead;
+	while (iterator!=NULL) {
+		wmove(win, iterator->y, iterator->x);
+		wattron(win, COLOR_PAIR(YELLOW_PAIR));
+		waddch(win, '*');
+		wattroff(win, COLOR_PAIR(YELLOW_PAIR));
+		iterator = iterator->next;
+	}
 
     refresh();
     wrefresh(win);

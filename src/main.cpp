@@ -1,6 +1,7 @@
 /* Includes */
 
 #include <ncursesw/ncurses.h>
+
 #include <cstring>
 #include <ctime>
 #include <cstdlib>
@@ -21,7 +22,7 @@ int currentMapIndex = 0;
 
 /* Methods */
 
-void loadNextLevel(WINDOW *info_win, WINDOW *game_win, map *maps[]) {
+void loadNextLevel(WINDOW *info_win, WINDOW *game_win, map *maps[], coin *cLists[]) {
 	level++;
 	refresh_title(info_win, level);
 
@@ -29,7 +30,7 @@ void loadNextLevel(WINDOW *info_win, WINDOW *game_win, map *maps[]) {
 	while (nextMapIndex == currentMapIndex) nextMapIndex = rand()%6;
 	currentMapIndex = nextMapIndex;
 
-	display_map(game_win, maps[currentMapIndex]);
+	display_map(game_win, maps[currentMapIndex], cLists[currentMapIndex]);
 }
 
 /* Main method */
@@ -68,13 +69,17 @@ int main() {
     map *maps[6];
     create_maps(maps);
 
+    // get array containing each map's coins list
+    coin *cLists[6];
+    create_coins_lists(cLists);
+
     // set a random number to map index
     srand(time(0));
     currentMapIndex = rand()%6;
     
     showSplashScreen(game_win);
 
-    display_map(game_win, maps[currentMapIndex]);
+    display_map(game_win, maps[currentMapIndex], cLists[currentMapIndex]);
     refresh_title(info_win, level);
     refresh_stats(info_win, life, money);
 

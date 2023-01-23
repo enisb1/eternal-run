@@ -26,7 +26,7 @@ WINDOW *create_game_window(
 void showSplashScreen(WINDOW *win);
 
 // display map in a window
-void display_map(WINDOW *win, map *map);
+void display_map(WINDOW *win, map *map, coin *cHead);
 
 /* Info window */
 
