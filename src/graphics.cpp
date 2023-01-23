@@ -29,7 +29,6 @@ WINDOW *create_game_window() {
 
     wtimeout(game_win, 0); // don't stop the program on getch()
 
-    refresh();
     wrefresh(game_win);
 
     return game_win;
@@ -75,7 +74,6 @@ void show_splash_screen(WINDOW *game_win) {
                 visible = 0;
             }
 
-            refresh();
             wrefresh(game_win);
         }
 
@@ -127,7 +125,6 @@ void display_map(WINDOW *game_win, map *map) {
                 }
             }
 
-            refresh();
             wrefresh(game_win);
 
             row--;
@@ -139,17 +136,12 @@ void display_map(WINDOW *game_win, map *map) {
 
         napms(1);
     }
-
-    refresh();
-    wrefresh(game_win);
 }
 
 /* Info window */
 
 void refresh_title(WINDOW *info_win, char *title) {
     mvwprintw(info_win, 1, 2, "%s", title);
-
-    refresh();
     wrefresh(info_win);
 }
 
@@ -164,7 +156,6 @@ void refresh_stats(WINDOW *info_win, int life, int money) {
     mvwprintw(info_win, 4, 2, "MONEY: %d", money);
     wattron(info_win, COLOR_PAIR(YELLOW_PAIR));
 
-    refresh();
     wrefresh(info_win);
 }
 
@@ -190,8 +181,6 @@ WINDOW *create_info_window(WINDOW *game_win) {
     mvwprintw(info_win, 2, 1, "----------------");
     mvwprintw(info_win, 5, 1, "----------------");
 
-    // refresh
-    refresh();
     wrefresh(info_win);
 
     return info_win;

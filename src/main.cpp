@@ -25,28 +25,34 @@ void create_colors() {
     init_pair(YELLOW_PAIR, COLOR_YELLOW, 0);
 }
 
-/* void death() {
-    // -1 life & refresh stats
+void death() {
     life--;
-    refresh_stats(life, money);
+    refresh_stats(info_win, life, money);
 
-    // show death screen
-    unsigned const int DEATH_SCREEN_DURATION = 200;
+    // destroy current map animation
     unsigned int tick = 0;
-    int exit_death_screen = 0;
-    while (!exit_death_screen) {
-        if (tick == DEATH_SCREEN_DURATION)
-            exit_death_screen = 1;
+    const unsigned int ANIM_PERIOD = 10;
+    int row = 1;
+
+    while (row < 19) {
+        if (tick == ANIM_PERIOD) {
+            // destroy current line
+            mvwprintw(game_win, row, 1, "                                                          ");
+            wrefresh(game_win);
+
+            row++;
+        }
 
         // increment tick
-        if (tick >= DEATH_SCREEN_DURATION) tick = 0;
+        if (tick >= ANIM_PERIOD) tick = 0;
         else tick++;
 
-        napms(10);
+        napms(1);
     }
-
-    // replace with next level method
-} */
+    
+    // TODO: replace with random level
+    display_map(game_win, maps[1]);
+}
 
 int main() {
     // start ncurses
@@ -73,13 +79,9 @@ int main() {
     refresh_stats(info_win, life, money);
 
     // test death
-    int i = 0;
     while (1) {
         char c = wgetch(game_win);
-        if (c != -1) {
-            i++;
-            display_map(game_win, maps[i]);
-        }
+        if (c != -1) death();
     };
 
     return 0;
