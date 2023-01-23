@@ -33,6 +33,47 @@ void loadNextLevel(WINDOW *info_win, WINDOW *game_win, map *maps[], coin *cLists
 	display_map(game_win, maps[currentMapIndex], cLists[currentMapIndex]);
 }
 
+void setBlankChar(WINDOW *window, int y, int x) {
+    wmove(window, y, x);
+    waddch(window, ' ');
+}
+
+coin *collectCoin(WINDOW *window, coin *head, int y, int x) {
+    // find the coin in the list, remove it and set blank char in that position
+    if (head!=NULL) {
+        if (head->y == y && head->x == x) {
+            setBlankChar(window, head->y, head->x);
+            coin *tmp = head; 
+            head = head->next; 
+            delete tmp;
+        } else {
+            bool found = false;
+            coin *prevPtr = head; 
+            coin *ptr = head->next; 
+            while (ptr!=NULL && !found) {
+                if (ptr->y == y && ptr->x == x) {
+                    setBlankChar(window, ptr->y, ptr->x);
+                    coin *tmp = ptr;
+                    prevPtr = ptr->next;
+                    delete tmp; 
+                    ptr = prevPtr->next;
+                    found = true; 
+                }
+                else {
+                    prevPtr = ptr; 
+                    ptr = prevPtr->next; 
+                }
+            }
+        }
+    }
+
+    // refresh game window
+    refresh();
+    wrefresh(window);
+
+    return head; 
+}
+
 /* Main method */
 
 int main() {
@@ -69,7 +110,7 @@ int main() {
     map *maps[6];
     create_maps(maps);
 
-    // get array containing each map's coins list
+    // create array containing each map's coins list
     coin *cLists[6];
     create_coins_lists(cLists);
 
