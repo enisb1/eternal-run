@@ -16,24 +16,16 @@ const int YELLOW_PAIR = 3;
 /* Game window */
 
 // create and return the window for the game
-WINDOW *create_game_window(
-    int game_win_height, 
-    int game_win_width
-);
+WINDOW *create_game_window();
 
-// move the game win by centering it and info win in terminal
-void move_game_window(
-    WINDOW *game_win,
-    int game_win_height, 
-    int game_win_width, 
-    int info_win_width
-);
+// move the game win by centering it in terminal (considering info win)
+void move_game_window(WINDOW *game_win);
 
 // show splash screen in a window
-void show_splash_screen(WINDOW *win);
+void show_splash_screen(WINDOW *game_win);
 
 // display map in a window
-void display_map(WINDOW *win, map *map);
+void display_map(WINDOW *game_win, map *map);
 
 /* Info window */
 
@@ -41,18 +33,9 @@ void display_map(WINDOW *win, map *map);
 void refresh_title(WINDOW *info_win, char *title);
 
 // refresh the text that shows the stats of the game
-void refresh_stats(
-    WINDOW *info_win,
-    int life, 
-    int money
-);
+void refresh_stats(WINDOW *info_win, int life, int money);
 
 // create and return the window for the info of the game
-WINDOW *create_info_window(
-    WINDOW *game_win,
-    int game_win_height, 
-    int game_win_width, 
-    int info_win_width
-);
+WINDOW *create_info_window(WINDOW *game_win);
 
 #endif

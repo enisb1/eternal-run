@@ -7,10 +7,8 @@
 #include "map.hpp"
 
 /* Vars */
-
-const int game_win_height = 20;
-const int game_win_width = 60;
-const int info_win_width = 18;
+WINDOW *game_win;
+WINDOW *info_win;
 
 map *maps[6];
 char title[25];
@@ -27,6 +25,29 @@ void create_colors() {
     init_pair(YELLOW_PAIR, COLOR_YELLOW, 0);
 }
 
+/* void death() {
+    // -1 life & refresh stats
+    life--;
+    refresh_stats(life, money);
+
+    // show death screen
+    unsigned const int DEATH_SCREEN_DURATION = 200;
+    unsigned int tick = 0;
+    int exit_death_screen = 0;
+    while (!exit_death_screen) {
+        if (tick == DEATH_SCREEN_DURATION)
+            exit_death_screen = 1;
+
+        // increment tick
+        if (tick >= DEATH_SCREEN_DURATION) tick = 0;
+        else tick++;
+
+        napms(10);
+    }
+
+    // replace with next level method
+} */
+
 int main() {
     // start ncurses
     initscr();
@@ -35,31 +56,15 @@ int main() {
     create_colors(); // create color pairs
 
     // create game window
-    WINDOW *game_win = create_game_window(
-        game_win_height, 
-        game_win_width
-    );
-
-    wtimeout(game_win, 0); // don't stop the program on getch()
+    game_win = create_game_window();
 
     // create the 6 maps and show splash screen
     create_maps(maps);
     show_splash_screen(game_win);
 
     // start game
-    move_game_window(
-        game_win,
-        game_win_height, 
-        game_win_width, 
-        info_win_width
-    );
-
-    WINDOW *info_win = create_info_window(
-        game_win,
-        game_win_height, 
-        game_win_width, 
-        info_win_width
-    );
+    move_game_window(game_win);
+    info_win = create_info_window(game_win);
 
     display_map(game_win, maps[0]);
     
@@ -67,7 +72,15 @@ int main() {
     refresh_title(info_win, title);
     refresh_stats(info_win, life, money);
 
-    while (1);
+    // test death
+    int i = 0;
+    while (1) {
+        char c = wgetch(game_win);
+        if (c != -1) {
+            i++;
+            display_map(game_win, maps[i]);
+        }
+    };
 
     return 0;
 }

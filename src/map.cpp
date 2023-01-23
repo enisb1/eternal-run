@@ -12,6 +12,8 @@ map *new_map() {
 			(new_map -> blocks)[row][col] = EMPTY_BLOCK;
 		}
 	}
+
+	return new_map;
 }
 
 void add_block(map *map, int y, int x, int type) {

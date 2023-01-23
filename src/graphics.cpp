@@ -5,77 +5,78 @@
 #include "graphics.hpp"
 #include "map.hpp"
 
+/* Vars */
+
+const int GAME_WIN_HEIGHT = 20;
+const int GAME_WIN_WIDTH = 60;
+const int INFO_WIN_WIDTH = 18;
+
 /* Game window */
 
-WINDOW *create_game_window(
-        int game_win_height, 
-        int game_win_width
-) {
+WINDOW *create_game_window() {
     // create game window by centering it in terminal
     int stdscr_maxy, stdscr_maxx;
     getmaxyx(stdscr, stdscr_maxy, stdscr_maxx);
 
-    int game_win_begy = (stdscr_maxy - game_win_height) / 2;
-    int game_win_begx = (stdscr_maxx - game_win_width) / 2;
+    const int GAME_WIN_BEGY = (stdscr_maxy - GAME_WIN_HEIGHT) / 2;
+    const int GAME_WIN_BEGX = (stdscr_maxx - GAME_WIN_WIDTH) / 2;
 
-    WINDOW *new_win = newwin(
-        game_win_height, game_win_width, 
-        game_win_begy, game_win_begx
+    WINDOW *game_win = newwin(
+        GAME_WIN_HEIGHT, GAME_WIN_WIDTH, 
+        GAME_WIN_BEGY, GAME_WIN_BEGX
     );
-    box(new_win, 0, 0);
+    box(game_win, 0, 0);
+
+    wtimeout(game_win, 0); // don't stop the program on getch()
 
     refresh();
-    wrefresh(new_win);
+    wrefresh(game_win);
 
-    return new_win;
+    return game_win;
 }
 
-void move_game_window(
-    WINDOW *game_win, 
-    int game_win_height, 
-    int game_win_width, 
-    int info_win_width
-) {
+void move_game_window(WINDOW *game_win) {
     wclear(game_win);
     wrefresh(game_win);
 
     int stdscr_maxy, stdscr_maxx;
     getmaxyx(stdscr, stdscr_maxy, stdscr_maxx);
 
-    int game_win_begy = (stdscr_maxy - game_win_height) / 2;
-    int game_win_begx = (stdscr_maxx - (game_win_width + info_win_width)) / 2 - 2;
+    int GAME_WIN_BEGY = (stdscr_maxy - GAME_WIN_HEIGHT) / 2;
+    int GAME_WIN_BEGX = (stdscr_maxx - (GAME_WIN_WIDTH + INFO_WIN_WIDTH)) / 2 - 2;
 
-    mvwin(game_win, game_win_begy, game_win_begx);
+    mvwin(game_win, GAME_WIN_BEGY, GAME_WIN_BEGX);
     wrefresh(game_win);
 }
 
-void show_splash_screen(WINDOW *win) {
-    wclear(win);
-    box(win, 0, 0);
+void show_splash_screen(WINDOW *game_win) {
+    wclear(game_win);
+    box(game_win, 0, 0);
 
     // print game name
 
-    // print "Premi un tasto per giocare" and wait for an input
+    // print "Premi un tasto" and wait for an input
     unsigned const int BLINK_PERIOD = 60;
     unsigned int tick = 0;
     int visible = 0;
     int exit_splash_screen = 0;
+
     while (!exit_splash_screen) {
-        char c = wgetch(win);
+        char c = wgetch(game_win);
         
         // if char entered exit the loop, otherwise blink the text
         if (c != -1) exit_splash_screen = 1;
         else if (tick == BLINK_PERIOD) {
             if (visible == 0) {
-                mvwprintw(win, 13, 23, "Premi un tasto");
+                mvwprintw(game_win, 13, 23, "Premi un tasto");
                 visible = 1;
             } else {
-                mvwprintw(win, 13, 23, "              ");
+                mvwprintw(game_win, 13, 23, "              ");
                 visible = 0;
             }
 
             refresh();
-            wrefresh(win);
+            wrefresh(game_win);
         }
 
         // increment tick
@@ -86,11 +87,11 @@ void show_splash_screen(WINDOW *win) {
     }
 }
 
-void display_map(WINDOW *win, map *map) {
-    wclear(win);
-    wattron(win, COLOR_PAIR(WALL_PAIR));
-    wborder(win, '#', '#', '#', '#', '#', '#', '#', '#');
-    wattroff(win, COLOR_PAIR(WALL_PAIR));
+void display_map(WINDOW *game_win, map *map) {
+    wclear(game_win);
+    wattron(game_win, COLOR_PAIR(WALL_PAIR));
+    wborder(game_win, '#', '#', '#', '#', '#', '#', '#', '#');
+    wattroff(game_win, COLOR_PAIR(WALL_PAIR));
 
     // display the map with an animation
     unsigned int tick = 0;
@@ -101,32 +102,33 @@ void display_map(WINDOW *win, map *map) {
         if (tick == ANIM_PERIOD) {
             // display current row
             for (int col = 0; col < 60; col++) {
-                wmove(win, row, col);
+                wmove(game_win, row, col);
                 int current_block = (map -> blocks)[row][col];
+
                 if (current_block != EMPTY_BLOCK) {
                     switch (current_block) {
                         case WALL_BLOCK:
-                            wattron(win, COLOR_PAIR(WALL_PAIR));
-                            waddch(win, '#');
-                            wattroff(win, COLOR_PAIR(WALL_PAIR));
+                            wattron(game_win, COLOR_PAIR(WALL_PAIR));
+                            waddch(game_win, '#');
+                            wattroff(game_win, COLOR_PAIR(WALL_PAIR));
                             break;
                         case COIN_BLOCK:
-                            wattron(win, COLOR_PAIR(YELLOW_PAIR));
-                            waddch(win, '*');
-                            wattroff(win, COLOR_PAIR(YELLOW_PAIR));
+                            wattron(game_win, COLOR_PAIR(YELLOW_PAIR));
+                            waddch(game_win, '*');
+                            wattroff(game_win, COLOR_PAIR(YELLOW_PAIR));
                             break;
                         case ENTRANCE_BLOCK:
-                            waddch(win, ' ');
+                            waddch(game_win, ' ');
                             break;
                         case EXIT_BLOCK:
-                            waddch(win, ' ');
+                            waddch(game_win, ' ');
                             break;
                     }
                 }
             }
 
             refresh();
-            wrefresh(win);
+            wrefresh(game_win);
 
             row--;
         }
@@ -139,7 +141,7 @@ void display_map(WINDOW *win, map *map) {
     }
 
     refresh();
-    wrefresh(win);
+    wrefresh(game_win);
 }
 
 /* Info window */
@@ -151,15 +153,13 @@ void refresh_title(WINDOW *info_win, char *title) {
     wrefresh(info_win);
 }
 
-void refresh_stats(
-        WINDOW *info_win,
-        int life, 
-        int money
-    ) {
+void refresh_stats(WINDOW *info_win, int life, int money) {
+    // life
     wattron(info_win, COLOR_PAIR(RED_PAIR));
     mvwprintw(info_win, 3, 2, "LIFE: %d", life);
     wattroff(info_win, COLOR_PAIR(RED_PAIR));
     
+    // money
     wattron(info_win, COLOR_PAIR(YELLOW_PAIR));
     mvwprintw(info_win, 4, 2, "MONEY: %d", money);
     wattron(info_win, COLOR_PAIR(YELLOW_PAIR));
@@ -168,36 +168,31 @@ void refresh_stats(
     wrefresh(info_win);
 }
 
-WINDOW *create_info_window(
-        WINDOW *game_win,
-        int game_win_height, 
-        int game_win_width, 
-        int info_win_width
-    ) {
+WINDOW *create_info_window(WINDOW *game_win) {
     // get stats window coordinates: aligned to game window
     int stdscr_maxy, stdscr_maxx;
     getmaxyx(stdscr, stdscr_maxy, stdscr_maxx);
     int game_win_begy = getbegy(game_win);
     int game_win_maxx = getmaxx(game_win);
 
-    int info_win_begy = game_win_begy;
-    int info_win_begx = game_win_maxx + 
-        (stdscr_maxx - (game_win_width + info_win_width)) / 2 + 2;
+    const int INFO_WIN_BEGY = game_win_begy;
+    const int INFO_WIN_BEGX = game_win_maxx + 
+        (stdscr_maxx - (GAME_WIN_WIDTH + INFO_WIN_WIDTH)) / 2 + 2;
 
     // create stats window
-    WINDOW *new_win = newwin(
-        game_win_height, info_win_width,
-        info_win_begy, info_win_begx
+    WINDOW *info_win = newwin(
+        GAME_WIN_HEIGHT, INFO_WIN_WIDTH,
+        INFO_WIN_BEGY, INFO_WIN_BEGX
     );
-    box(new_win, 0, 0);
+    box(info_win, 0, 0);
 
     // print dividers
-    mvwprintw(new_win, 2, 1, "----------------");
-    mvwprintw(new_win, 5, 1, "----------------");
+    mvwprintw(info_win, 2, 1, "----------------");
+    mvwprintw(info_win, 5, 1, "----------------");
 
     // refresh
     refresh();
-    wrefresh(new_win);
+    wrefresh(info_win);
 
-    return new_win;
+    return info_win;
 }
