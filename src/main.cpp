@@ -1,6 +1,7 @@
 /* Includes */
 
 #include <ncursesw/ncurses.h>
+#include <stdlib.h>
 #include <cstring>
 
 #include "graphics.hpp"
@@ -12,8 +13,8 @@ WINDOW *info_win;
 
 map *maps[6];
 char title[25];
-int life = 3;
-int money = 0;
+int life;
+int money;
 
 /* Main method */
 
@@ -25,33 +26,40 @@ void create_colors() {
     init_pair(YELLOW_PAIR, COLOR_YELLOW, 0);
 }
 
+void new_game() {
+    // initialize vars
+    strcpy(title, "LEVEL 1");
+    life = 3;
+    money = 0;
+
+    // refresh
+    refresh_title(info_win, title);
+    refresh_stats(info_win, life, money);
+
+    // TODO: new level (replace with random level)
+    display_map(game_win, maps[0]);
+}
+
 void death() {
     life--;
     refresh_stats(info_win, life, money);
 
-    // destroy current map animation
-    unsigned int tick = 0;
-    const unsigned int ANIM_PERIOD = 10;
-    int row = 1;
-
-    while (row < 19) {
-        if (tick == ANIM_PERIOD) {
-            // destroy current line
-            mvwprintw(game_win, row, 1, "                                                          ");
-            wrefresh(game_win);
-
-            row++;
+    destroy_map(game_win);
+    if (life > 0) {
+        // TODO: replace with random level
+        display_map(game_win, maps[1]);
+    } else {
+        // game over
+        switch (show_game_over_screen(game_win)) {
+            case 0:
+                new_game();
+                break;
+            case 1:
+                endwin();
+                exit(0);
+                break;
         }
-
-        // increment tick
-        if (tick >= ANIM_PERIOD) tick = 0;
-        else tick++;
-
-        napms(1);
     }
-    
-    // TODO: replace with random level
-    display_map(game_win, maps[1]);
 }
 
 int main() {
@@ -72,13 +80,9 @@ int main() {
     move_game_window(game_win);
     info_win = create_info_window(game_win);
 
-    display_map(game_win, maps[0]);
-    
-    strcpy(title, "LEVEL 1");
-    refresh_title(info_win, title);
-    refresh_stats(info_win, life, money);
+    new_game();
 
-    // test death
+    // test
     while (1) {
         char c = wgetch(game_win);
         if (c != -1) death();

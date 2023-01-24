@@ -1,6 +1,7 @@
 /* Includes */
 
 #include <ncursesw/ncurses.h>
+#include <cstring>
 
 #include "graphics.hpp"
 #include "map.hpp"
@@ -27,7 +28,8 @@ WINDOW *create_game_window() {
     );
     box(game_win, 0, 0);
 
-    wtimeout(game_win, 0); // don't stop the program on getch()
+    nodelay(game_win, true); // don't stop the program on getch()
+    keypad(game_win, true); // enable keypad inputs
 
     wrefresh(game_win);
 
@@ -57,21 +59,21 @@ void show_splash_screen(WINDOW *game_win) {
     // print "Premi un tasto" and wait for an input
     unsigned const int BLINK_PERIOD = 60;
     unsigned int tick = 0;
-    int visible = 0;
-    int exit_splash_screen = 0;
+    bool visible = false;
+    bool exit_splash_screen = false;
 
     while (!exit_splash_screen) {
         char c = wgetch(game_win);
         
         // if char entered exit the loop, otherwise blink the text
-        if (c != -1) exit_splash_screen = 1;
+        if (c != -1) exit_splash_screen = true;
         else if (tick == BLINK_PERIOD) {
-            if (visible == 0) {
+            if (visible) {
+                mvwprintw(game_win, 13, 23, "              ");
+                visible = false;
+            } else {
                 mvwprintw(game_win, 13, 23, "Premi un tasto");
                 visible = 1;
-            } else {
-                mvwprintw(game_win, 13, 23, "              ");
-                visible = 0;
             }
 
             wrefresh(game_win);
@@ -82,6 +84,49 @@ void show_splash_screen(WINDOW *game_win) {
         else tick++;
 
         napms(10);
+    }
+}
+
+void show_menu(
+    WINDOW *game_win, 
+    char options[][50], 
+    int options_length, 
+    int starty, 
+    int selected_option
+    ) {
+    for (int i = 0; i < 2; i++) {
+        int y = starty + i * 2;
+        int x = (getmaxx(game_win) - strlen(options[i])) / 2;
+        
+        if (i == selected_option) {
+            wattron(game_win, A_REVERSE);
+            mvwprintw(game_win, y, x, "- %s", options[i]);
+            wattroff(game_win, A_REVERSE);
+        } else mvwprintw(game_win, y, x, "- %s", options[i]);
+    }
+
+    wrefresh(game_win);
+}
+
+void destroy_map(WINDOW *game_win) {
+    unsigned int tick = 0;
+    const unsigned int ANIM_PERIOD = 10;
+    int row = 1;
+
+    while (row < 19) {
+        if (tick == ANIM_PERIOD) {
+            // destroy current line
+            mvwprintw(game_win, row, 1, "                                                          ");
+            wrefresh(game_win);
+
+            row++;
+        }
+
+        // increment tick
+        if (tick >= ANIM_PERIOD) tick = 0;
+        else tick++;
+
+        napms(1);
     }
 }
 
@@ -138,6 +183,49 @@ void display_map(WINDOW *game_win, map *map) {
     }
 }
 
+int show_game_over_screen(WINDOW *game_win) {
+    wclear(game_win);
+    box(game_win, 0, 0);
+
+    // create menu options array
+    char menu_options[2][50] = {};
+    strcpy(menu_options[0], "Nuova partita");
+    strcpy(menu_options[1], "Esci dal gioco");
+
+    // start menu cicle
+    int selected_option = 0;
+    show_menu(game_win, menu_options, 2, 12, selected_option);
+
+    int exit_game_over_screen = 0;
+    while (!exit_game_over_screen) {
+        char c = wgetch(game_win);
+
+        if (c != -1) {
+            switch (c) {
+                case 2:
+                    // increase selected option
+                    if (selected_option < 1) selected_option++;
+                    else selected_option = 0;
+                    show_menu(game_win, menu_options, 2, 12, selected_option);
+                    break;
+                case 3:
+                    // decrease selected option
+                    if (selected_option > 0) selected_option--;
+                    else selected_option = 1;
+                    show_menu(game_win, menu_options, 2, 12, selected_option);
+                    break;
+                case 10:
+                    // enter option
+                    exit_game_over_screen = true;
+            }
+        }
+
+        napms(10);
+    }
+
+    return selected_option;
+}
+
 /* Info window */
 
 void refresh_title(WINDOW *info_win, char *title) {
@@ -154,7 +242,7 @@ void refresh_stats(WINDOW *info_win, int life, int money) {
     // money
     wattron(info_win, COLOR_PAIR(YELLOW_PAIR));
     mvwprintw(info_win, 4, 2, "MONEY: %d", money);
-    wattron(info_win, COLOR_PAIR(YELLOW_PAIR));
+    wattroff(info_win, COLOR_PAIR(YELLOW_PAIR));
 
     wrefresh(info_win);
 }

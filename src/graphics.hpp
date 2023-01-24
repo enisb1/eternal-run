@@ -21,10 +21,16 @@ WINDOW *create_game_window();
 // move the game win by centering it in terminal (considering info win)
 void move_game_window(WINDOW *game_win);
 
-// show splash screen in a window
 void show_splash_screen(WINDOW *game_win);
 
-// display map in a window
+// show the game over screen,
+// returns the index of the option selected from the menu
+int show_game_over_screen(WINDOW *game_win);
+
+// destroy current map with animation
+void destroy_map(WINDOW *game_win);
+
+// display map with animation
 void display_map(WINDOW *game_win, map *map);
 
 /* Info window */
