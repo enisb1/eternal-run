@@ -26,7 +26,6 @@ WINDOW *create_game_window() {
         GAME_WIN_HEIGHT, GAME_WIN_WIDTH, 
         GAME_WIN_BEGY, GAME_WIN_BEGX
     );
-    box(game_win, 0, 0);
 
     nodelay(game_win, true); // don't stop the program on getch()
     keypad(game_win, true); // enable keypad inputs
@@ -50,18 +49,26 @@ void move_game_window(WINDOW *game_win) {
     wrefresh(game_win);
 }
 
+void print_game_name_text(WINDOW *game_win) {
+    mvwprintw(game_win, 5, 3, "8888  w                         8    888b.");
+    mvwprintw(game_win, 6, 3, "8www w8ww .d88b 8d8b 8d8b. .d88 8    8  .8 8   8 8d8b.");
+    mvwprintw(game_win, 7, 3, "8     8   8.dP' 8P   8P Y8 8  8 8    8wwK' 8b d8 8P Y8");
+    mvwprintw(game_win, 8, 3, "8888  Y8P `Y88P 8    8   8 `Y88 8    8  Yb `Y8P8 8   8");
+}
+
 void show_splash_screen(WINDOW *game_win) {
     wclear(game_win);
-    box(game_win, 0, 0);
 
     // print game name
+    print_game_name_text(game_win);
 
     // print "Premi un tasto" and wait for an input
     unsigned const int BLINK_PERIOD = 60;
     unsigned int tick = 0;
-    bool visible = false;
+    bool visible = true;
     bool exit_splash_screen = false;
 
+    mvwprintw(game_win, 13, 23, "Premi un tasto");
     while (!exit_splash_screen) {
         char c = wgetch(game_win);
         
@@ -186,8 +193,8 @@ void display_map(WINDOW *game_win, map *map) {
 void print_game_over_text(WINDOW *game_win, int COLOR_PAIR_NUM) {
     mvwprintw(game_win, 4, 3, ".d88b                          .d88b.");
     mvwprintw(game_win, 5, 3, "8P www .d88 8d8b.d8b. .d88b    8P  Y8 Yb  dP .d88b 8d8b");
-    mvwprintw(game_win, 6, 3, "8b  d8 8  8 8P Y8P Y8 8.dP'    8b  d8  YbdP  8.dP' 8P   ");
-    mvwprintw(game_win, 7, 3, "`Y88P' `Y88 8   8   8 `Y88P    `Y88P'   YP   `Y88P 8    ");
+    mvwprintw(game_win, 6, 3, "8b  d8 8  8 8P Y8P Y8 8.dP'    8b  d8  YbdP  8.dP' 8P");
+    mvwprintw(game_win, 7, 3, "`Y88P' `Y88 8   8   8 `Y88P    `Y88P'   YP   `Y88P 8");
 }
 
 int show_game_over_screen(WINDOW *game_win) {
