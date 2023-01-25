@@ -47,7 +47,7 @@ void death() {
     life--;
     refresh_stats(info_win, life, shield, money);
 
-    destroy_map(game_win);
+    destroy_map_with_animation(game_win);
     if (life > 0) {
         // TODO: replace with random level
         display_map_with_anim(game_win, maps[1]);
@@ -68,24 +68,23 @@ void death() {
 int main() {
     // start ncurses
     initscr();
-    noecho(); // don't print input
     curs_set(0); // cursor invisible
+    noecho(); // don't print input
+    nodelay(stdscr, true); // don't stop the program on getch()
     create_colors(); // create color pairs
-
-    // create game window
-    game_win = create_game_window();
 
     // create the 6 maps and show splash screen
     create_maps(maps);
-    show_splash_screen(game_win);
+
+    show_splash_screen();
 
     // start game
-    move_game_window(game_win);
+    game_win = create_game_window();
     info_win = create_info_window(game_win);
 
     new_game();
 
-    // test
+    // game loop
     while (1) {
         char c = wgetch(game_win);
         

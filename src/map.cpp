@@ -7,6 +7,7 @@
 map *new_map() {
 	map *new_map = new map;
 
+	// set every block of the map as EMPTY_BLOCK
 	for (int row = 0; row < 20; row++) {
 		for (int col = 0; col < 60; col++) {
 			(new_map -> blocks)[row][col] = EMPTY_BLOCK;
@@ -994,7 +995,6 @@ void create_maps(map *maps[]) {
 	map *map5 = create_map5();
 	map *map6 = create_map6();
 
-    /* Create array of maps */
     maps[0] = map1;
     maps[1] = map2;
     maps[2] = map3;

@@ -12,15 +12,71 @@ const int GAME_WIN_HEIGHT = 20;
 const int GAME_WIN_WIDTH = 60;
 const int INFO_WIN_WIDTH = 18;
 
+/* Standard screen */
+
+void print_game_name_text() {
+    int x = (getmaxx(stdscr) - 54) / 2;
+    int y = (getmaxy(stdscr) - 10) / 2;
+
+    mvprintw(y, x, "8888  w                         8    888b.");
+    mvprintw(y + 1, x, "8www w8ww .d88b 8d8b 8d8b. .d88 8    8  .8 8   8 8d8b.");
+    mvprintw(y + 2, x, "8     8   8.dP' 8P   8P Y8 8  8 8    8wwK' 8b d8 8P Y8");
+    mvprintw(y + 3, x, "8888  Y8P `Y88P 8    8   8 `Y88 8    8  Yb `Y8P8 8   8");
+}
+
+void show_splash_screen() {
+    clear();
+    refresh();
+
+    // print game name
+    print_game_name_text();
+
+    // print "Premi un tasto" and wait for an input
+    unsigned const int BLINK_PERIOD = 60;
+    unsigned int tick = 0;
+    bool visible = true;
+    bool exit_splash_screen = false;
+
+    int textx = (getmaxx(stdscr) - 14) / 2;
+    int texty = (getmaxy(stdscr) - 10) / 2 + 8;
+    mvprintw(texty, textx, "Premi un tasto");
+    while (!exit_splash_screen) {
+        char c = getch();
+        
+        // if char entered exit the loop, otherwise blink the text
+        if (c != -1) exit_splash_screen = true;
+        else if (tick == BLINK_PERIOD) {
+            if (visible) {
+                mvprintw(texty, textx, "              ");
+                visible = false;
+            } else {
+                mvprintw(texty, textx, "Premi un tasto");
+                visible = true;
+            }
+
+            refresh();
+        }
+
+        // increment tick
+        if (tick >= BLINK_PERIOD) tick = 0;
+        else tick++;
+
+        napms(10);
+    }
+
+    clear();
+    refresh();
+}
+
 /* Game window */
 
 WINDOW *create_game_window() {
-    // create game window by centering it in terminal
+    // create game window by aligning it to info window
     int stdscr_maxy, stdscr_maxx;
     getmaxyx(stdscr, stdscr_maxy, stdscr_maxx);
 
     const int GAME_WIN_BEGY = (stdscr_maxy - GAME_WIN_HEIGHT) / 2;
-    const int GAME_WIN_BEGX = (stdscr_maxx - GAME_WIN_WIDTH) / 2;
+    const int GAME_WIN_BEGX = (stdscr_maxx - (GAME_WIN_WIDTH + INFO_WIN_WIDTH)) / 2 - 2;
 
     WINDOW *game_win = newwin(
         GAME_WIN_HEIGHT, GAME_WIN_WIDTH, 
@@ -33,20 +89,6 @@ WINDOW *create_game_window() {
     wrefresh(game_win);
 
     return game_win;
-}
-
-void move_game_window(WINDOW *game_win) {
-    wclear(game_win);
-    wrefresh(game_win);
-
-    int stdscr_maxy, stdscr_maxx;
-    getmaxyx(stdscr, stdscr_maxy, stdscr_maxx);
-
-    int GAME_WIN_BEGY = (stdscr_maxy - GAME_WIN_HEIGHT) / 2;
-    int GAME_WIN_BEGX = (stdscr_maxx - (GAME_WIN_WIDTH + INFO_WIN_WIDTH)) / 2 - 2;
-
-    mvwin(game_win, GAME_WIN_BEGY, GAME_WIN_BEGX);
-    wrefresh(game_win);
 }
 
 void show_menu(
@@ -67,6 +109,7 @@ void show_menu(
     // get start x for all the options
     int x = (getmaxx(game_win) - max_option_length) / 2 - 1;
 
+    // print options
     for (int i = 0; i < options_length; i++) {
         int y = starty + i * 2;
         
@@ -80,51 +123,6 @@ void show_menu(
     wrefresh(game_win);
 }
 
-void print_game_name_text(WINDOW *game_win) {
-    mvwprintw(game_win, 5, 3, "8888  w                         8    888b.");
-    mvwprintw(game_win, 6, 3, "8www w8ww .d88b 8d8b 8d8b. .d88 8    8  .8 8   8 8d8b.");
-    mvwprintw(game_win, 7, 3, "8     8   8.dP' 8P   8P Y8 8  8 8    8wwK' 8b d8 8P Y8");
-    mvwprintw(game_win, 8, 3, "8888  Y8P `Y88P 8    8   8 `Y88 8    8  Yb `Y8P8 8   8");
-}
-
-void show_splash_screen(WINDOW *game_win) {
-    wclear(game_win);
-
-    // print game name
-    print_game_name_text(game_win);
-
-    // print "Premi un tasto" and wait for an input
-    unsigned const int BLINK_PERIOD = 60;
-    unsigned int tick = 0;
-    bool visible = true;
-    bool exit_splash_screen = false;
-
-    mvwprintw(game_win, 13, 23, "Premi un tasto");
-    while (!exit_splash_screen) {
-        char c = wgetch(game_win);
-        
-        // if char entered exit the loop, otherwise blink the text
-        if (c != -1) exit_splash_screen = true;
-        else if (tick == BLINK_PERIOD) {
-            if (visible) {
-                mvwprintw(game_win, 13, 23, "              ");
-                visible = false;
-            } else {
-                mvwprintw(game_win, 13, 23, "Premi un tasto");
-                visible = 1;
-            }
-
-            wrefresh(game_win);
-        }
-
-        // increment tick
-        if (tick >= BLINK_PERIOD) tick = 0;
-        else tick++;
-
-        napms(10);
-    }
-}
-
 void print_game_over_text(WINDOW *game_win, int COLOR_PAIR_NUM) {
     mvwprintw(game_win, 4, 3, ".d88b                          .d88b.");
     mvwprintw(game_win, 5, 3, "8P www .d88 8d8b.d8b. .d88b    8P  Y8 Yb  dP .d88b 8d8b");
@@ -135,7 +133,6 @@ void print_game_over_text(WINDOW *game_win, int COLOR_PAIR_NUM) {
 int show_game_over_screen(WINDOW *game_win) {
     wclear(game_win);
 
-    // show game over text
     print_game_over_text(game_win, WALL_PAIR);
 
     // create menu options array
@@ -143,7 +140,7 @@ int show_game_over_screen(WINDOW *game_win) {
     strcpy(menu_options[0], "Nuova partita");
     strcpy(menu_options[1], "Esci dal gioco");
 
-    // show menu and start menu cicle
+    // show menu and start menu loop
     int selected_option = 0;
     show_menu(game_win, menu_options, 2, 12, selected_option);
 
@@ -223,28 +220,6 @@ int show_esc_screen(WINDOW *game_win) {
     return selected_option;
 }
 
-void destroy_map(WINDOW *game_win) {
-    unsigned int tick = 0;
-    const unsigned int ANIM_PERIOD = 10;
-    int row = 1;
-
-    while (row < 19) {
-        if (tick == ANIM_PERIOD) {
-            // destroy current line
-            mvwprintw(game_win, row, 1, "                                                          ");
-            wrefresh(game_win);
-
-            row++;
-        }
-
-        // increment tick
-        if (tick >= ANIM_PERIOD) tick = 0;
-        else tick++;
-
-        napms(1);
-    }
-}
-
 void display_map(WINDOW *game_win, map *map) {
     // diplay map border
     wclear(game_win);
@@ -252,7 +227,7 @@ void display_map(WINDOW *game_win, map *map) {
     wborder(game_win, '#', '#', '#', '#', '#', '#', '#', '#');
     wattroff(game_win, COLOR_PAIR(WALL_PAIR));
 
-    // display the map
+    // display all the map at once
     for (int row = 0; row < 20; row++) {
         for (int col = 1; col < 60; col++) {
             wmove(game_win, row, col);
@@ -291,7 +266,7 @@ void display_map_with_anim(WINDOW *game_win, map *map) {
     wborder(game_win, '#', '#', '#', '#', '#', '#', '#', '#');
     wattroff(game_win, COLOR_PAIR(WALL_PAIR));
 
-    // display the map with an animation
+    // display the map with an animation (row after row)
     unsigned int tick = 0;
     const unsigned int ANIM_PERIOD = 10;
     int row = 20;
@@ -338,10 +313,33 @@ void display_map_with_anim(WINDOW *game_win, map *map) {
     }
 }
 
+void destroy_map_with_animation(WINDOW *game_win) {
+    // destroy the map with an animation (row after row)
+    unsigned int tick = 0;
+    const unsigned int ANIM_PERIOD = 10;
+    int row = 1;
+
+    while (row < 19) {
+        if (tick == ANIM_PERIOD) {
+            // destroy current line
+            mvwprintw(game_win, row, 1, "                                                          ");
+            wrefresh(game_win);
+
+            row++;
+        }
+
+        // increment tick
+        if (tick >= ANIM_PERIOD) tick = 0;
+        else tick++;
+
+        napms(1);
+    }
+}
+
 /* Info window */
 
 WINDOW *create_info_window(WINDOW *game_win) {
-    // get stats window coordinates: aligned to game window
+    // create info window by aligning it to game window
     int stdscr_maxy, stdscr_maxx;
     getmaxyx(stdscr, stdscr_maxy, stdscr_maxx);
     int game_win_begy = getbegy(game_win);
@@ -351,11 +349,11 @@ WINDOW *create_info_window(WINDOW *game_win) {
     const int INFO_WIN_BEGX = game_win_maxx + 
         (stdscr_maxx - (GAME_WIN_WIDTH + INFO_WIN_WIDTH)) / 2 + 2;
 
-    // create stats window
     WINDOW *info_win = newwin(
         GAME_WIN_HEIGHT, INFO_WIN_WIDTH,
         INFO_WIN_BEGY, INFO_WIN_BEGX
     );
+    
     box(info_win, 0, 0);
 
     // print dividers
