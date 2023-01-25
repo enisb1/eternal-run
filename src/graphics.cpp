@@ -18,10 +18,12 @@ void print_game_name_text() {
     int x = (getmaxx(stdscr) - 54) / 2;
     int y = (getmaxy(stdscr) - 10) / 2;
 
+    attron(COLOR_PAIR(CYAN_PAIR));
     mvprintw(y, x, "8888  w                         8    888b.");
     mvprintw(y + 1, x, "8www w8ww .d88b 8d8b 8d8b. .d88 8    8  .8 8   8 8d8b.");
     mvprintw(y + 2, x, "8     8   8.dP' 8P   8P Y8 8  8 8    8wwK' 8b d8 8P Y8");
     mvprintw(y + 3, x, "8888  Y8P `Y88P 8    8   8 `Y88 8    8  Yb `Y8P8 8   8");
+    attroff(COLOR_PAIR(CYAN_PAIR));
 }
 
 void show_splash_screen() {
@@ -34,12 +36,11 @@ void show_splash_screen() {
     // print "Premi un tasto" and wait for an input
     unsigned const int BLINK_PERIOD = 60;
     unsigned int tick = 0;
-    bool visible = true;
+    bool visible = false;
     bool exit_splash_screen = false;
 
     int textx = (getmaxx(stdscr) - 14) / 2;
     int texty = (getmaxy(stdscr) - 10) / 2 + 8;
-    mvprintw(texty, textx, "Premi un tasto");
     while (!exit_splash_screen) {
         char c = getch();
         
@@ -124,10 +125,12 @@ void show_menu(
 }
 
 void print_game_over_text(WINDOW *game_win, int COLOR_PAIR_NUM) {
+    wattron(game_win, COLOR_PAIR(RED_PAIR));
     mvwprintw(game_win, 4, 3, ".d88b                          .d88b.");
     mvwprintw(game_win, 5, 3, "8P www .d88 8d8b.d8b. .d88b    8P  Y8 Yb  dP .d88b 8d8b");
     mvwprintw(game_win, 6, 3, "8b  d8 8  8 8P Y8P Y8 8.dP'    8b  d8  YbdP  8.dP' 8P");
     mvwprintw(game_win, 7, 3, "`Y88P' `Y88 8   8   8 `Y88P    `Y88P'   YP   `Y88P 8");
+    wattroff(game_win, COLOR_PAIR(RED_PAIR));
 }
 
 int show_game_over_screen(WINDOW *game_win) {
@@ -353,7 +356,7 @@ WINDOW *create_info_window(WINDOW *game_win) {
         GAME_WIN_HEIGHT, INFO_WIN_WIDTH,
         INFO_WIN_BEGY, INFO_WIN_BEGX
     );
-    
+
     box(info_win, 0, 0);
 
     // print dividers

@@ -92,7 +92,7 @@ int main() {
             switch (c) {
                 case 27:
                     // esc
-                    switch (show_esc_screen(game_win)) {
+                    switch (show_game_over_screen(game_win)) {
                         case 0:
                             endwin();
                             exit(0);
