@@ -950,12 +950,8 @@ map *create_map6() {
 coin* get_cList_map6() {
 	coin *head = NULL;
 
-	head = add_coin_to_list(head, 10, 2);
 	head = add_coin_to_list(head, 10, 57);
-	head = add_coin_to_list(head, 1, 3);
-	head = add_coin_to_list(head, 1, 58);
 	head = add_coin_to_list(head, 18, 58);
-	head = add_coin_to_list(head, 18, 1);
 	head = add_coin_to_list(head, 17, 10);
 	head = add_coin_to_list(head, 17, 26);
 	head = add_coin_to_list(head, 15, 30);
@@ -985,13 +981,13 @@ coin* get_cList_map6() {
 	head = add_coin_to_list(head, 16, 53);
 	head = add_coin_to_list(head, 5, 57);
 	head = add_coin_to_list(head, 4, 49);
-	head = add_coin_to_list(head, 1, 44);
+	head = add_coin_to_list(head, 1, 48);
 	head = add_coin_to_list(head, 4, 40);
 	head = add_coin_to_list(head, 4, 36);
 	head = add_coin_to_list(head, 4, 33);
 	head = add_coin_to_list(head, 4, 24);
 	head = add_coin_to_list(head, 4, 20);
-	head = add_coin_to_list(head, 1, 18);
+	head = add_coin_to_list(head, 1, 14);
 	head = add_coin_to_list(head, 2, 29);
 	head = add_coin_to_list(head, 2, 26);
 	head = add_coin_to_list(head, 1, 34);
