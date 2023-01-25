@@ -37,7 +37,7 @@ void new_game() {
     refresh_stats(info_win, life, money);
 
     // TODO: new level (replace with random level)
-    display_map(game_win, maps[0]);
+    display_map_with_anim(game_win, maps[0]);
 }
 
 void death() {
@@ -47,7 +47,7 @@ void death() {
     destroy_map(game_win);
     if (life > 0) {
         // TODO: replace with random level
-        display_map(game_win, maps[1]);
+        display_map_with_anim(game_win, maps[1]);
     } else {
         // game over
         switch (show_game_over_screen(game_win)) {

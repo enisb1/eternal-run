@@ -33,8 +33,11 @@ int show_esc_screen(WINDOW *game_win);
 // destroy current map with animation
 void destroy_map(WINDOW *game_win);
 
-// display map with animation
+// display map without animation
 void display_map(WINDOW *game_win, map *map);
+
+// display map with animation
+void display_map_with_anim(WINDOW *game_win, map *map);
 
 /* Info window */
 

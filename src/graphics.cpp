@@ -246,6 +246,46 @@ void destroy_map(WINDOW *game_win) {
 }
 
 void display_map(WINDOW *game_win, map *map) {
+    // diplay map border
+    wclear(game_win);
+    wattron(game_win, COLOR_PAIR(WALL_PAIR));
+    wborder(game_win, '#', '#', '#', '#', '#', '#', '#', '#');
+    wattroff(game_win, COLOR_PAIR(WALL_PAIR));
+
+    // display the map
+    for (int row = 0; row < 20; row++) {
+        for (int col = 1; col < 60; col++) {
+            wmove(game_win, row, col);
+            int current_block = (map -> blocks)[row][col];
+
+            if (current_block != EMPTY_BLOCK) {
+                switch (current_block) {
+                    case WALL_BLOCK:
+                        wattron(game_win, COLOR_PAIR(WALL_PAIR));
+                        waddch(game_win, '#');
+                        wattroff(game_win, COLOR_PAIR(WALL_PAIR));
+                        break;
+                    case COIN_BLOCK:
+                        wattron(game_win, COLOR_PAIR(YELLOW_PAIR));
+                        waddch(game_win, '*');
+                        wattroff(game_win, COLOR_PAIR(YELLOW_PAIR));
+                        break;
+                    case ENTRANCE_BLOCK:
+                        waddch(game_win, ' ');
+                        break;
+                    case EXIT_BLOCK:
+                        waddch(game_win, ' ');
+                        break;
+                }
+            }
+        }
+    }
+
+    wrefresh(game_win);
+}
+
+void display_map_with_anim(WINDOW *game_win, map *map) {
+    // display map border
     wclear(game_win);
     wattron(game_win, COLOR_PAIR(WALL_PAIR));
     wborder(game_win, '#', '#', '#', '#', '#', '#', '#', '#');
