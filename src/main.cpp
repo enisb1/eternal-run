@@ -14,6 +14,7 @@ WINDOW *info_win;
 map *maps[6];
 char title[25];
 int life;
+int shield;
 int money;
 
 /* Main method */
@@ -23,6 +24,7 @@ void create_colors() {
 
     init_pair(WALL_PAIR, COLOR_WHITE, COLOR_BLUE);
     init_pair(RED_PAIR, COLOR_RED, 0);
+    init_pair(CYAN_PAIR, COLOR_CYAN, 0);
     init_pair(YELLOW_PAIR, COLOR_YELLOW, 0);
 }
 
@@ -30,11 +32,12 @@ void new_game() {
     // initialize vars
     strcpy(title, "LEVEL 1");
     life = 3;
+    shield = 0;
     money = 0;
 
     // refresh
     refresh_title(info_win, title);
-    refresh_stats(info_win, life, money);
+    refresh_stats(info_win, life, shield, money);
 
     // TODO: new level (replace with random level)
     display_map_with_anim(game_win, maps[0]);
@@ -42,7 +45,7 @@ void new_game() {
 
 void death() {
     life--;
-    refresh_stats(info_win, life, money);
+    refresh_stats(info_win, life, shield, money);
 
     destroy_map(game_win);
     if (life > 0) {

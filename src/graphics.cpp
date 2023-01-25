@@ -340,25 +340,6 @@ void display_map_with_anim(WINDOW *game_win, map *map) {
 
 /* Info window */
 
-void refresh_title(WINDOW *info_win, char *title) {
-    mvwprintw(info_win, 1, 2, "%s", title);
-    wrefresh(info_win);
-}
-
-void refresh_stats(WINDOW *info_win, int life, int money) {
-    // life
-    wattron(info_win, COLOR_PAIR(RED_PAIR));
-    mvwprintw(info_win, 3, 2, "LIFE: %d", life);
-    wattroff(info_win, COLOR_PAIR(RED_PAIR));
-    
-    // money
-    wattron(info_win, COLOR_PAIR(YELLOW_PAIR));
-    mvwprintw(info_win, 4, 2, "MONEY: %d", money);
-    wattroff(info_win, COLOR_PAIR(YELLOW_PAIR));
-
-    wrefresh(info_win);
-}
-
 WINDOW *create_info_window(WINDOW *game_win) {
     // get stats window coordinates: aligned to game window
     int stdscr_maxy, stdscr_maxx;
@@ -379,9 +360,33 @@ WINDOW *create_info_window(WINDOW *game_win) {
 
     // print dividers
     mvwprintw(info_win, 2, 1, "----------------");
-    mvwprintw(info_win, 5, 1, "----------------");
+    mvwprintw(info_win, 6, 1, "----------------");
 
     wrefresh(info_win);
 
     return info_win;
+}
+
+void refresh_title(WINDOW *info_win, char *title) {
+    mvwprintw(info_win, 1, 2, "%s", title);
+    wrefresh(info_win);
+}
+
+void refresh_stats(WINDOW *info_win, int life, int shield, int money) {
+    // life
+    wattron(info_win, COLOR_PAIR(RED_PAIR));
+    mvwprintw(info_win, 3, 2, "LIFE: %d", life);
+    wattroff(info_win, COLOR_PAIR(RED_PAIR));
+
+    // shield
+    wattron(info_win, COLOR_PAIR(CYAN_PAIR));
+    mvwprintw(info_win, 4, 2, "SHIELD: %d", shield);
+    wattroff(info_win, COLOR_PAIR(CYAN_PAIR));
+    
+    // money
+    wattron(info_win, COLOR_PAIR(YELLOW_PAIR));
+    mvwprintw(info_win, 5, 2, "MONEY: %d", money);
+    wattroff(info_win, COLOR_PAIR(YELLOW_PAIR));
+
+    wrefresh(info_win);
 }

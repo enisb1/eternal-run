@@ -11,7 +11,8 @@
 
 const int WALL_PAIR = 1;
 const int RED_PAIR = 2;
-const int YELLOW_PAIR = 3;
+const int CYAN_PAIR = 3;
+const int YELLOW_PAIR = 4;
 
 /* Game window */
 
@@ -45,7 +46,7 @@ void display_map_with_anim(WINDOW *game_win, map *map);
 void refresh_title(WINDOW *info_win, char *title);
 
 // refresh the text that shows the stats of the game
-void refresh_stats(WINDOW *info_win, int life, int money);
+void refresh_stats(WINDOW *info_win, int life, int shield, int money);
 
 // create and return the window for the info of the game
 WINDOW *create_info_window(WINDOW *game_win);
