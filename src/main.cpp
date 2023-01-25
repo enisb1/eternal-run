@@ -85,7 +85,23 @@ int main() {
     // test
     while (1) {
         char c = wgetch(game_win);
-        if (c != -1) death();
+        
+        if (c != -1) {
+            switch (c) {
+                case 27:
+                    // esc
+                    switch (show_esc_screen(game_win)) {
+                        case 0:
+                            endwin();
+                            exit(0);
+                            break;
+                        case 1:
+                            // resume_game();
+                            break;
+                    }
+                    break;
+            }
+        }
     };
 
     return 0;

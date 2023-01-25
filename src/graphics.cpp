@@ -49,6 +49,37 @@ void move_game_window(WINDOW *game_win) {
     wrefresh(game_win);
 }
 
+void show_menu(
+    WINDOW *game_win, 
+    char options[][50], 
+    int options_length, 
+    int starty, 
+    int selected_option
+    ) {
+    // get max strlen() of options
+    int max_option_length = strlen(options[0]);
+    for (int i = 1; i < options_length; i++) {
+        int current_option_length = strlen(options[i]);
+        if (current_option_length > max_option_length)
+            max_option_length = current_option_length;
+    }
+
+    // get start x for all the options
+    int x = (getmaxx(game_win) - max_option_length) / 2 - 1;
+
+    for (int i = 0; i < options_length; i++) {
+        int y = starty + i * 2;
+        
+        if (i == selected_option) {
+            wattron(game_win, A_REVERSE);
+            mvwprintw(game_win, y, x, "- %s", options[i]);
+            wattroff(game_win, A_REVERSE);
+        } else mvwprintw(game_win, y, x, "- %s", options[i]);
+    }
+
+    wrefresh(game_win);
+}
+
 void print_game_name_text(WINDOW *game_win) {
     mvwprintw(game_win, 5, 3, "8888  w                         8    888b.");
     mvwprintw(game_win, 6, 3, "8www w8ww .d88b 8d8b 8d8b. .d88 8    8  .8 8   8 8d8b.");
@@ -94,25 +125,102 @@ void show_splash_screen(WINDOW *game_win) {
     }
 }
 
-void show_menu(
-    WINDOW *game_win, 
-    char options[][50], 
-    int options_length, 
-    int starty, 
-    int selected_option
-    ) {
-    for (int i = 0; i < options_length; i++) {
-        int y = starty + i * 2;
-        int x = (getmaxx(game_win) - strlen(options[i])) / 2;
-        
-        if (i == selected_option) {
-            wattron(game_win, A_REVERSE);
-            mvwprintw(game_win, y, x, "- %s", options[i]);
-            wattroff(game_win, A_REVERSE);
-        } else mvwprintw(game_win, y, x, "- %s", options[i]);
+void print_game_over_text(WINDOW *game_win, int COLOR_PAIR_NUM) {
+    mvwprintw(game_win, 4, 3, ".d88b                          .d88b.");
+    mvwprintw(game_win, 5, 3, "8P www .d88 8d8b.d8b. .d88b    8P  Y8 Yb  dP .d88b 8d8b");
+    mvwprintw(game_win, 6, 3, "8b  d8 8  8 8P Y8P Y8 8.dP'    8b  d8  YbdP  8.dP' 8P");
+    mvwprintw(game_win, 7, 3, "`Y88P' `Y88 8   8   8 `Y88P    `Y88P'   YP   `Y88P 8");
+}
+
+int show_game_over_screen(WINDOW *game_win) {
+    wclear(game_win);
+
+    // show game over text
+    print_game_over_text(game_win, WALL_PAIR);
+
+    // create menu options array
+    char menu_options[2][50] = {};
+    strcpy(menu_options[0], "Nuova partita");
+    strcpy(menu_options[1], "Esci dal gioco");
+
+    // show menu and start menu cicle
+    int selected_option = 0;
+    show_menu(game_win, menu_options, 2, 12, selected_option);
+
+    int exit_game_over_screen = 0;
+    while (!exit_game_over_screen) {
+        char c = wgetch(game_win);
+
+        // check if key entered
+        if (c != -1) {
+            switch (c) {
+                case 2:
+                    // increase selected option
+                    if (selected_option < 1) selected_option++;
+                    else selected_option = 0;
+                    show_menu(game_win, menu_options, 2, 12, selected_option);
+                    break;
+                case 3:
+                    // decrease selected option
+                    if (selected_option > 0) selected_option--;
+                    else selected_option = 1;
+                    show_menu(game_win, menu_options, 2, 12, selected_option);
+                    break;
+                case 10:
+                    // enter option
+                    exit_game_over_screen = true;
+            }
+        }
+
+        napms(10);
     }
 
-    wrefresh(game_win);
+    return selected_option;
+}
+
+int show_esc_screen(WINDOW *game_win) {
+    wclear(game_win);
+
+    mvwprintw(game_win, 6, 17, "Sei sicuro di voler uscire?");
+
+    // create menu options array
+    char menu_options[2][50] = {};
+    strcpy(menu_options[0], "Si");
+    strcpy(menu_options[1], "No");
+
+    // show menu and start menu cicle
+    int selected_option = 0;
+    show_menu(game_win, menu_options, 2, 10, selected_option);
+
+    int exit_esc_screen = 0;
+    while (!exit_esc_screen) {
+        char c = wgetch(game_win);
+
+        // check if key entered
+        if (c != -1) {
+            switch (c) {
+                case 2:
+                    // increase selected option
+                    if (selected_option < 1) selected_option++;
+                    else selected_option = 0;
+                    show_menu(game_win, menu_options, 2, 10, selected_option);
+                    break;
+                case 3:
+                    // decrease selected option
+                    if (selected_option > 0) selected_option--;
+                    else selected_option = 1;
+                    show_menu(game_win, menu_options, 2, 10, selected_option);
+                    break;
+                case 10:
+                    // enter option
+                    exit_esc_screen = true;
+            }
+        }
+
+        napms(10);
+    }
+
+    return selected_option;
 }
 
 void destroy_map(WINDOW *game_win) {
@@ -188,59 +296,6 @@ void display_map(WINDOW *game_win, map *map) {
 
         napms(1);
     }
-}
-
-void print_game_over_text(WINDOW *game_win, int COLOR_PAIR_NUM) {
-    mvwprintw(game_win, 4, 3, ".d88b                          .d88b.");
-    mvwprintw(game_win, 5, 3, "8P www .d88 8d8b.d8b. .d88b    8P  Y8 Yb  dP .d88b 8d8b");
-    mvwprintw(game_win, 6, 3, "8b  d8 8  8 8P Y8P Y8 8.dP'    8b  d8  YbdP  8.dP' 8P");
-    mvwprintw(game_win, 7, 3, "`Y88P' `Y88 8   8   8 `Y88P    `Y88P'   YP   `Y88P 8");
-}
-
-int show_game_over_screen(WINDOW *game_win) {
-    wclear(game_win);
-
-    // create menu options array
-    char menu_options[2][50] = {};
-    strcpy(menu_options[0], "Nuova partita");
-    strcpy(menu_options[1], "Esci dal gioco");
-
-    // show game over text
-    print_game_over_text(game_win, WALL_PAIR);
-
-    // show menu and start menu cicle
-    int selected_option = 0;
-    show_menu(game_win, menu_options, 2, 12, selected_option);
-
-    int exit_game_over_screen = 0;
-    while (!exit_game_over_screen) {
-        char c = wgetch(game_win);
-
-        // check if key entered
-        if (c != -1) {
-            switch (c) {
-                case 2:
-                    // increase selected option
-                    if (selected_option < 1) selected_option++;
-                    else selected_option = 0;
-                    show_menu(game_win, menu_options, 2, 12, selected_option);
-                    break;
-                case 3:
-                    // decrease selected option
-                    if (selected_option > 0) selected_option--;
-                    else selected_option = 1;
-                    show_menu(game_win, menu_options, 2, 12, selected_option);
-                    break;
-                case 10:
-                    // enter option
-                    exit_game_over_screen = true;
-            }
-        }
-
-        napms(10);
-    }
-
-    return selected_option;
 }
 
 /* Info window */

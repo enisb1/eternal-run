@@ -27,6 +27,9 @@ void show_splash_screen(WINDOW *game_win);
 // returns the index of the option selected from the menu
 int show_game_over_screen(WINDOW *game_win);
 
+// shwo the exit screen, ask the user if want to exit
+int show_esc_screen(WINDOW *game_win);
+
 // destroy current map with animation
 void destroy_map(WINDOW *game_win);
 
