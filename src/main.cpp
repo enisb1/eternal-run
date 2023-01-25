@@ -2,12 +2,13 @@
 
 #include <ncursesw/ncurses.h>
 
-#include <cstring>
 #include <ctime>
 #include <cstdlib>
 
 #include "graphics.hpp"
 #include "map.hpp"
+
+using namespace std; 
 
 /* Vars */
 

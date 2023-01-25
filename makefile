@@ -1,4 +1,4 @@
-SOURCES = src/main.cpp src/graphics.cpp src/map.cpp
+SOURCES = src/main.cpp src/graphics.cpp src/map.cpp src/storing.cpp
 EXECUTABLE = game
 
 all: $(EXECUTABLE)
