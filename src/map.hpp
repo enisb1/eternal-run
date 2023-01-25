@@ -24,7 +24,7 @@ struct map {
 // create maps for the game and put them inside an array
 void create_maps(map *maps[]);
 
-// create coins lists for each map and put them inside an array 
-void create_coins_lists(coin *cLists[]);
+// return the map's default coins list
+coin *get_default_cList(int mapIndex);
 
 #endif

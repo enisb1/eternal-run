@@ -19,10 +19,11 @@ int level = 1;
 int life = 3;
 int money = 0;
 int currentMapIndex = 0;
+coin *currentCoinsList = NULL;
 
 /* Methods */
 
-void loadNextLevel(WINDOW *info_win, WINDOW *game_win, map *maps[], coin *cLists[]) {
+void load_next_level(WINDOW *info_win, WINDOW *game_win, map *maps[], coin *cLists[]) {
 	level++;
 	refresh_title(info_win, level);
 
@@ -30,19 +31,22 @@ void loadNextLevel(WINDOW *info_win, WINDOW *game_win, map *maps[], coin *cLists
 	while (nextMapIndex == currentMapIndex) nextMapIndex = rand()%6;
 	currentMapIndex = nextMapIndex;
 
-	display_map(game_win, maps[currentMapIndex], cLists[currentMapIndex]);
+    currentCoinsList = get_default_cList(currentMapIndex);
+	display_map(game_win, maps[currentMapIndex], currentCoinsList);
+    
+    //TODO: save previous level's data in a file
 }
 
-void setBlankChar(WINDOW *window, int y, int x) {
+void set_blank_char(WINDOW *window, int y, int x) {
     wmove(window, y, x);
     waddch(window, ' ');
 }
 
-coin *collectCoin(WINDOW *window, coin *head, int y, int x) {
+coin *collect_coin(WINDOW *window, coin *head, int y, int x) {
     // find the coin in the list, remove it and set blank char in that position
     if (head!=NULL) {
         if (head->y == y && head->x == x) {
-            setBlankChar(window, head->y, head->x);
+            set_blank_char(window, head->y, head->x);
             coin *tmp = head; 
             head = head->next; 
             delete tmp;
@@ -52,7 +56,7 @@ coin *collectCoin(WINDOW *window, coin *head, int y, int x) {
             coin *ptr = head->next; 
             while (ptr!=NULL && !found) {
                 if (ptr->y == y && ptr->x == x) {
-                    setBlankChar(window, ptr->y, ptr->x);
+                    set_blank_char(window, ptr->y, ptr->x);
                     coin *tmp = ptr;
                     prevPtr = ptr->next;
                     delete tmp; 
@@ -110,17 +114,16 @@ int main() {
     map *maps[6];
     create_maps(maps);
 
-    // create array containing each map's coins list
-    coin *cLists[6];
-    create_coins_lists(cLists);
-
     // set a random number to map index
     srand(time(0));
     currentMapIndex = rand()%6;
+
+    // get coins list based on map index 
+    currentCoinsList = get_default_cList(currentMapIndex);
     
     showSplashScreen(game_win);
 
-    display_map(game_win, maps[currentMapIndex], cLists[currentMapIndex]);
+    display_map(game_win, maps[currentMapIndex], currentCoinsList);
     refresh_title(info_win, level);
     refresh_stats(info_win, life, money);
 

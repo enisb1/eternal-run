@@ -1,6 +1,6 @@
 /* Includes */
 
-#include <cstddef>
+#include <cstdlib>
 
 #include "map.hpp"
 
@@ -122,7 +122,7 @@ map *create_map1() {
 	return map1;
 }
 
-coin *get_coins_list1() {
+coin *get_cList_map1() {
 	coin *head = NULL; 
 
 	head = add_coin_to_list(head, 4, 12);
@@ -294,7 +294,7 @@ map *create_map2() {
 	return map2;
 }
 
-coin *get_coins_list2() {
+coin *get_cList_map2() {
 	coin *head = NULL; 
 
     head = add_coin_to_list(head, 1, 1);
@@ -423,7 +423,7 @@ map *create_map3() {
 	return map3;
 }
 
-coin *get_coins_list3() {
+coin *get_cList_map3() {
 	coin *head = NULL; 
 
     head = add_coin_to_list(head, 12, 20);
@@ -593,7 +593,7 @@ map *create_map4() {
 	return map4;
 }
 
-coin *get_coins_list4() {
+coin *get_cList_map4() {
 	coin *head = NULL; 
 
 	head = add_coin_to_list(head, 7, 3);
@@ -781,7 +781,7 @@ map *create_map5() {
 	return map5;
 }
 
-coin *get_coins_list5() {
+coin *get_cList_map5() {
 	coin *head = NULL;
 
 	head = add_coin_to_list(head, 9, 2);
@@ -947,7 +947,7 @@ map *create_map6() {
 	return map6;
 }
 
-coin* get_coins_list6() {
+coin* get_cList_map6() {
 	coin *head = NULL;
 
 	head = add_coin_to_list(head, 10, 2);
@@ -1020,19 +1020,29 @@ void create_maps(map *maps[]) {
     maps[5] = map6;
 }
 
-void create_coins_lists(coin *cLists[]) {
-	coin *cHead1 = get_coins_list1();
-	coin *cHead2 = get_coins_list2();
-	coin *cHead3 = get_coins_list3();
-	coin *cHead4 = get_coins_list4();
-	coin *cHead5 = get_coins_list5();
-	coin *cHead6 = get_coins_list6();
+coin *get_default_cList(int mapIndex) {
+	coin *head = NULL; 
 
-	/* Create array of maps */
-	cLists[0] = cHead1;
-	cLists[1] = cHead2;
-	cLists[2] = cHead3;
-	cLists[3] = cHead4;
-	cLists[4] = cHead5;
-	cLists[5] = cHead6;
+	switch (mapIndex) {
+		case 0: 
+			head = get_cList_map1();
+			break; 
+		case 1: 
+			head = get_cList_map2();
+			break;
+		case 2: 
+			head = get_cList_map3();
+			break; 
+		case 3: 
+			head = get_cList_map4();
+			break;
+		case 4: 
+			head = get_cList_map5();
+			break;
+		case 5:
+			head = get_cList_map6();
+			break;			
+	}
+	
+	return head;
 }
