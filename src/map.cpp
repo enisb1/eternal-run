@@ -1,5 +1,7 @@
 /* Includes */
 
+#include <cstdlib>
+
 #include "map.hpp"
 
 /* Methods */
@@ -35,6 +37,15 @@ void add_blocks_horizontally(map *map, int y, int x1, int x2, int type) {
 	for (int i = x1; i <= x2; i++) {
 		add_block(map, y, i, type);
 	}
+}
+
+coin* add_coin_to_list(coin *c, int y, int x) {
+	coin *newHead = new coin;
+	newHead->y = y;
+	newHead->x = x;
+	newHead->next = c;
+
+	return newHead;
 }
 
 map *create_map1() {
@@ -109,89 +120,77 @@ map *create_map1() {
     add_blocks_horizontally(map1, 7, 51, 54, WALL_BLOCK);
     add_blocks_horizontally(map1, 8, 51, 54, WALL_BLOCK);
 
-    // add coins
-	add_block(map1, 4, 12, COIN_BLOCK);
-	add_block(map1, 7, 12, COIN_BLOCK);
-	add_block(map1, 10, 12, COIN_BLOCK);
-	add_block(map1, 13, 12, COIN_BLOCK);
-	add_block(map1, 4, 47, COIN_BLOCK);
-	add_block(map1, 7, 47, COIN_BLOCK);
-	add_block(map1, 10, 47, COIN_BLOCK);
-	add_block(map1, 13, 47, COIN_BLOCK);
-
-	add_block(map1, 4, 17, COIN_BLOCK);
-	add_block(map1, 8, 16, COIN_BLOCK);
-	add_block(map1, 12, 17, COIN_BLOCK);
-	add_block(map1, 4, 42, COIN_BLOCK);
-	add_block(map1, 8, 43, COIN_BLOCK);
-	add_block(map1, 12, 42, COIN_BLOCK);
-		
-	add_block(map1, 11, 20, COIN_BLOCK);
-	add_block(map1, 6, 21, COIN_BLOCK);
-	add_block(map1, 11, 39, COIN_BLOCK);
-	add_block(map1, 6, 38, COIN_BLOCK);
-		
-	add_block(map1, 1, 21, COIN_BLOCK);
-	add_block(map1, 1, 38, COIN_BLOCK);
-	add_block(map1, 1, 29, COIN_BLOCK);
-		
-	add_block(map1, 7, 28, COIN_BLOCK);
-	add_block(map1, 8, 31, COIN_BLOCK);
-
-
-	add_block(map1, 16, 21, COIN_BLOCK);
-
-	add_block(map1, 16, 38, COIN_BLOCK);
-
-	add_block(map1, 18, 1, COIN_BLOCK);
-    add_block(map1, 18, 58, COIN_BLOCK);
-	add_block(map1, 18, 8, COIN_BLOCK);
-	add_block(map1, 18, 17, COIN_BLOCK);
-	add_block(map1, 18, 25, COIN_BLOCK);
-	add_block(map1, 18, 51, COIN_BLOCK);
-	add_block(map1, 18, 42, COIN_BLOCK);
-	add_block(map1, 18, 34, COIN_BLOCK);
-	
-	add_block(map1, 15, 27, COIN_BLOCK);
-	add_block(map1, 15, 32, COIN_BLOCK);
-
-	add_block(map1, 15, 1, COIN_BLOCK);
-	add_block(map1, 15, 58, COIN_BLOCK);
-    
-    add_block(map1, 16, 13, COIN_BLOCK);
-    add_block(map1, 16, 46, COIN_BLOCK);
-    
-    add_block(map1, 12, 6, COIN_BLOCK);
-    add_block(map1, 12, 53, COIN_BLOCK);
-    
-    add_block(map1, 2, 16, COIN_BLOCK);
-    add_block(map1, 2, 43, COIN_BLOCK);
-    
-    add_block(map1, 6, 25, COIN_BLOCK);
-    add_block(map1, 9, 25, COIN_BLOCK);
-    add_block(map1, 6, 34, COIN_BLOCK);
-    add_block(map1, 9, 34, COIN_BLOCK);
-
-    add_block(map1, 1, 10, COIN_BLOCK);
-    add_block(map1, 2, 5, COIN_BLOCK);
-    add_block(map1, 4, 7, COIN_BLOCK);
-    add_block(map1, 5, 3, COIN_BLOCK);
-    add_block(map1, 7, 2, COIN_BLOCK);
-    add_block(map1, 10, 2, COIN_BLOCK);
-    add_block(map1, 13, 1, COIN_BLOCK);
-
-	add_block(map1, 1, 49, COIN_BLOCK);
-    add_block(map1, 2, 54, COIN_BLOCK);
-    add_block(map1, 4, 52, COIN_BLOCK);
-    add_block(map1, 5, 56, COIN_BLOCK);
-    add_block(map1, 7, 57, COIN_BLOCK);
-    add_block(map1, 10, 57, COIN_BLOCK);
-    add_block(map1, 13, 58, COIN_BLOCK);
-	
-    add_block(map1, 13, 25, COIN_BLOCK);
-    add_block(map1, 13, 34, COIN_BLOCK);
-
 	return map1;
+}
+
+coin *get_cList_map1() {
+	coin *head = NULL; 
+
+	head = add_coin_to_list(head, 4, 12);
+	head = add_coin_to_list(head, 7, 12);
+	head = add_coin_to_list(head, 10, 12);
+	head = add_coin_to_list(head, 13, 12);
+	head = add_coin_to_list(head, 4, 47);
+	head = add_coin_to_list(head, 7, 47);
+	head = add_coin_to_list(head, 10, 47);
+	head = add_coin_to_list(head, 13, 47);
+	head = add_coin_to_list(head, 4, 17);
+	head = add_coin_to_list(head, 8, 16);
+	head = add_coin_to_list(head, 12, 17);
+	head = add_coin_to_list(head, 4, 42);
+	head = add_coin_to_list(head, 8, 43);
+	head = add_coin_to_list(head, 12, 42);
+	head = add_coin_to_list(head, 11, 20);
+	head = add_coin_to_list(head, 6, 21);
+	head = add_coin_to_list(head, 11, 39);
+	head = add_coin_to_list(head, 6, 38);
+	head = add_coin_to_list(head, 1, 21);
+	head = add_coin_to_list(head, 1, 38);
+	head = add_coin_to_list(head, 1, 29);
+	head = add_coin_to_list(head, 7, 28);
+	head = add_coin_to_list(head, 8, 31);
+	head = add_coin_to_list(head, 16, 21);
+	head = add_coin_to_list(head, 16, 38);
+	head = add_coin_to_list(head, 18, 1);
+    head = add_coin_to_list(head, 18, 58);
+	head = add_coin_to_list(head, 18, 8);
+	head = add_coin_to_list(head, 18, 17);
+	head = add_coin_to_list(head, 18, 25);
+	head = add_coin_to_list(head, 18, 51);
+	head = add_coin_to_list(head, 18, 42);
+	head = add_coin_to_list(head, 18, 34);
+	head = add_coin_to_list(head, 15, 27);
+	head = add_coin_to_list(head, 15, 32);
+	head = add_coin_to_list(head, 15, 1);
+	head = add_coin_to_list(head, 15, 58);
+    head = add_coin_to_list(head, 16, 13);
+    head = add_coin_to_list(head, 16, 46);
+    head = add_coin_to_list(head, 12, 6);
+    head = add_coin_to_list(head, 12, 53);
+    head = add_coin_to_list(head, 2, 16);
+    head = add_coin_to_list(head, 2, 43);
+    head = add_coin_to_list(head, 6, 25);
+    head = add_coin_to_list(head, 9, 25);
+    head = add_coin_to_list(head, 6, 34);
+    head = add_coin_to_list(head, 9, 34);
+    head = add_coin_to_list(head, 1, 10);
+    head = add_coin_to_list(head, 2, 5);
+    head = add_coin_to_list(head, 4, 7);
+    head = add_coin_to_list(head, 5, 3);
+    head = add_coin_to_list(head, 7, 2);
+    head = add_coin_to_list(head, 10, 2);
+    head = add_coin_to_list(head, 13, 1);
+	head = add_coin_to_list(head, 1, 49);
+    head = add_coin_to_list(head, 2, 54);
+    head = add_coin_to_list(head, 4, 52);
+    head = add_coin_to_list(head, 5, 56);
+    head = add_coin_to_list(head, 7, 57);
+    head = add_coin_to_list(head, 10, 57);
+    head = add_coin_to_list(head, 13, 58);
+    head = add_coin_to_list(head, 13, 25);
+    head = add_coin_to_list(head, 13, 34);
+
+	return head; 
 }
 
 map *create_map2() {
@@ -293,53 +292,58 @@ map *create_map2() {
     add_blocks_horizontally(map2, 3, 33, 39, WALL_BLOCK);
     add_blocks_horizontally(map2, 2, 33, 39, WALL_BLOCK);
 
-    // add coins
-    add_block(map2, 1, 1, COIN_BLOCK);
-    add_block(map2, 4, 2, COIN_BLOCK);
-    add_block(map2, 8, 1, COIN_BLOCK);
-    add_block(map2, 12, 2, COIN_BLOCK);
-    add_block(map2, 1, 12, COIN_BLOCK);
-    add_block(map2, 3, 10, COIN_BLOCK);
-    add_block(map2, 7, 9, COIN_BLOCK);
-    add_block(map2, 9, 9, COIN_BLOCK);
-    add_block(map2, 11, 13, COIN_BLOCK);
-    add_block(map2, 2, 23, COIN_BLOCK);
-    add_block(map2, 4, 20, COIN_BLOCK);
-    add_block(map2, 7, 16, COIN_BLOCK);
-    add_block(map2, 12, 19, COIN_BLOCK);
-    add_block(map2, 16, 10, COIN_BLOCK);
-    add_block(map2, 18, 9, COIN_BLOCK);
-    add_block(map2, 18, 18, COIN_BLOCK);
-    add_block(map2, 18, 27, COIN_BLOCK);
-    add_block(map2, 16, 30, COIN_BLOCK);
-    add_block(map2, 14, 26, COIN_BLOCK);
-    add_block(map2, 14, 33, COIN_BLOCK);
-    add_block(map2, 8, 28, COIN_BLOCK);
-    add_block(map2, 8, 31, COIN_BLOCK);
-    add_block(map2, 4, 40, COIN_BLOCK);
-    add_block(map2, 4, 32, COIN_BLOCK);
-    add_block(map2, 4, 44, COIN_BLOCK);
-    add_block(map2, 11, 44, COIN_BLOCK);
-    add_block(map2, 14, 41, COIN_BLOCK);
-    add_block(map2, 18, 40, COIN_BLOCK);
-    add_block(map2, 18, 50, COIN_BLOCK);
-    add_block(map2, 5, 58, COIN_BLOCK);
-    add_block(map2, 10, 57, COIN_BLOCK);
-    add_block(map2, 15, 58, COIN_BLOCK);
-    add_block(map2, 1, 28, COIN_BLOCK);
-    add_block(map2, 1, 31, COIN_BLOCK);
-    add_block(map2, 5, 9, COIN_BLOCK);
-    add_block(map2, 18, 37, COIN_BLOCK);
-    add_block(map2, 9, 37, COIN_BLOCK);
-    add_block(map2, 9, 40, COIN_BLOCK);
-    add_block(map2, 15, 15, COIN_BLOCK);
-    add_block(map2, 3, 54, COIN_BLOCK);
-    add_block(map2, 16, 48, COIN_BLOCK);
-    add_block(map2, 13, 50, COIN_BLOCK);
-    add_block(map2, 8, 54, COIN_BLOCK);
-    add_block(map2, 7, 22, COIN_BLOCK);
-
 	return map2;
+}
+
+coin *get_cList_map2() {
+	coin *head = NULL; 
+
+    head = add_coin_to_list(head, 1, 1);
+    head = add_coin_to_list(head, 4, 2);
+    head = add_coin_to_list(head, 8, 1);
+    head = add_coin_to_list(head, 12, 2);
+    head = add_coin_to_list(head, 1, 12);
+    head = add_coin_to_list(head, 3, 10);
+    head = add_coin_to_list(head, 7, 9);
+    head = add_coin_to_list(head, 9, 9);
+    head = add_coin_to_list(head, 11, 13);
+    head = add_coin_to_list(head, 2, 23);
+    head = add_coin_to_list(head, 4, 20);
+    head = add_coin_to_list(head, 7, 16);
+    head = add_coin_to_list(head, 12, 19);
+    head = add_coin_to_list(head, 16, 10);
+    head = add_coin_to_list(head, 18, 9);
+    head = add_coin_to_list(head, 18, 18);
+    head = add_coin_to_list(head, 18, 27);
+    head = add_coin_to_list(head, 16, 30);
+    head = add_coin_to_list(head, 14, 26);
+    head = add_coin_to_list(head, 14, 33);
+    head = add_coin_to_list(head, 8, 28);
+    head = add_coin_to_list(head, 8, 31);
+    head = add_coin_to_list(head, 4, 40);
+    head = add_coin_to_list(head, 4, 32);
+    head = add_coin_to_list(head, 4, 44);
+    head = add_coin_to_list(head, 11, 44);
+    head = add_coin_to_list(head, 14, 41);
+    head = add_coin_to_list(head, 18, 40);
+    head = add_coin_to_list(head, 18, 50);
+    head = add_coin_to_list(head, 5, 58);
+    head = add_coin_to_list(head, 10, 57);
+    head = add_coin_to_list(head, 15, 58);
+    head = add_coin_to_list(head, 1, 28);
+    head = add_coin_to_list(head, 1, 31);
+    head = add_coin_to_list(head, 5, 9);
+    head = add_coin_to_list(head, 18, 37);
+    head = add_coin_to_list(head, 9, 37);
+    head = add_coin_to_list(head, 9, 40);
+    head = add_coin_to_list(head, 15, 15);
+    head = add_coin_to_list(head, 3, 54);
+    head = add_coin_to_list(head, 16, 48);
+    head = add_coin_to_list(head, 13, 50);
+    head = add_coin_to_list(head, 8, 54);
+    head = add_coin_to_list(head, 7, 22);
+
+	return head; 
 }
 
 map *create_map3() {
@@ -417,68 +421,66 @@ map *create_map3() {
     add_block(map3, 4, 50, WALL_BLOCK);
     add_block(map3, 4, 49, WALL_BLOCK);
 
-    // add coins
-    add_block(map3, 12, 20, COIN_BLOCK);
-    add_block(map3, 12, 39, COIN_BLOCK);
-    add_block(map3, 9, 24, COIN_BLOCK);
-    add_block(map3, 9, 35, COIN_BLOCK);
-    add_block(map3, 7, 16, COIN_BLOCK);
-    add_block(map3, 7, 43, COIN_BLOCK);
-    add_block(map3, 5, 12, COIN_BLOCK);
-    add_block(map3, 5, 47, COIN_BLOCK);
-    add_block(map3, 1, 1, COIN_BLOCK);
-    add_block(map3, 1, 58, COIN_BLOCK);
-    add_block(map3, 3, 30, COIN_BLOCK);
-    add_block(map3, 17, 2, COIN_BLOCK);
-    add_block(map3, 13, 9, COIN_BLOCK);
-    add_block(map3, 14, 3, COIN_BLOCK);
-    add_block(map3, 15, 7, COIN_BLOCK);
-    add_block(map3, 17, 57, COIN_BLOCK);
-    add_block(map3, 13, 50, COIN_BLOCK);
-    add_block(map3, 14, 56, COIN_BLOCK);
-    add_block(map3, 15, 52, COIN_BLOCK);
-
-    add_block(map3, 18, 15, COIN_BLOCK);
-    add_block(map3, 18, 28, COIN_BLOCK);
-    add_block(map3, 13, 27, COIN_BLOCK);
-    add_block(map3, 8, 28, COIN_BLOCK);
-	
-    add_block(map3, 18, 44, COIN_BLOCK);
-    add_block(map3, 18, 31, COIN_BLOCK);
-    add_block(map3, 13, 32, COIN_BLOCK);
-    add_block(map3, 8, 31, COIN_BLOCK);
-	
-    add_block(map3, 16, 22, COIN_BLOCK);
-    add_block(map3, 16, 37, COIN_BLOCK);
-
-    add_block(map3, 12, 23, COIN_BLOCK);
-    add_block(map3, 12, 36, COIN_BLOCK);
-	
-    add_block(map3, 5, 23, COIN_BLOCK);
-    add_block(map3, 3, 21, COIN_BLOCK);
-    add_block(map3, 5, 36, COIN_BLOCK);
-    add_block(map3, 3, 38, COIN_BLOCK);
-	
-    add_block(map3, 1, 10, COIN_BLOCK);
-    add_block(map3, 2, 5, COIN_BLOCK);
-    add_block(map3, 3, 7, COIN_BLOCK);
-    add_block(map3, 4, 3, COIN_BLOCK);
-    add_block(map3, 5, 5, COIN_BLOCK);
-    add_block(map3, 6, 1, COIN_BLOCK);
-	add_block(map3, 1, 49, COIN_BLOCK);
-    add_block(map3, 2, 54, COIN_BLOCK);
-    add_block(map3, 3, 52, COIN_BLOCK);
-    add_block(map3, 4, 56, COIN_BLOCK);
-    add_block(map3, 5, 54, COIN_BLOCK);
-    add_block(map3, 6, 58, COIN_BLOCK);
-    add_block(map3, 7, 10, COIN_BLOCK);
-    add_block(map3, 7, 49, COIN_BLOCK);
-    add_block(map3, 4, 16, COIN_BLOCK);
-    add_block(map3, 4, 43, COIN_BLOCK);
-	
-    add_block(map3, 3, 29, COIN_BLOCK);
-
 	return map3;
+}
+
+coin *get_cList_map3() {
+	coin *head = NULL; 
+
+    head = add_coin_to_list(head, 12, 20);
+    head = add_coin_to_list(head, 12, 39);
+    head = add_coin_to_list(head, 9, 24);
+    head = add_coin_to_list(head, 9, 35);
+    head = add_coin_to_list(head, 7, 16);
+    head = add_coin_to_list(head, 7, 43);
+    head = add_coin_to_list(head, 5, 12);
+    head = add_coin_to_list(head, 5, 47);
+    head = add_coin_to_list(head, 1, 1);
+    head = add_coin_to_list(head, 1, 58);
+    head = add_coin_to_list(head, 3, 30);
+    head = add_coin_to_list(head, 17, 2);
+    head = add_coin_to_list(head, 13, 9);
+    head = add_coin_to_list(head, 14, 3);
+    head = add_coin_to_list(head, 15, 7);
+    head = add_coin_to_list(head, 17, 57);
+    head = add_coin_to_list(head, 13, 50);
+    head = add_coin_to_list(head, 14, 56);
+    head = add_coin_to_list(head, 15, 52);
+    head = add_coin_to_list(head, 18, 15);
+    head = add_coin_to_list(head, 18, 28);
+    head = add_coin_to_list(head, 13, 27);
+    head = add_coin_to_list(head, 8, 28);
+    head = add_coin_to_list(head, 18, 44);
+    head = add_coin_to_list(head, 18, 31);
+    head = add_coin_to_list(head, 13, 32);
+    head = add_coin_to_list(head, 8, 31);
+    head = add_coin_to_list(head, 16, 22);
+    head = add_coin_to_list(head, 16, 37);
+    head = add_coin_to_list(head, 12, 23);
+    head = add_coin_to_list(head, 12, 36);
+    head = add_coin_to_list(head, 5, 23);
+    head = add_coin_to_list(head, 3, 21);
+    head = add_coin_to_list(head, 5, 36);
+    head = add_coin_to_list(head, 3, 38);
+    head = add_coin_to_list(head, 1, 10);
+    head = add_coin_to_list(head, 2, 5);
+    head = add_coin_to_list(head, 3, 7);
+    head = add_coin_to_list(head, 4, 3);
+    head = add_coin_to_list(head, 5, 5);
+    head = add_coin_to_list(head, 6, 1);
+	head = add_coin_to_list(head, 1, 49);
+    head = add_coin_to_list(head, 2, 54);
+    head = add_coin_to_list(head, 3, 52);
+    head = add_coin_to_list(head, 4, 56);
+    head = add_coin_to_list(head, 5, 54);
+    head = add_coin_to_list(head, 6, 58);
+    head = add_coin_to_list(head, 7, 10);
+    head = add_coin_to_list(head, 7, 49);
+    head = add_coin_to_list(head, 4, 16);
+    head = add_coin_to_list(head, 4, 43);
+    head = add_coin_to_list(head, 3, 29);
+
+	return head;
 }
 
 map *create_map4() {
@@ -589,56 +591,61 @@ map *create_map4() {
 	add_blocks_horizontally(map4, 14, 53, 54, WALL_BLOCK);
 	add_blocks_horizontally(map4, 17, 53, 54, WALL_BLOCK);
 
-	// Coins
-	add_block(map4, 7, 3, COIN_BLOCK);
-	add_block(map4, 12, 3, COIN_BLOCK);
-	add_block(map4, 4, 32, COIN_BLOCK);
-	add_block(map4, 6, 33, COIN_BLOCK);
-	add_block(map4, 8, 33, COIN_BLOCK);
-	add_block(map4, 6, 28, COIN_BLOCK);
-	add_block(map4, 8, 28, COIN_BLOCK);
-	add_block(map4, 4, 29, COIN_BLOCK);
-	add_block(map4, 10, 32, COIN_BLOCK);
-	add_block(map4, 10, 29, COIN_BLOCK);
-	add_block(map4, 16, 26, COIN_BLOCK);
-	add_block(map4, 16, 41, COIN_BLOCK);
-	add_block(map4, 18, 6, COIN_BLOCK);
-	add_block(map4, 16, 7, COIN_BLOCK);
-	add_block(map4, 12, 9, COIN_BLOCK);
-	add_block(map4, 12, 21, COIN_BLOCK);
-	add_block(map4, 12, 28, COIN_BLOCK);
-	add_block(map4, 12, 33, COIN_BLOCK);
-	add_block(map4, 12, 40, COIN_BLOCK);
-	add_block(map4, 8, 9, COIN_BLOCK);
-	add_block(map4, 8, 14, COIN_BLOCK);
-	add_block(map4, 1, 6, COIN_BLOCK);
-	add_block(map4, 1, 16, COIN_BLOCK);
-	add_block(map4, 1, 30, COIN_BLOCK);
-	add_block(map4, 1, 45, COIN_BLOCK);
-	add_block(map4, 1, 54, COIN_BLOCK);
-	add_block(map4, 8, 51, COIN_BLOCK);
-	add_block(map4, 5, 57, COIN_BLOCK);
-	add_block(map4, 18, 56, COIN_BLOCK);
-	add_block(map4, 17, 51, COIN_BLOCK);
-	add_block(map4, 14, 52, COIN_BLOCK);
-	add_block(map4, 14, 55, COIN_BLOCK);
-	add_block(map4, 10, 57, COIN_BLOCK);
-	add_block(map4, 12, 48, COIN_BLOCK);
-	add_block(map4, 4, 51, COIN_BLOCK);
-	add_block(map4, 14, 52, COIN_BLOCK);
-	add_block(map4, 18, 15, COIN_BLOCK);
-	add_block(map4, 15, 32, COIN_BLOCK);
-	add_block(map4, 15, 46, COIN_BLOCK);
-	add_block(map4, 15, 21, COIN_BLOCK);
-	add_block(map4, 3, 40, COIN_BLOCK);
-	add_block(map4, 7, 40, COIN_BLOCK);
-	add_block(map4, 7, 21, COIN_BLOCK);
-	add_block(map4, 3, 19, COIN_BLOCK);
-	add_block(map4, 14, 15, COIN_BLOCK);
-	add_block(map4, 4, 6, COIN_BLOCK);
-	add_block(map4, 4, 11, COIN_BLOCK);
-
 	return map4;
+}
+
+coin *get_cList_map4() {
+	coin *head = NULL; 
+
+	head = add_coin_to_list(head, 7, 3);
+	head = add_coin_to_list(head, 12, 3);
+	head = add_coin_to_list(head, 4, 32);
+	head = add_coin_to_list(head, 6, 33);
+	head = add_coin_to_list(head, 8, 33);
+	head = add_coin_to_list(head, 6, 28);
+	head = add_coin_to_list(head, 8, 28);
+	head = add_coin_to_list(head, 4, 29);
+	head = add_coin_to_list(head, 10, 32);
+	head = add_coin_to_list(head, 10, 29);
+	head = add_coin_to_list(head, 16, 26);
+	head = add_coin_to_list(head, 16, 41);
+	head = add_coin_to_list(head, 18, 6);
+	head = add_coin_to_list(head, 16, 7);
+	head = add_coin_to_list(head, 12, 9);
+	head = add_coin_to_list(head, 12, 21);
+	head = add_coin_to_list(head, 12, 28);
+	head = add_coin_to_list(head, 12, 33);
+	head = add_coin_to_list(head, 12, 40);
+	head = add_coin_to_list(head, 8, 9);
+	head = add_coin_to_list(head, 8, 14);
+	head = add_coin_to_list(head, 1, 6);
+	head = add_coin_to_list(head, 1, 16);
+	head = add_coin_to_list(head, 1, 30);
+	head = add_coin_to_list(head, 1, 45);
+	head = add_coin_to_list(head, 1, 54);
+	head = add_coin_to_list(head, 8, 51);
+	head = add_coin_to_list(head, 5, 57);
+	head = add_coin_to_list(head, 18, 56);
+	head = add_coin_to_list(head, 17, 51);
+	head = add_coin_to_list(head, 14, 52);
+	head = add_coin_to_list(head, 14, 55);
+	head = add_coin_to_list(head, 10, 57);
+	head = add_coin_to_list(head, 12, 48);
+	head = add_coin_to_list(head, 4, 51);
+	head = add_coin_to_list(head, 14, 52);
+	head = add_coin_to_list(head, 18, 15);
+	head = add_coin_to_list(head, 15, 32);
+	head = add_coin_to_list(head, 15, 46);
+	head = add_coin_to_list(head, 15, 21);
+	head = add_coin_to_list(head, 3, 40);
+	head = add_coin_to_list(head, 7, 40);
+	head = add_coin_to_list(head, 7, 21);
+	head = add_coin_to_list(head, 3, 19);
+	head = add_coin_to_list(head, 14, 15);
+	head = add_coin_to_list(head, 4, 6);
+	head = add_coin_to_list(head, 4, 11);
+
+	return head; 
 }
 
 map *create_map5() {
@@ -772,53 +779,58 @@ map *create_map5() {
 	add_blocks_horizontally(map5, 16, 44, 56, WALL_BLOCK);
 	add_blocks_horizontally(map5, 17, 44, 56, WALL_BLOCK);
 
-	// Coins
-	add_block(map5, 9, 2, COIN_BLOCK);
-	add_block(map5, 9, 57, COIN_BLOCK);
-	add_block(map5, 1, 1, COIN_BLOCK);
-	add_block(map5, 1, 19, COIN_BLOCK);
-	add_block(map5, 1, 28, COIN_BLOCK);
-	add_block(map5, 1, 58, COIN_BLOCK);
-	add_block(map5, 18, 58, COIN_BLOCK);
-	add_block(map5, 18, 1, COIN_BLOCK);
-	add_block(map5, 4, 13, COIN_BLOCK);
-	add_block(map5, 7, 8, COIN_BLOCK);
-	add_block(map5, 10, 19, COIN_BLOCK);
-	add_block(map5, 18, 19, COIN_BLOCK);
-	add_block(map5, 4, 18, COIN_BLOCK);
-	add_block(map5, 4, 28, COIN_BLOCK);
-	add_block(map5, 4, 41, COIN_BLOCK);
-	add_block(map5, 13, 5, COIN_BLOCK);
-	add_block(map5, 10, 42, COIN_BLOCK);
-	add_block(map5, 10, 54, COIN_BLOCK);
-	add_block(map5, 15, 53, COIN_BLOCK);
-	add_block(map5, 18, 40, COIN_BLOCK);
-	add_block(map5, 15, 42, COIN_BLOCK);
-	add_block(map5, 16, 28, COIN_BLOCK);
-	add_block(map5, 4, 54, COIN_BLOCK);
-	add_block(map5, 1, 45, COIN_BLOCK);
-	add_block(map5, 16, 33, COIN_BLOCK);
-	add_block(map5, 14, 12, COIN_BLOCK);
-	add_block(map5, 12, 24, COIN_BLOCK);
-	add_block(map5, 8, 24, COIN_BLOCK);
-	add_block(map5, 8, 37, COIN_BLOCK);
-	add_block(map5, 12, 37, COIN_BLOCK);
-	add_block(map5, 8, 28, COIN_BLOCK);
-	add_block(map5, 8, 33, COIN_BLOCK);
-	add_block(map5, 12, 28, COIN_BLOCK);
-	add_block(map5, 12, 33, COIN_BLOCK);
-	add_block(map5, 4, 33, COIN_BLOCK);
-	add_block(map5, 18, 48, COIN_BLOCK);
-	add_block(map5, 13, 50, COIN_BLOCK);
-	add_block(map5, 7, 47, COIN_BLOCK);
-	add_block(map5, 4, 5, COIN_BLOCK);
-	add_block(map5, 17, 11, COIN_BLOCK);
-	add_block(map5, 10, 12, COIN_BLOCK);
-	add_block(map5, 7, 14, COIN_BLOCK);
-	add_block(map5, 2, 37, COIN_BLOCK);
-	add_block(map5, 1, 10, COIN_BLOCK);
-
 	return map5;
+}
+
+coin *get_cList_map5() {
+	coin *head = NULL;
+
+	head = add_coin_to_list(head, 9, 2);
+	head = add_coin_to_list(head, 9, 57);
+	head = add_coin_to_list(head, 1, 1);
+	head = add_coin_to_list(head, 1, 19);
+	head = add_coin_to_list(head, 1, 28);
+	head = add_coin_to_list(head, 1, 58);
+	head = add_coin_to_list(head, 18, 58);
+	head = add_coin_to_list(head, 18, 1);
+	head = add_coin_to_list(head, 4, 13);
+	head = add_coin_to_list(head, 7, 8);
+	head = add_coin_to_list(head, 10, 19);
+	head = add_coin_to_list(head, 18, 19);
+	head = add_coin_to_list(head, 4, 18);
+	head = add_coin_to_list(head, 4, 28);
+	head = add_coin_to_list(head, 4, 41);
+	head = add_coin_to_list(head, 13, 5);
+	head = add_coin_to_list(head, 10, 42);
+	head = add_coin_to_list(head, 10, 54);
+	head = add_coin_to_list(head, 15, 53);
+	head = add_coin_to_list(head, 18, 40);
+	head = add_coin_to_list(head, 15, 42);
+	head = add_coin_to_list(head, 16, 28);
+	head = add_coin_to_list(head, 4, 54);
+	head = add_coin_to_list(head, 1, 45);
+	head = add_coin_to_list(head, 16, 33);
+	head = add_coin_to_list(head, 14, 12);
+	head = add_coin_to_list(head, 12, 24);
+	head = add_coin_to_list(head, 8, 24);
+	head = add_coin_to_list(head, 8, 37);
+	head = add_coin_to_list(head, 12, 37);
+	head = add_coin_to_list(head, 8, 28);
+	head = add_coin_to_list(head, 8, 33);
+	head = add_coin_to_list(head, 12, 28);
+	head = add_coin_to_list(head, 12, 33);
+	head = add_coin_to_list(head, 4, 33);
+	head = add_coin_to_list(head, 18, 48);
+	head = add_coin_to_list(head, 13, 50);
+	head = add_coin_to_list(head, 7, 47);
+	head = add_coin_to_list(head, 4, 5);
+	head = add_coin_to_list(head, 17, 11);
+	head = add_coin_to_list(head, 10, 12);
+	head = add_coin_to_list(head, 7, 14);
+	head = add_coin_to_list(head, 2, 37);
+	head = add_coin_to_list(head, 1, 10);
+
+	return head;
 }
 
 map *create_map6() {
@@ -933,58 +945,59 @@ map *create_map6() {
 
 	add_blocks_horizontally(map6, 17, 41, 42, WALL_BLOCK);
 
-	// Coins
-	add_block(map6, 10, 2, COIN_BLOCK);
-	add_block(map6, 10, 57, COIN_BLOCK);
-	add_block(map6, 1, 3, COIN_BLOCK);
-	add_block(map6, 1, 58, COIN_BLOCK);
-	add_block(map6, 18, 58, COIN_BLOCK);
-	add_block(map6, 18, 1, COIN_BLOCK);
-	add_block(map6, 17, 10, COIN_BLOCK);
-	add_block(map6, 17, 26, COIN_BLOCK);
-	add_block(map6, 15, 30, COIN_BLOCK);
-	add_block(map6, 17, 34, COIN_BLOCK);
-	add_block(map6, 12, 30, COIN_BLOCK);
-	add_block(map6, 12, 36, COIN_BLOCK);
-	add_block(map6, 12, 24, COIN_BLOCK);
-	add_block(map6, 9, 30, COIN_BLOCK);
-	add_block(map6, 7, 28, COIN_BLOCK);
-	add_block(map6, 9, 35, COIN_BLOCK);
-	add_block(map6, 9, 25, COIN_BLOCK);
-	add_block(map6, 7, 5, COIN_BLOCK);
-	add_block(map6, 7, 15, COIN_BLOCK);
-	add_block(map6, 4, 9, COIN_BLOCK);
-	add_block(map6, 10, 20, COIN_BLOCK);
-	add_block(map6, 14, 14, COIN_BLOCK);
-	add_block(map6, 12, 17, COIN_BLOCK);
-	add_block(map6, 10, 2, COIN_BLOCK);
-	add_block(map6, 10, 39, COIN_BLOCK);
-	add_block(map6, 10, 48, COIN_BLOCK);
-	add_block(map6, 12, 54, COIN_BLOCK);
-	add_block(map6, 12, 43, COIN_BLOCK);
-	add_block(map6, 18, 44, COIN_BLOCK);
-	add_block(map6, 18, 51, COIN_BLOCK);
-	add_block(map6, 17, 18, COIN_BLOCK);
-	add_block(map6, 12, 8, COIN_BLOCK);
-	add_block(map6, 16, 53, COIN_BLOCK);
-	add_block(map6, 5, 57, COIN_BLOCK);
-	add_block(map6, 4, 49, COIN_BLOCK);
-	add_block(map6, 1, 44, COIN_BLOCK);
-	add_block(map6, 4, 40, COIN_BLOCK);
-	add_block(map6, 4, 36, COIN_BLOCK);
-	add_block(map6, 4, 33, COIN_BLOCK);
-	add_block(map6, 4, 24, COIN_BLOCK);
-	add_block(map6, 4, 20, COIN_BLOCK);
-	add_block(map6, 1, 18, COIN_BLOCK);
-	add_block(map6, 2, 29, COIN_BLOCK);
-	add_block(map6, 2, 26, COIN_BLOCK);
-	add_block(map6, 1, 34, COIN_BLOCK);
-	add_block(map6, 7, 43, COIN_BLOCK);
-	add_block(map6, 5, 54, COIN_BLOCK);
-	add_block(map6, 3, 54, COIN_BLOCK);
-	add_block(map6, 7, 52, COIN_BLOCK);
-
 	return map6;
+}
+
+coin* get_cList_map6() {
+	coin *head = NULL;
+
+	head = add_coin_to_list(head, 10, 57);
+	head = add_coin_to_list(head, 18, 58);
+	head = add_coin_to_list(head, 17, 10);
+	head = add_coin_to_list(head, 17, 26);
+	head = add_coin_to_list(head, 15, 30);
+	head = add_coin_to_list(head, 17, 34);
+	head = add_coin_to_list(head, 12, 30);
+	head = add_coin_to_list(head, 12, 36);
+	head = add_coin_to_list(head, 12, 24);
+	head = add_coin_to_list(head, 9, 30);
+	head = add_coin_to_list(head, 7, 28);
+	head = add_coin_to_list(head, 9, 35);
+	head = add_coin_to_list(head, 9, 25);
+	head = add_coin_to_list(head, 7, 5);
+	head = add_coin_to_list(head, 7, 15);
+	head = add_coin_to_list(head, 4, 9);
+	head = add_coin_to_list(head, 10, 20);
+	head = add_coin_to_list(head, 14, 14);
+	head = add_coin_to_list(head, 12, 17);
+	head = add_coin_to_list(head, 10, 2);
+	head = add_coin_to_list(head, 10, 39);
+	head = add_coin_to_list(head, 10, 48);
+	head = add_coin_to_list(head, 12, 54);
+	head = add_coin_to_list(head, 12, 43);
+	head = add_coin_to_list(head, 18, 44);
+	head = add_coin_to_list(head, 18, 51);
+	head = add_coin_to_list(head, 17, 18);
+	head = add_coin_to_list(head, 12, 8);
+	head = add_coin_to_list(head, 16, 53);
+	head = add_coin_to_list(head, 5, 57);
+	head = add_coin_to_list(head, 4, 49);
+	head = add_coin_to_list(head, 1, 48);
+	head = add_coin_to_list(head, 4, 40);
+	head = add_coin_to_list(head, 4, 36);
+	head = add_coin_to_list(head, 4, 33);
+	head = add_coin_to_list(head, 4, 24);
+	head = add_coin_to_list(head, 4, 20);
+	head = add_coin_to_list(head, 1, 14);
+	head = add_coin_to_list(head, 2, 29);
+	head = add_coin_to_list(head, 2, 26);
+	head = add_coin_to_list(head, 1, 34);
+	head = add_coin_to_list(head, 7, 43);
+	head = add_coin_to_list(head, 5, 54);
+	head = add_coin_to_list(head, 3, 54);
+	head = add_coin_to_list(head, 7, 52);
+
+	return head;
 }
 
 void create_maps(map *maps[]) {
@@ -1001,4 +1014,31 @@ void create_maps(map *maps[]) {
     maps[3] = map4;
     maps[4] = map5;
     maps[5] = map6;
+}
+
+coin *get_default_cList(int mapIndex) {
+	coin *head = NULL; 
+
+	switch (mapIndex) {
+		case 0: 
+			head = get_cList_map1();
+			break; 
+		case 1: 
+			head = get_cList_map2();
+			break;
+		case 2: 
+			head = get_cList_map3();
+			break; 
+		case 3: 
+			head = get_cList_map4();
+			break;
+		case 4: 
+			head = get_cList_map5();
+			break;
+		case 5:
+			head = get_cList_map6();
+			break;			
+	}
+	
+	return head;
 }

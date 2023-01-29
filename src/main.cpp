@@ -4,20 +4,32 @@
 #include <stdlib.h>
 #include <cstring>
 
+#include <ctime>
+#include <cstdlib>
+
 #include "graphics.hpp"
 #include "map.hpp"
 
+using namespace std; 
+
 /* Vars */
+
 WINDOW *game_win;
 WINDOW *info_win;
+const int game_win_height = 20;
+const int game_win_width = 60;
+const int info_win_width = 18;
 
 map *maps[6];
-char title[25];
 int life;
 int shield;
 int coins;
+int level;
 
-/* Main method */
+int currentMapIndex = 0;
+coin *currentCoinsList = NULL;
+
+/* Methods */
 
 void create_colors() {
     if (has_colors()) start_color();
@@ -28,19 +40,81 @@ void create_colors() {
     init_pair(YELLOW_PAIR, COLOR_YELLOW, 0);
 }
 
+void load_next_level(WINDOW *info_win, WINDOW *game_win, map *maps[], coin *cLists[]) {
+	level++;
+	refresh_title(info_win, level);
+
+	int nextMapIndex = rand()%6;
+	while (nextMapIndex == currentMapIndex) nextMapIndex = rand()%6;
+	currentMapIndex = nextMapIndex;
+
+    currentCoinsList = get_default_cList(currentMapIndex);
+	display_map(game_win, maps[currentMapIndex], currentCoinsList);
+    
+    //TODO: save previous level's data in a file
+}
+
+void set_blank_char(WINDOW *window, int y, int x) {
+    wmove(window, y, x);
+    waddch(window, ' ');
+}
+
+coin *collect_coin(WINDOW *window, coin *head, int y, int x) {
+    // find the coin in the list, remove it and set blank char in that position
+    if (head!=NULL) {
+        if (head->y == y && head->x == x) {
+            set_blank_char(window, head->y, head->x);
+            coin *tmp = head; 
+            head = head->next; 
+            delete tmp;
+        } else {
+            bool found = false;
+            coin *prevPtr = head; 
+            coin *ptr = head->next; 
+            while (ptr!=NULL && !found) {
+                if (ptr->y == y && ptr->x == x) {
+                    set_blank_char(window, ptr->y, ptr->x);
+                    coin *tmp = ptr;
+                    prevPtr = ptr->next;
+                    delete tmp; 
+                    ptr = prevPtr->next;
+                    found = true; 
+                }
+                else {
+                    prevPtr = ptr; 
+                    ptr = prevPtr->next; 
+                }
+            }
+        }
+    }
+
+    // refresh game window
+    refresh();
+    wrefresh(window);
+
+    return head; 
+}
+
 void new_game() {
     // initialize vars
-    strcpy(title, "LEVEL 1");
     life = 3;
     shield = 0;
     coins = 0;
+    level = 1; 
 
+    // set a random number(0-5) to map index
+    srand(time(0));
+    currentMapIndex = rand()%6;
+
+    // get coins list based on map index 
+    currentCoinsList = get_default_cList(currentMapIndex);
+    
     // refresh
-    refresh_title(info_win, title);
+    refresh_title(info_win, level);
     refresh_stats(info_win, life, shield, coins);
 
     // TODO: new level (replace with random level)
-    display_map_with_anim(game_win, maps[0]);
+    display_map_with_anim(game_win, maps[currentMapIndex], currentCoinsList);
 }
 
 void death() {
@@ -50,7 +124,7 @@ void death() {
     destroy_map_with_animation(game_win);
     if (life > 0) {
         // TODO: replace with random level
-        display_map_with_anim(game_win, maps[1]);
+        display_map_with_anim(game_win, maps[1], currentCoinsList);
     } else {
         // game over
         switch (show_game_over_screen(game_win)) {
@@ -64,6 +138,8 @@ void death() {
         }
     }
 }
+
+/* Main method */
 
 int main() {
     // start ncurses

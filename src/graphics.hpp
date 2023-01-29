@@ -31,13 +31,16 @@ int show_game_over_screen(WINDOW *game_win);
 int show_esc_screen(WINDOW *game_win);
 
 // display map without animation
-void display_map(WINDOW *game_win, map *map);
+void display_map(WINDOW *game_win, map *map, coin *cHead);
 
 // display map with animation (row after row)
-void display_map_with_anim(WINDOW *game_win, map *map);
+void display_map_with_anim(WINDOW *game_win, map *map, coin *cHead);
 
 // destroy current map with animation (row after row)
 void destroy_map_with_animation(WINDOW *game_win);
+
+// display map in a window
+void display_map(WINDOW *win, map *map, coin *cHead);
 
 /* Info window */
 
@@ -45,7 +48,7 @@ void destroy_map_with_animation(WINDOW *game_win);
 WINDOW *create_info_window(WINDOW *game_win);
 
 // refresh the text that shows the title of the game
-void refresh_title(WINDOW *info_win, char *title);
+void refresh_title(WINDOW *info_win, int level);
 
 // refresh the text that shows the stats of the game
 void refresh_stats(WINDOW *info_win, int life, int shield, int coins);

@@ -69,8 +69,6 @@ void show_splash_screen() {
     refresh();
 }
 
-/* Game window */
-
 WINDOW *create_game_window() {
     // create game window by aligning it to info window
     int stdscr_maxy, stdscr_maxx;
@@ -223,7 +221,7 @@ int show_esc_screen(WINDOW *game_win) {
     return selected_option;
 }
 
-void display_map(WINDOW *game_win, map *map) {
+void display_map(WINDOW *game_win, map *map, coin *cHead) {
     // diplay map border
     wclear(game_win);
     wattron(game_win, COLOR_PAIR(WALL_PAIR));
@@ -243,11 +241,6 @@ void display_map(WINDOW *game_win, map *map) {
                         waddch(game_win, '#');
                         wattroff(game_win, COLOR_PAIR(WALL_PAIR));
                         break;
-                    case COIN_BLOCK:
-                        wattron(game_win, COLOR_PAIR(YELLOW_PAIR));
-                        waddch(game_win, '*');
-                        wattroff(game_win, COLOR_PAIR(YELLOW_PAIR));
-                        break;
                     case ENTRANCE_BLOCK:
                         waddch(game_win, ' ');
                         break;
@@ -259,10 +252,19 @@ void display_map(WINDOW *game_win, map *map) {
         }
     }
 
+    coin *iterator = cHead;
+	while (iterator!=NULL) {
+		wmove(game_win, iterator->y, iterator->x);
+		wattron(game_win, COLOR_PAIR(YELLOW_PAIR));
+		waddch(game_win, '*');
+		wattroff(game_win, COLOR_PAIR(YELLOW_PAIR));
+		iterator = iterator->next;
+	}
+
     wrefresh(game_win);
 }
 
-void display_map_with_anim(WINDOW *game_win, map *map) {
+void display_map_with_anim(WINDOW *game_win, map *map, coin *cHead) {
     // display map border
     wclear(game_win);
     wattron(game_win, COLOR_PAIR(WALL_PAIR));
@@ -288,11 +290,6 @@ void display_map_with_anim(WINDOW *game_win, map *map) {
                             waddch(game_win, '#');
                             wattroff(game_win, COLOR_PAIR(WALL_PAIR));
                             break;
-                        case COIN_BLOCK:
-                            wattron(game_win, COLOR_PAIR(YELLOW_PAIR));
-                            waddch(game_win, '*');
-                            wattroff(game_win, COLOR_PAIR(YELLOW_PAIR));
-                            break;
                         case ENTRANCE_BLOCK:
                             waddch(game_win, ' ');
                             break;
@@ -314,6 +311,17 @@ void display_map_with_anim(WINDOW *game_win, map *map) {
 
         napms(1);
     }
+
+    coin *iterator = cHead;
+	while (iterator!=NULL) {
+		wmove(game_win, iterator->y, iterator->x);
+		wattron(game_win, COLOR_PAIR(YELLOW_PAIR));
+		waddch(game_win, '*');
+		wattroff(game_win, COLOR_PAIR(YELLOW_PAIR));
+		iterator = iterator->next;
+	}
+
+    wrefresh(game_win);
 }
 
 void destroy_map_with_animation(WINDOW *game_win) {
@@ -368,8 +376,8 @@ WINDOW *create_info_window(WINDOW *game_win) {
     return info_win;
 }
 
-void refresh_title(WINDOW *info_win, char *title) {
-    mvwprintw(info_win, 1, 2, "%s", title);
+void refresh_title(WINDOW *info_win, int level) {
+    mvwprintw(info_win, 1, 2, "LEVEL %d", level);
     wrefresh(info_win);
 }
 
