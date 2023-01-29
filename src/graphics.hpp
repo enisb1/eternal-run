@@ -48,6 +48,6 @@ WINDOW *create_info_window(WINDOW *game_win);
 void refresh_title(WINDOW *info_win, char *title);
 
 // refresh the text that shows the stats of the game
-void refresh_stats(WINDOW *info_win, int life, int shield, int money);
+void refresh_stats(WINDOW *info_win, int life, int shield, int coins);
 
 #endif

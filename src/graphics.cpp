@@ -373,7 +373,7 @@ void refresh_title(WINDOW *info_win, char *title) {
     wrefresh(info_win);
 }
 
-void refresh_stats(WINDOW *info_win, int life, int shield, int money) {
+void refresh_stats(WINDOW *info_win, int life, int shield, int coins) {
     // life
     wattron(info_win, COLOR_PAIR(RED_PAIR));
     mvwprintw(info_win, 3, 2, "LIFE: %d", life);
@@ -384,9 +384,9 @@ void refresh_stats(WINDOW *info_win, int life, int shield, int money) {
     mvwprintw(info_win, 4, 2, "SHIELD: %d", shield);
     wattroff(info_win, COLOR_PAIR(CYAN_PAIR));
     
-    // money
+    // coins
     wattron(info_win, COLOR_PAIR(YELLOW_PAIR));
-    mvwprintw(info_win, 5, 2, "MONEY: %d", money);
+    mvwprintw(info_win, 5, 2, "COINS: %d", coins);
     wattroff(info_win, COLOR_PAIR(YELLOW_PAIR));
 
     wrefresh(info_win);

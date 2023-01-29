@@ -15,7 +15,7 @@ map *maps[6];
 char title[25];
 int life;
 int shield;
-int money;
+int coins;
 
 /* Main method */
 
@@ -33,11 +33,11 @@ void new_game() {
     strcpy(title, "LEVEL 1");
     life = 3;
     shield = 0;
-    money = 0;
+    coins = 0;
 
     // refresh
     refresh_title(info_win, title);
-    refresh_stats(info_win, life, shield, money);
+    refresh_stats(info_win, life, shield, coins);
 
     // TODO: new level (replace with random level)
     display_map_with_anim(game_win, maps[0]);
@@ -45,7 +45,7 @@ void new_game() {
 
 void death() {
     life--;
-    refresh_stats(info_win, life, shield, money);
+    refresh_stats(info_win, life, shield, coins);
 
     destroy_map_with_animation(game_win);
     if (life > 0) {
