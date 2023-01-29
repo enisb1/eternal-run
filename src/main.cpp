@@ -94,11 +94,11 @@ int main() {
                     // esc
                     switch (show_game_over_screen(game_win)) {
                         case 0:
-                            endwin();
-                            exit(0);
+                            // resume_game();
                             break;
                         case 1:
-                            // resume_game();
+                            endwin();
+                            exit(0);
                             break;
                     }
                     break;
