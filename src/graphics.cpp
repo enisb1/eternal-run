@@ -15,14 +15,25 @@ const int INFO_WIN_WIDTH = 18;
 /* Standard screen */
 
 void print_game_name_text() {
-    int x = (getmaxx(stdscr) - 54) / 2;
+    int x = (getmaxx(stdscr) - 87) / 2;
+    // int x = (getmaxx(stdscr) - 78) / 2;
+    // int x = (getmaxx(stdscr) - 54) / 2;
     int y = (getmaxy(stdscr) - 10) / 2;
 
     attron(COLOR_PAIR(CYAN_PAIR));
-    mvprintw(y, x, "8888  w                         8    888b.");
+    mvprintw(y, x, "    dMMMMMP dMMMMMMP dMMMMMP dMMMMb  dMMMMb  .aMMMb  dMP         dMMMMb  dMP dMP dMMMMb");
+    mvprintw(y + 1, x, "   dMP        dMP   dMP     dMP.dMP dMP dMP dMP\"dMP dMP         dMP.dMP dMP dMP dMP dMP");
+    mvprintw(y + 2, x, "  dMMMP      dMP   dMMMP   dMMMMK\" dMP dMP dMMMMMP dMP         dMMMMK\" dMP dMP dMP dMP");
+    mvprintw(y + 3, x, " dMP        dMP   dMP     dMP\"AMF dMP dMP dMP dMP dMP         dMP\"AMF dMP.aMP dMP dMP");
+    mvprintw(y + 4, x, "dMMMMMP    dMP   dMMMMMP dMP dMP dMP dMP dMP dMP dMMMMMP     dMP dMP  VMMMP\" dMP dMP");
+    /* mvprintw(y, x, "888888 888888 888888 88\"\"Yb 88b 88    db    88         88\"\"Yb 88   88 88b 88");
+    mvprintw(y + 1, x, "88__     88   88__   88__dP 88Yb88   dPYb   88         88__dP 88   88 88Yb88");
+    mvprintw(y + 2, x, "88\"\"     88   88\"\"   88\"Yb  88 Y88  dP__Yb  88  .o     88\"Yb  Y8   8P 88 Y88");
+    mvprintw(y + 3, x, "888888   88   888888 88  Yb 88  Y8 dP\"\"\"\"Yb 88ood8     88  Yb `YbodP' 88  Y8"); */   
+    /* mvprintw(y, x, "8888  w                         8    888b.");
     mvprintw(y + 1, x, "8www w8ww .d88b 8d8b 8d8b. .d88 8    8  .8 8   8 8d8b.");
     mvprintw(y + 2, x, "8     8   8.dP' 8P   8P Y8 8  8 8    8wwK' 8b d8 8P Y8");
-    mvprintw(y + 3, x, "8888  Y8P `Y88P 8    8   8 `Y88 8    8  Yb `Y8P8 8   8");
+    mvprintw(y + 3, x, "8888  Y8P `Y88P 8    8   8 `Y88 8    8  Yb `Y8P8 8   8"); */
     attroff(COLOR_PAIR(CYAN_PAIR));
 }
 
@@ -230,9 +241,9 @@ void display_map(WINDOW *game_win, map *map, coin *cHead) {
 
     // display all the map at once
     for (int row = 0; row < 20; row++) {
-        for (int col = 1; col < 60; col++) {
+        for (int col = 0; col < 60; col++) {
             wmove(game_win, row, col);
-            int current_block = (map -> blocks)[row][col];
+            int current_block = (map->blocks)[row][col];
 
             if (current_block != EMPTY_BLOCK) {
                 switch (current_block) {
@@ -253,7 +264,7 @@ void display_map(WINDOW *game_win, map *map, coin *cHead) {
     }
 
     coin *iterator = cHead;
-	while (iterator!=NULL) {
+	while (iterator != NULL) {
 		wmove(game_win, iterator->y, iterator->x);
 		wattron(game_win, COLOR_PAIR(YELLOW_PAIR));
 		waddch(game_win, '*');
@@ -274,7 +285,7 @@ void display_map_with_anim(WINDOW *game_win, map *map, coin *cHead) {
     // display the map with an animation (row after row)
     unsigned int tick = 0;
     const unsigned int ANIM_PERIOD = 10;
-    int row = 20;
+    int row = 19;
 
     while (row >= 0) {
         if (tick == ANIM_PERIOD) {

@@ -3,12 +3,6 @@
 
 /* Vars */
 
-struct coin {
-	int y;
-	int x; 
-	coin *next;	
-};
-
 const int EMPTY_BLOCK = -1;
 const int ENTRANCE_BLOCK = 1;
 const int EXIT_BLOCK = 2;
@@ -17,16 +11,20 @@ const int COIN_BLOCK = 4;
 
 /* Structs */
 
+struct coin {
+	int y;
+	int x; 
+	coin *next;	
+};
+
 struct map {
     int blocks[20][60];
+	coin *coin_list;
 };
 
 /* Methods */
 
 // create maps for the game and put them inside an array
 void create_maps(map *maps[]);
-
-// return the map's default coins list
-coin *get_default_cList(int mapIndex);
 
 #endif
