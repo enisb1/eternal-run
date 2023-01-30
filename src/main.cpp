@@ -9,6 +9,7 @@
 
 #include "graphics.hpp"
 #include "map.hpp"
+#include "entities.hpp"
 
 using namespace std; 
 
