@@ -25,9 +25,9 @@ int shield;
 int coins;
 int level;
 
-map *maps[6];
-int map_index = 0;
-coin *coin_list = NULL;
+map *default_maps[6];
+int current_map_index = 0;
+coin *current_coin_list = NULL;
 
 /* Methods */
 
@@ -40,19 +40,28 @@ void create_colors() {
     init_pair(YELLOW_PAIR, COLOR_YELLOW, 0);
 }
 
+void load_random_level() {
+    // get a new random index
+    int next_map_index = rand() % 6;
+	while (next_map_index == current_map_index) next_map_index = rand() % 6;
+	current_map_index = next_map_index;
+
+    // get coins list based on current map index
+    current_coin_list = default_maps[current_map_index]->coin_list;
+
+    // display new level map
+	display_map_with_anim(game_win, default_maps[current_map_index]);
+}
+
 void load_next_level() {
+    //TODO: save previous level's data in a file
+
     // increment vars
     level++;
-	refresh_title(info_win, level);
+	refresh_title(info_win, level, true);
 
-	int next_map_index = rand() % 6;
-	while (next_map_index == map_index) next_map_index = rand() % 6;
-	map_index = next_map_index;
-    
-    // display new level map
-	display_map_with_anim(game_win, maps[map_index]);
-    
-    //TODO: save previous level's data in a file
+    // load a new level based on a random index
+	load_random_level();
 }
 
 void new_game() {
@@ -60,17 +69,16 @@ void new_game() {
     life = 3;
     shield = 0;
     coins = 0;
-    level = 0; 
+    level = 0;
 
-    // set a random number(0-5) to map index
+    // set a random number(0-5) to current map index
     srand(time(0));
-    map_index = rand() % 6;
+    current_map_index = rand() % 6;
 
-    // get coins list based on map index 
-    coin_list = maps[map_index]->coin_list;
+    // get coins list based on current map index 
+    current_coin_list = default_maps[current_map_index]->coin_list;
     
-    // refresh
-    refresh_title(info_win, level);
+    // refresh stats
     refresh_stats(info_win, life, shield, coins);
 
     // TODO: new level (replace with random level)
@@ -79,18 +87,16 @@ void new_game() {
 
 void collect_coin(int y, int x) {
     // find the coin in the list, remove it and set blank char in that position
-    coin *head = maps[map_index]->coin_list;
-
-    if (head != NULL) {
-        if (head->y == y && head->x == x) {
-            set_blank_char(game_win, head->y, head->x);
-            coin *tmp = head; 
-            head = head->next; 
+    if (current_coin_list != NULL) {
+        if (current_coin_list->y == y && current_coin_list->x == x) {
+            set_blank_char(game_win, current_coin_list->y, current_coin_list->x);
+            coin *tmp = current_coin_list; 
+            current_coin_list = current_coin_list->next;
             delete tmp;
         } else {
             bool found = false;
-            coin *previous_coin = head;
-            coin *current_coin = head->next;
+            coin *previous_coin = current_coin_list;
+            coin *current_coin = current_coin_list->next;
 
             while (current_coin != NULL && !found) {
                 if (current_coin->y == y && current_coin->x == x) {
@@ -116,10 +122,8 @@ void death() {
     refresh_stats(info_win, life, shield, coins);
 
     destroy_map_with_animation(game_win);
-    if (life > 0) {
-        // TODO: replace with random level
-        display_map_with_anim(game_win, maps[1]);
-    } else {
+    if (life > 0) load_random_level();
+    else {
         // game over
         switch (show_game_over_screen(game_win)) {
             case 0:
@@ -143,8 +147,8 @@ int main() {
     nodelay(stdscr, true); // don't stop the program on getch()
     create_colors(); // create color pairs
 
-    // create the 6 maps and show splash screen
-    create_maps(maps);
+    // create the 6 default_maps and show splash screen
+    create_default_maps(default_maps);
 
     show_splash_screen();
 
@@ -162,8 +166,7 @@ int main() {
             switch (c) {
                 case 27:
                     // esc
-                    collect_coin(1, 6);
-                    /* switch (show_esc_screen(game_win)) {
+                    switch (show_esc_screen(game_win)) {
                         case 0:
                             endwin();
                             exit(0);
@@ -171,7 +174,7 @@ int main() {
                         case 1:
                             // resume_game();
                             break;
-                    } */
+                    }
                     break;
             }
         }

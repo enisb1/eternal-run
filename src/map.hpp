@@ -24,7 +24,7 @@ struct map {
 
 /* Methods */
 
-// create maps for the game and put them inside an array
-void create_maps(map *maps[]);
+// create default_maps for the game and put them inside an array
+void create_default_maps(map *default_maps[]);
 
 #endif

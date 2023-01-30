@@ -392,8 +392,9 @@ WINDOW *create_info_window(WINDOW *game_win) {
     return info_win;
 }
 
-void refresh_title(WINDOW *info_win, int level) {
-    mvwprintw(info_win, 1, 2, "LEVEL %d", level);
+void refresh_title(WINDOW *info_win, int level, bool is_market_level) {
+    if (is_market_level) mvwprintw(info_win, 1, 2, "MARKET LEVEL");
+    else mvwprintw(info_win, 1, 2, "LEVEL %d", level);
     wrefresh(info_win);
 }
 

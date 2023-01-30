@@ -48,7 +48,7 @@ void set_blank_char(WINDOW *game_win, int y, int x);
 WINDOW *create_info_window(WINDOW *game_win);
 
 // refresh the text that shows the title of the game
-void refresh_title(WINDOW *info_win, int level);
+void refresh_title(WINDOW *info_win, int level, bool is_market_level);
 
 // refresh the text that shows the stats of the game
 void refresh_stats(WINDOW *info_win, int life, int shield, int coins);
