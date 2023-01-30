@@ -31,16 +31,16 @@ int show_game_over_screen(WINDOW *game_win);
 int show_esc_screen(WINDOW *game_win);
 
 // display map without animation
-void display_map(WINDOW *game_win, map *map, coin *cHead);
+void display_map(WINDOW *game_win, map *map);
 
 // display map with animation (row after row)
-void display_map_with_anim(WINDOW *game_win, map *map, coin *cHead);
+void display_map_with_anim(WINDOW *game_win, map *map);
 
 // destroy current map with animation (row after row)
 void destroy_map_with_animation(WINDOW *game_win);
 
-// display map in a window
-void display_map(WINDOW *win, map *map, coin *cHead);
+// set a blank char to a certain position of the map
+void set_blank_char(WINDOW *game_win, int y, int x);
 
 /* Info window */
 

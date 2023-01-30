@@ -40,12 +40,27 @@ void create_colors() {
     init_pair(YELLOW_PAIR, COLOR_YELLOW, 0);
 }
 
+void load_next_level() {
+    // increment vars
+    level++;
+	refresh_title(info_win, level);
+
+	int next_map_index = rand() % 6;
+	while (next_map_index == map_index) next_map_index = rand() % 6;
+	map_index = next_map_index;
+    
+    // display new level map
+	display_map_with_anim(game_win, maps[map_index]);
+    
+    //TODO: save previous level's data in a file
+}
+
 void new_game() {
     // initialize vars
     life = 3;
     shield = 0;
     coins = 0;
-    level = 1; 
+    level = 0; 
 
     // set a random number(0-5) to map index
     srand(time(0));
@@ -59,62 +74,41 @@ void new_game() {
     refresh_stats(info_win, life, shield, coins);
 
     // TODO: new level (replace with random level)
-    display_map_with_anim(game_win, maps[map_index], coin_list);
+    load_next_level();
 }
 
-void load_next_level(WINDOW *info_win, WINDOW *game_win, map *maps[], coin *cLists[]) {
-	level++;
-	refresh_title(info_win, level);
-
-	int nextMapIndex = rand()%6;
-	while (nextMapIndex == map_index) nextMapIndex = rand()%6;
-	map_index = nextMapIndex;
-
-    coin_list = maps[map_index]->coin_list;
-	display_map(game_win, maps[map_index], coin_list);
-    
-    //TODO: save previous level's data in a file
-}
-
-void set_blank_char(WINDOW *window, int y, int x) {
-    wmove(window, y, x);
-    waddch(window, ' ');
-}
-
-coin *collect_coin(WINDOW *window, coin *head, int y, int x) {
+void collect_coin(int y, int x) {
     // find the coin in the list, remove it and set blank char in that position
-    if (head!=NULL) {
+    coin *head = maps[map_index]->coin_list;
+
+    if (head != NULL) {
         if (head->y == y && head->x == x) {
-            set_blank_char(window, head->y, head->x);
+            set_blank_char(game_win, head->y, head->x);
             coin *tmp = head; 
             head = head->next; 
             delete tmp;
         } else {
             bool found = false;
-            coin *prevPtr = head; 
-            coin *ptr = head->next; 
-            while (ptr!=NULL && !found) {
-                if (ptr->y == y && ptr->x == x) {
-                    set_blank_char(window, ptr->y, ptr->x);
-                    coin *tmp = ptr;
-                    prevPtr = ptr->next;
-                    delete tmp; 
-                    ptr = prevPtr->next;
+            coin *previous_coin = head;
+            coin *current_coin = head->next;
+
+            while (current_coin != NULL && !found) {
+                if (current_coin->y == y && current_coin->x == x) {
+                    set_blank_char(game_win, current_coin->y, current_coin->x);
+                    coin *tmp = current_coin;
+                    previous_coin = current_coin->next;
+                    delete tmp;
                     found = true; 
-                }
-                else {
-                    prevPtr = ptr; 
-                    ptr = prevPtr->next; 
+                } else {
+                    previous_coin = current_coin; 
+                    current_coin = previous_coin->next; 
                 }
             }
         }
     }
 
-    // refresh game window
-    refresh();
-    wrefresh(window);
-
-    return head; 
+    // refresh
+    wrefresh(game_win);
 }
 
 void death() {
@@ -124,7 +118,7 @@ void death() {
     destroy_map_with_animation(game_win);
     if (life > 0) {
         // TODO: replace with random level
-        display_map_with_anim(game_win, maps[1], coin_list);
+        display_map_with_anim(game_win, maps[1]);
     } else {
         // game over
         switch (show_game_over_screen(game_win)) {
@@ -168,7 +162,8 @@ int main() {
             switch (c) {
                 case 27:
                     // esc
-                    switch (show_esc_screen(game_win)) {
+                    collect_coin(1, 6);
+                    /* switch (show_esc_screen(game_win)) {
                         case 0:
                             endwin();
                             exit(0);
@@ -176,7 +171,7 @@ int main() {
                         case 1:
                             // resume_game();
                             break;
-                    }
+                    } */
                     break;
             }
         }

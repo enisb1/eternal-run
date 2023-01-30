@@ -232,14 +232,14 @@ int show_esc_screen(WINDOW *game_win) {
     return selected_option;
 }
 
-void display_map(WINDOW *game_win, map *map, coin *cHead) {
+void display_map(WINDOW *game_win, map *map) {
     // diplay map border
     wclear(game_win);
     wattron(game_win, COLOR_PAIR(WALL_PAIR));
     wborder(game_win, '#', '#', '#', '#', '#', '#', '#', '#');
     wattroff(game_win, COLOR_PAIR(WALL_PAIR));
 
-    // display all the map at once
+    // display all the map walls and coins at once
     for (int row = 0; row < 20; row++) {
         for (int col = 0; col < 60; col++) {
             wmove(game_win, row, col);
@@ -263,7 +263,7 @@ void display_map(WINDOW *game_win, map *map, coin *cHead) {
         }
     }
 
-    coin *iterator = cHead;
+    coin *iterator = map->coin_list;
 	while (iterator != NULL) {
 		wmove(game_win, iterator->y, iterator->x);
 		wattron(game_win, COLOR_PAIR(YELLOW_PAIR));
@@ -275,7 +275,7 @@ void display_map(WINDOW *game_win, map *map, coin *cHead) {
     wrefresh(game_win);
 }
 
-void display_map_with_anim(WINDOW *game_win, map *map, coin *cHead) {
+void display_map_with_anim(WINDOW *game_win, map *map) {
     // display map border
     wclear(game_win);
     wattron(game_win, COLOR_PAIR(WALL_PAIR));
@@ -323,7 +323,7 @@ void display_map_with_anim(WINDOW *game_win, map *map, coin *cHead) {
         napms(1);
     }
 
-    coin *iterator = cHead;
+    coin *iterator = map->coin_list;
 	while (iterator!=NULL) {
 		wmove(game_win, iterator->y, iterator->x);
 		wattron(game_win, COLOR_PAIR(YELLOW_PAIR));
@@ -356,6 +356,11 @@ void destroy_map_with_animation(WINDOW *game_win) {
 
         napms(1);
     }
+}
+
+void set_blank_char(WINDOW *game_win, int y, int x) {
+    wmove(game_win, y, x);
+    waddch(game_win, ' ');
 }
 
 /* Info window */
