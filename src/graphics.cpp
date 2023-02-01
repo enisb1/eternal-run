@@ -314,18 +314,12 @@ void display_map_with_anim(WINDOW *game_win, map *map) {
     }
     
     coin *iterator = map->coin_list;
-    mvprintw(0, 0, "!%d!", iterator->next->next->y);
-    refresh();
 	while (iterator!=NULL) {
 		wmove(game_win, iterator->y, iterator->x);
 		wattron(game_win, COLOR_PAIR(YELLOW_PAIR));
 		waddch(game_win, '*');
 		wattroff(game_win, COLOR_PAIR(YELLOW_PAIR));
-        mvprintw(0, 0, "%d, ", iterator->y);
-        refresh();
 		iterator = iterator->next;
-        mvprintw(0, 0, "%d\n", iterator->y);
-        refresh();
 	}
 
     wrefresh(game_win);

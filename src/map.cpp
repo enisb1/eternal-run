@@ -121,6 +121,7 @@ map *create_default_map1() {
     add_blocks_horizontally(default_map1, 8, 51, 54, WALL_BLOCK);
 
 	// add coins
+	default_map1->coin_list = NULL;
 	add_coin(default_map1, 4, 12);
 	add_coin(default_map1, 7, 12);
 	add_coin(default_map1, 10, 12);
@@ -288,6 +289,7 @@ map *create_default_map2() {
     add_blocks_horizontally(default_map2, 2, 33, 39, WALL_BLOCK);
 
 	// add coins
+	default_map2->coin_list = NULL;
 	add_coin(default_map2, 1, 1);
     add_coin(default_map2, 4, 2);
     add_coin(default_map2, 8, 1);
@@ -410,6 +412,7 @@ map *create_default_map3() {
     add_block(default_map3, 4, 49, WALL_BLOCK);
 
 	// add coins
+	default_map3->coin_list = NULL;
 	add_coin(default_map3, 12, 20);
     add_coin(default_map3, 12, 39);
     add_coin(default_map3, 9, 24);
@@ -570,6 +573,7 @@ map *create_default_map4() {
 	add_blocks_horizontally(default_map4, 17, 53, 54, WALL_BLOCK);
 
 	// add coins
+	default_map4->coin_list = NULL;
 	add_coin(default_map4, 7, 3);
 	add_coin(default_map4, 12, 3);
 	add_coin(default_map4, 4, 32);
@@ -748,6 +752,7 @@ map *create_default_map5() {
 	add_blocks_horizontally(default_map5, 17, 44, 56, WALL_BLOCK);
 
 	// add coins
+	default_map5->coin_list = NULL;
 	add_coin(default_map5, 9, 2);
 	add_coin(default_map5, 9, 57);
 	add_coin(default_map5, 1, 1);
@@ -907,6 +912,7 @@ map *create_default_map6() {
 	add_blocks_horizontally(default_map6, 17, 41, 42, WALL_BLOCK);
 
 	// add coins
+	default_map6->coin_list = NULL;
 	add_coin(default_map6, 10, 57);
 	add_coin(default_map6, 18, 58);
 	add_coin(default_map6, 17, 10);

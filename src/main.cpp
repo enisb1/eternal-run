@@ -43,7 +43,7 @@ void create_colors() {
 
 void load_random_level() {
     // get a new random index
-    int next_map_index = 3;
+    int next_map_index = rand() % 6;
 	while (next_map_index == current_map_index) next_map_index = rand() % 6;
 	current_map_index = next_map_index;
 
