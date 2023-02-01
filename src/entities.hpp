@@ -5,15 +5,13 @@ class Entity {
     protected:
         int x;
         int y;
-        char symbol;
 
     public:
-        Entity(int x, int y, char symbol);
+        Entity(int x, int y);
 
         // getter and setter
         int get_x();
         int get_y();
-        char get_symbol();
         
         // move the entity inside the map
         void move(int dx, int dy);
@@ -28,9 +26,9 @@ class Player: public Entity {
 
     public:
         Player(
-            int x, int y, char symbol, int life, 
+            int x, int y, int life, 
             int shield, int has_weapon
-        ):Entity(x, y, symbol);
+        );
 
         // getter and setter
         void set_life(int life);
@@ -60,8 +58,7 @@ class Enemy: public Entity {
         int damage;
 
     public:
-        Player(int x, int y, char symbol, int level)
-            :Entity(x, y, symbol);
+        Enemy(int x, int y, int level);
         
         // getter and setter
         int get_life();
@@ -78,10 +75,9 @@ class Bullet: public Entity {
         int speed;
 
     public:
-        Player(
-            int x, int y, char symbol, 
-            int direction_x, int direction_y, int speed
-        ):Entity(x, y, symbol);
+        Bullet(
+            int x, int y, 
+            int direction_x, int direction_y, int speed);
         
         // move the entity inside the map
         // following the bullet movement

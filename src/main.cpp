@@ -43,7 +43,7 @@ void create_colors() {
 
 void load_random_level() {
     // get a new random index
-    int next_map_index = rand() % 6;
+    int next_map_index = 3;
 	while (next_map_index == current_map_index) next_map_index = rand() % 6;
 	current_map_index = next_map_index;
 
@@ -72,12 +72,7 @@ void new_game() {
     coins = 0;
     level = 0;
 
-    // set a random number(0-5) to current map index
     srand(time(0));
-    current_map_index = rand() % 6;
-
-    // get coins list based on current map index 
-    current_coin_list = default_maps[current_map_index]->coin_list;
     
     // refresh stats
     refresh_stats(info_win, life, shield, coins);
@@ -160,25 +155,32 @@ int main() {
     new_game();
 
     // game loop
+    unsigned int tick = 0;
+    const unsigned int ANIM_PERIOD = 1;
     while (1) {
         char c = wgetch(game_win);
         
-        if (c != -1) {
-            switch (c) {
-                case 27:
-                    // esc
-                    switch (show_esc_screen(game_win)) {
-                        case 0:
-                            endwin();
-                            exit(0);
-                            break;
-                        case 1:
-                            // resume_game();
-                            break;
-                    }
-                    break;
+        if (tick == ANIM_PERIOD) {
+            if (c != -1) {
+                switch (c) {
+                    case 27:
+                        // esc
+                        switch (show_esc_screen(game_win)) {
+                            case 0:
+                                endwin();
+                                exit(0);
+                                break;
+                            case 1:
+                                // resume_game();
+                                break;
+                        }
+                        break;
+                }
             }
+
+            tick = 0; 
         }
+        else tick++;
     };
 
     return 0;
