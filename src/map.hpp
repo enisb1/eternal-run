@@ -19,6 +19,7 @@ struct coin {
 
 struct map {
     int blocks[20][60];
+	int entrance_exit_positions[4]; // [entrancey, entrancex, exity, exitx]
 	coin *coin_list;
 };
 

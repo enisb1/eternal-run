@@ -39,6 +39,26 @@ void add_blocks_horizontally(map *map, int y, int x1, int x2, int type) {
 	}
 }
 
+void add_entrance(map *map, bool is_vertical, int y, int x) {
+	if (is_vertical) {
+		add_blocks_vertically(map, y-1, y+1, x, ENTRANCE_BLOCK);
+	} else {
+		add_blocks_horizontally(map, y, x-1, x+1, ENTRANCE_BLOCK);
+	}
+	map->entrance_exit_positions[0] = y; 
+	map->entrance_exit_positions[1] = x;
+}
+
+void add_exit(map *map, bool is_vertical, int y, int x) {
+	if (is_vertical) {
+		add_blocks_vertically(map, y-1, y+1, x, EXIT_BLOCK);
+	} else {
+		add_blocks_horizontally(map, y, x-1, x+1, EXIT_BLOCK);
+	}
+	map->entrance_exit_positions[2] = y; 
+	map->entrance_exit_positions[3] = x;
+}
+
 void add_coin(map *map, int y, int x) {
 	coin *new_head = new coin;
 	new_head->y = y;
@@ -52,9 +72,9 @@ map *create_default_map1() {
 	map *default_map1 = new_map();
 
 	// add entrance and exit
-    add_blocks_vertically(default_map1, 2, 4, 0, ENTRANCE_BLOCK);
-    add_blocks_vertically(default_map1, 2, 4, 59, EXIT_BLOCK);
-    
+	add_entrance(default_map1, true, 3, 0);
+	add_exit(default_map1, true, 3, 59);
+
     // add walls
     add_blocks_vertically(default_map1, 4, 11, 9, WALL_BLOCK);
     add_blocks_vertically(default_map1, 4, 11, 10, WALL_BLOCK);
@@ -193,8 +213,8 @@ map *create_default_map2() {
 	map *default_map2 = new_map();
 
 	// add entrance and exit
-    add_blocks_vertically(default_map2, 16, 17, 0, ENTRANCE_BLOCK);
-    add_blocks_vertically(default_map2, 16, 17, 59, EXIT_BLOCK);
+	add_entrance(default_map2, true, 17, 0); 
+	add_exit(default_map2, true, 17, 59);
 
     // add walls
     add_blocks_vertically(default_map2, 1, 4, 29, WALL_BLOCK);
@@ -342,8 +362,8 @@ map *create_default_map3() {
 	map *default_map3 = new_map();
 
 	// add entrance and exit
-    add_blocks_horizontally(default_map3, 19, 3, 6, ENTRANCE_BLOCK);
-    add_blocks_horizontally(default_map3, 19, 53, 56, EXIT_BLOCK);
+	add_entrance(default_map3, false, 19, 4);
+	add_exit(default_map3, false, 19, 54);
 
     // add walls
     add_blocks_vertically(default_map3, 4, 18, 29, WALL_BLOCK);
@@ -473,8 +493,8 @@ map *create_default_map4() {
 	map *default_map4 = new_map();
 
 	// add entrance and exit
-	add_blocks_vertically(default_map4, 9, 10, 0, ENTRANCE_BLOCK);
-	add_blocks_vertically(default_map4, 9, 10, 59, EXIT_BLOCK);
+	add_entrance(default_map4, true, 10, 0);
+	add_exit(default_map4, true, 10, 59);
 
 	// add walls
 	add_blocks_vertically(default_map4, 0, 8, 1, WALL_BLOCK);
@@ -629,8 +649,8 @@ map *create_default_map5() {
 	map *default_map5 = new_map();
 
 	// add entrance and exit
-	add_blocks_vertically(default_map5, 9, 10, 0, ENTRANCE_BLOCK);
-	add_blocks_vertically(default_map5, 9, 10, 59, EXIT_BLOCK);
+	add_entrance(default_map5, true, 10, 0);
+	add_exit(default_map5, true, 10, 59);
 
 	// add walls
 	add_blocks_vertically(default_map5, 2, 6, 3, WALL_BLOCK);
@@ -805,8 +825,8 @@ map *create_default_map6() {
 	map *default_map6 = new_map();
 
 	// add entrance and exit
-	add_blocks_vertically(default_map6, 9, 10, 0, ENTRANCE_BLOCK);
-	add_blocks_vertically(default_map6, 9, 10, 59, EXIT_BLOCK);
+	add_entrance(default_map6, true, 10, 0);
+	add_exit(default_map6, true, 10, 59);
 
 	// add walls
 	add_blocks_horizontally(default_map6, 2, 3, 8, WALL_BLOCK);
