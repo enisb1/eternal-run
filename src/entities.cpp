@@ -2,34 +2,54 @@
 
 // Methods of class Entity
 
-Entity::Entity(int x, int y) {
-    this->x = x; 
-    this->y = y; 
+Entity::Entity(int y, int x) {
+    this->y = y;
+    this->x = x;
 }
 
-int Entity::get_x() {
-    return this->x; 
+void Entity::set_y(int y) {
+    this->y = y;
 }
 
 int Entity::get_y() {
     return this->y; 
 }
 
-void Entity::move(int dx, int dy) {
-    this->x += dx; 
+void Entity::set_x(int x) {
+    this->x = x;
+}
+
+int Entity::get_x() {
+    return this->x; 
+}
+
+void Entity::move(int dy, int dx) {
     this->y += dy;
+    this->x += dx;
 }
 
 // Methods of class Player
 
-Player::Player(int x, int y, int life, int shield, int has_weapon):Entity(x, y) {
-            this->life = life; 
-            this->shield = shield; 
-            this->has_weapon = has_weapon;
+Player::Player(
+    int y, int x, int direction,
+    int life, int shield, bool has_weapon
+):Entity(y, x) {
+    this->direction = direction;
+    this->life = life;
+    this->shield = shield; 
+    this->has_weapon = has_weapon;
+}
+
+void Player::set_direction(int direction) {
+    this->direction = direction;
+}
+
+int Player::get_direction() {
+    return this->direction;
 }
 
 void Player::set_life(int life) {
-    this->life = life; 
+    this->life = life;
 }
 
 int Player::get_life() {

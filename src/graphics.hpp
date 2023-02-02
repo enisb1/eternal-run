@@ -6,6 +6,7 @@
 #include <ncursesw/ncurses.h>
 
 #include "map.hpp"
+#include "entities.hpp"
 
 /* Vars */
 
@@ -42,6 +43,9 @@ void destroy_map_with_animation(WINDOW *game_win);
 // set a blank char to a certain position of the map
 void set_blank_char(WINDOW *game_win, int y, int x);
 
+// display player in game window
+void display_player(WINDOW *game_win, Player *player);
+
 /* Info window */
 
 // create and return the window for the info of the game
@@ -51,6 +55,6 @@ WINDOW *create_info_window(WINDOW *game_win);
 void refresh_title(WINDOW *info_win, int level, bool is_market_level);
 
 // refresh the text that shows the stats of the game
-void refresh_stats(WINDOW *info_win, int life, int shield, int coins);
+void refresh_stats(WINDOW *info_win, Player *player, int coins);
 
 #endif

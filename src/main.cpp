@@ -21,8 +21,8 @@ const int game_win_height = 20;
 const int game_win_width = 60;
 const int info_win_width = 18;
 
-int life;
-int shield;
+Player *player;
+
 int coins;
 int level;
 
@@ -45,12 +45,12 @@ void load_random_level() {
     // get a new random index
     int next_map_index = rand() % 6;
 	while (next_map_index == current_map_index) next_map_index = rand() % 6;
-	current_map_index = next_map_index;
+	current_map_index = 2;
 
     // get coins list based on current map index
     current_coin_list = default_maps[current_map_index]->coin_list;
 
-    // display new level map
+    // display new level map and player
 	display_map_with_anim(game_win, default_maps[current_map_index]);
 }
 
@@ -65,20 +65,44 @@ void load_next_level() {
 	load_random_level();
 }
 
+int get_player_starting_direction() {
+    int direction;
+
+    if (default_maps[current_map_index]->entrance_exit_positions[0] == 0)
+        direction = DOWN;
+    else if (default_maps[current_map_index]->entrance_exit_positions[0] == 19)
+        direction = UP;
+    else if (default_maps[current_map_index]->entrance_exit_positions[1] == 0)
+        direction = RIGHT;
+    else if (default_maps[current_map_index]->entrance_exit_positions[1] == 59)
+        direction = LEFT;
+    
+    return direction;
+}
+
 void new_game() {
     // initialize vars
-    life = 3;
-    shield = 0;
     coins = 0;
     level = 0;
 
     srand(time(0));
+
+    // load next level
+    load_next_level();
+    
+    // create and display player
+    Player player_object = Player(
+        default_maps[current_map_index]->entrance_exit_positions[0],
+        default_maps[current_map_index]->entrance_exit_positions[1],
+        get_player_starting_direction(),
+        3, 0, false
+    );
+    player = &player_object;
+
+    display_player(game_win, player);
     
     // refresh stats
-    refresh_stats(info_win, life, shield, coins);
-
-    // TODO: new level (replace with random level)
-    load_next_level();
+    refresh_stats(info_win, player, coins);
 }
 
 void collect_coin(int y, int x) {
@@ -114,11 +138,11 @@ void collect_coin(int y, int x) {
 }
 
 void death() {
-    life--;
-    refresh_stats(info_win, life, shield, coins);
+    player->decrease_life();
+    refresh_stats(info_win, player, coins);
 
     destroy_map_with_animation(game_win);
-    if (life > 0) load_random_level();
+    if (player->get_life() > 0) load_random_level();
     else {
         // game over
         switch (show_game_over_screen(game_win)) {

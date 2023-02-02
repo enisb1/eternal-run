@@ -1,24 +1,37 @@
 #ifndef ENTITIES_HPP
 #define ENTITIES_HPP
 
+/* Vars */
+
+const int LEFT = 1;
+const int RIGHT = 2;
+const int UP = 3;
+const int DOWN = 4;
+
+/* Classes */
+
 class Entity {
     protected:
-        int x;
         int y;
+        int x;
 
     public:
-        Entity(int x, int y);
+        Entity(int y, int x);
 
         // getter and setter
-        int get_x();
+        void set_y(int y);
         int get_y();
+
+        void set_x(int x);
+        int get_x();
         
         // move the entity inside the map
-        void move(int dx, int dy);
+        void move(int dy, int dx);
 };
 
 class Player: public Entity {
     protected:
+        int direction;
         int life;
         int shield;
         bool has_weapon;
@@ -26,11 +39,14 @@ class Player: public Entity {
 
     public:
         Player(
-            int x, int y, int life, 
-            int shield, int has_weapon
+            int y, int x, int direction,
+            int life, int shield, bool has_weapon
         );
 
         // getter and setter
+        void set_direction(int direction);
+        int get_direction();
+
         void set_life(int life);
         int get_life();
 
@@ -58,7 +74,7 @@ class Enemy: public Entity {
         int damage;
 
     public:
-        Enemy(int x, int y, int level);
+        Enemy(int y, int x, int level);
         
         // getter and setter
         int get_life();
@@ -70,14 +86,14 @@ class Enemy: public Entity {
 
 class Bullet: public Entity {
     protected:
-        int direction_x;
         int direction_y;
+        int direction_x;
         int speed;
 
     public:
         Bullet(
-            int x, int y, 
-            int direction_x, int direction_y, int speed);
+            int y, int x, 
+            int direction_y, int direction_x, int speed);
         
         // move the entity inside the map
         // following the bullet movement

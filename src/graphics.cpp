@@ -4,6 +4,7 @@
 #include <cstring>
 
 #include "graphics.hpp"
+#include "entities.hpp"
 #include "map.hpp"
 
 /* Vars */
@@ -253,6 +254,7 @@ void display_map(WINDOW *game_win, map *map) {
         }
     }
 
+    // display coins
     coin *iterator = map->coin_list;
 	while (iterator != NULL) {
 		wmove(game_win, iterator->y, iterator->x);
@@ -281,21 +283,20 @@ void display_map_with_anim(WINDOW *game_win, map *map) {
         if (tick == ANIM_PERIOD) {
             // display current row
             for (int col = 0; col < 60; col++) {
-                wmove(game_win, row, col);
                 int current_block = (map -> blocks)[row][col];
 
                 if (current_block != EMPTY_BLOCK) {
                     switch (current_block) {
                         case WALL_BLOCK:
                             wattron(game_win, COLOR_PAIR(WALL_PAIR));
-                            waddch(game_win, '#');
+                            mvwaddch(game_win, row, col, '#');
                             wattroff(game_win, COLOR_PAIR(WALL_PAIR));
                             break;
                         case ENTRANCE_BLOCK:
-                            waddch(game_win, ' ');
+                            set_blank_char(game_win, row, col);
                             break;
                         case EXIT_BLOCK:
-                            waddch(game_win, ' ');
+                            set_blank_char(game_win, row, col);
                             break;
                     }
                 }
@@ -313,6 +314,7 @@ void display_map_with_anim(WINDOW *game_win, map *map) {
         napms(1);
     }
     
+    // display coins
     coin *iterator = map->coin_list;
 	while (iterator!=NULL) {
 		wmove(game_win, iterator->y, iterator->x);
@@ -349,8 +351,28 @@ void destroy_map_with_animation(WINDOW *game_win) {
 }
 
 void set_blank_char(WINDOW *game_win, int y, int x) {
-    wmove(game_win, y, x);
-    waddch(game_win, ' ');
+    mvwaddch(game_win, y, x, ' ');
+}
+
+void display_player(WINDOW *game_win, Player *player) {
+    char player_char;
+
+    switch (player->get_direction()) {
+        case LEFT:
+            player_char = '<';
+            break;
+        case RIGHT:
+            player_char = '>';
+            break;
+        case UP:
+            player_char = '^';
+            break;
+        case DOWN:
+            player_char = 'v';
+            break;
+    }
+
+    mvwaddch(game_win, player->get_y(), player->get_x(), player_char);
 }
 
 /* Info window */
@@ -388,15 +410,15 @@ void refresh_title(WINDOW *info_win, int level, bool is_market_level) {
     wrefresh(info_win);
 }
 
-void refresh_stats(WINDOW *info_win, int life, int shield, int coins) {
+void refresh_stats(WINDOW *info_win, Player *player, int coins) {
     // life
     wattron(info_win, COLOR_PAIR(RED_PAIR));
-    mvwprintw(info_win, 3, 2, "LIFE: %d", life);
+    mvwprintw(info_win, 3, 2, "LIFE: %d", player->get_life());
     wattroff(info_win, COLOR_PAIR(RED_PAIR));
 
     // shield
     wattron(info_win, COLOR_PAIR(CYAN_PAIR));
-    mvwprintw(info_win, 4, 2, "SHIELD: %d", shield);
+    mvwprintw(info_win, 4, 2, "SHIELD: %d", player->get_shield());
     wattroff(info_win, COLOR_PAIR(CYAN_PAIR));
     
     // coins
