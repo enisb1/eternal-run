@@ -71,11 +71,12 @@ void add_coin(map *map, int y, int x) {
 map *create_default_map1() {
 	map *default_map1 = new_map();
 
-	// add entrance and exit
-	add_entrance(default_map1, true, 3, 0);
-	add_exit(default_map1, true, 3, 59);
-
     // add walls
+	add_blocks_horizontally(default_map1, 0, 0, 59, WALL_BLOCK);
+	add_blocks_horizontally(default_map1, 19, 0, 59, WALL_BLOCK);
+    add_blocks_vertically(default_map1, 1, 18, 0, WALL_BLOCK);
+    add_blocks_vertically(default_map1, 1, 18, 59, WALL_BLOCK);
+
     add_blocks_vertically(default_map1, 4, 11, 9, WALL_BLOCK);
     add_blocks_vertically(default_map1, 4, 11, 10, WALL_BLOCK);
     add_blocks_horizontally(default_map1, 7, 5, 8, WALL_BLOCK);
@@ -139,6 +140,10 @@ map *create_default_map1() {
     add_blocks_vertically(default_map1, 4, 11, 49, WALL_BLOCK);
     add_blocks_horizontally(default_map1, 7, 51, 54, WALL_BLOCK);
     add_blocks_horizontally(default_map1, 8, 51, 54, WALL_BLOCK);
+
+	// add entrance and exit
+	add_entrance(default_map1, true, 3, 0);
+	add_exit(default_map1, true, 3, 59);
 
 	// add coins
 	default_map1->coin_list = NULL;
@@ -212,11 +217,12 @@ map *create_default_map1() {
 map *create_default_map2() {
 	map *default_map2 = new_map();
 
-	// add entrance and exit
-	add_entrance(default_map2, true, 17, 0); 
-	add_exit(default_map2, true, 17, 59);
-
     // add walls
+	add_blocks_horizontally(default_map2, 0, 0, 59, WALL_BLOCK);
+	add_blocks_horizontally(default_map2, 19, 0, 59, WALL_BLOCK);
+    add_blocks_vertically(default_map2, 1, 18, 0, WALL_BLOCK);
+    add_blocks_vertically(default_map2, 1, 18, 59, WALL_BLOCK);
+
     add_blocks_vertically(default_map2, 1, 4, 29, WALL_BLOCK);
     add_blocks_vertically(default_map2, 1, 4, 30, WALL_BLOCK);
     add_blocks_horizontally(default_map2, 5, 24, 39, WALL_BLOCK);
@@ -308,6 +314,10 @@ map *create_default_map2() {
     add_blocks_horizontally(default_map2, 3, 33, 39, WALL_BLOCK);
     add_blocks_horizontally(default_map2, 2, 33, 39, WALL_BLOCK);
 
+	// add entrance and exit
+	add_entrance(default_map2, true, 17, 0); 
+	add_exit(default_map2, true, 17, 59);
+
 	// add coins
 	default_map2->coin_list = NULL;
 	add_coin(default_map2, 1, 1);
@@ -361,11 +371,12 @@ map *create_default_map2() {
 map *create_default_map3() {
 	map *default_map3 = new_map();
 
-	// add entrance and exit
-	add_entrance(default_map3, false, 19, 4);
-	add_exit(default_map3, false, 19, 54);
-
     // add walls
+	add_blocks_horizontally(default_map3, 0, 0, 59, WALL_BLOCK);
+	add_blocks_horizontally(default_map3, 19, 0, 59, WALL_BLOCK);
+    add_blocks_vertically(default_map3, 1, 18, 0, WALL_BLOCK);
+    add_blocks_vertically(default_map3, 1, 18, 59, WALL_BLOCK);
+
     add_blocks_vertically(default_map3, 4, 18, 29, WALL_BLOCK);
     add_blocks_vertically(default_map3, 4, 18, 30, WALL_BLOCK);
 
@@ -431,6 +442,10 @@ map *create_default_map3() {
     add_block(default_map3, 4, 50, WALL_BLOCK);
     add_block(default_map3, 4, 49, WALL_BLOCK);
 
+	// add entrance and exit
+	add_entrance(default_map3, false, 19, 4);
+	add_exit(default_map3, false, 19, 54);
+
 	// add coins
 	default_map3->coin_list = NULL;
 	add_coin(default_map3, 12, 20);
@@ -492,13 +507,14 @@ map *create_default_map3() {
 map *create_default_map4() {
 	map *default_map4 = new_map();
 
-	// add entrance and exit
-	add_entrance(default_map4, true, 10, 0);
-	add_exit(default_map4, true, 10, 59);
-
 	// add walls
+	add_blocks_horizontally(default_map4, 0, 0, 59, WALL_BLOCK);
+	add_blocks_horizontally(default_map4, 19, 0, 59, WALL_BLOCK);
+    add_blocks_vertically(default_map4, 1, 18, 0, WALL_BLOCK);
+    add_blocks_vertically(default_map4, 1, 18, 59, WALL_BLOCK);
+
 	add_blocks_vertically(default_map4, 0, 8, 1, WALL_BLOCK);
-	add_blocks_vertically(default_map4, 11, 20, 1, WALL_BLOCK);
+	add_blocks_vertically(default_map4, 12, 20, 1, WALL_BLOCK);
 
 	add_blocks_vertically(default_map4, 2, 13, 4, WALL_BLOCK);
 	add_blocks_vertically(default_map4, 2, 13, 5, WALL_BLOCK);
@@ -586,11 +602,14 @@ map *create_default_map4() {
 	add_blocks_vertically(default_map4, 2, 10, 52, WALL_BLOCK);
 	add_blocks_vertically(default_map4, 9, 12, 51, WALL_BLOCK);
 
-
 	add_blocks_horizontally(default_map4, 15, 51, 56, WALL_BLOCK);
 	add_blocks_horizontally(default_map4, 16, 51, 56, WALL_BLOCK);
 	add_blocks_horizontally(default_map4, 14, 53, 54, WALL_BLOCK);
 	add_blocks_horizontally(default_map4, 17, 53, 54, WALL_BLOCK);
+
+	// add entrance and exit
+	add_entrance(default_map4, true, 10, 0);
+	add_exit(default_map4, true, 10, 59);
 
 	// add coins
 	default_map4->coin_list = NULL;
@@ -648,11 +667,12 @@ map *create_default_map4() {
 map *create_default_map5() {
 	map *default_map5 = new_map();
 
-	// add entrance and exit
-	add_entrance(default_map5, true, 10, 0);
-	add_exit(default_map5, true, 10, 59);
-
 	// add walls
+	add_blocks_horizontally(default_map5, 0, 0, 59, WALL_BLOCK);
+	add_blocks_horizontally(default_map5, 19, 0, 59, WALL_BLOCK);
+    add_blocks_vertically(default_map5, 1, 18, 0, WALL_BLOCK);
+    add_blocks_vertically(default_map5, 1, 18, 59, WALL_BLOCK);
+
 	add_blocks_vertically(default_map5, 2, 6, 3, WALL_BLOCK);
 	add_blocks_vertically(default_map5, 2, 6, 4, WALL_BLOCK);
 	add_blocks_horizontally(default_map5, 2, 4, 8, WALL_BLOCK);
@@ -771,6 +791,10 @@ map *create_default_map5() {
 	add_blocks_horizontally(default_map5, 16, 44, 56, WALL_BLOCK);
 	add_blocks_horizontally(default_map5, 17, 44, 56, WALL_BLOCK);
 
+	// add entrance and exit
+	add_entrance(default_map5, true, 10, 0);
+	add_exit(default_map5, true, 10, 59);
+
 	// add coins
 	default_map5->coin_list = NULL;
 	add_coin(default_map5, 9, 2);
@@ -824,11 +848,12 @@ map *create_default_map5() {
 map *create_default_map6() {
 	map *default_map6 = new_map();
 
-	// add entrance and exit
-	add_entrance(default_map6, true, 10, 0);
-	add_exit(default_map6, true, 10, 59);
-
 	// add walls
+	add_blocks_horizontally(default_map6, 0, 0, 59, WALL_BLOCK);
+	add_blocks_horizontally(default_map6, 19, 0, 59, WALL_BLOCK);
+    add_blocks_vertically(default_map6, 1, 18, 0, WALL_BLOCK);
+    add_blocks_vertically(default_map6, 1, 18, 59, WALL_BLOCK);
+
 	add_blocks_horizontally(default_map6, 2, 3, 8, WALL_BLOCK);
 	add_blocks_horizontally(default_map6, 3, 3, 8, WALL_BLOCK);
 	add_blocks_vertically(default_map6, 4, 6, 7, WALL_BLOCK);
@@ -930,6 +955,10 @@ map *create_default_map6() {
 	add_blocks_horizontally(default_map6, 17, 55, 56, WALL_BLOCK);
 
 	add_blocks_horizontally(default_map6, 17, 41, 42, WALL_BLOCK);
+
+	// add entrance and exit
+	add_entrance(default_map6, true, 10, 0);
+	add_exit(default_map6, true, 10, 59);
 
 	// add coins
 	default_map6->coin_list = NULL;
