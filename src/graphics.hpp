@@ -44,7 +44,7 @@ void destroy_map_with_animation(WINDOW *game_win);
 void set_blank_char(WINDOW *game_win, int y, int x);
 
 // display player in game window
-void display_player(WINDOW *game_win, Player *player);
+void display_player(WINDOW *game_win, Player player);
 
 /* Info window */
 
@@ -55,6 +55,6 @@ WINDOW *create_info_window(WINDOW *game_win);
 void refresh_title(WINDOW *info_win, int level, bool is_market_level);
 
 // refresh the text that shows the stats of the game
-void refresh_stats(WINDOW *info_win, Player *player, int coins);
+void refresh_stats(WINDOW *info_win, Player player, int coins);
 
 #endif

@@ -21,7 +21,7 @@ const int game_win_height = 20;
 const int game_win_width = 60;
 const int info_win_width = 18;
 
-Player *player;
+Player player = Player(0, 0, 0, 0, 0, false);
 
 int coins;
 int level;
@@ -91,13 +91,12 @@ void new_game() {
     load_next_level();
     
     // create and display player
-    Player player_object = Player(
+    player = Player(
         default_maps[current_map_index]->entrance_exit_positions[0],
         default_maps[current_map_index]->entrance_exit_positions[1],
         get_player_starting_direction(),
         3, 0, false
     );
-    player = &player_object;
 
     display_player(game_win, player);
     
@@ -133,16 +132,58 @@ void collect_coin(int y, int x) {
         }
     }
 
+    // add coin and refresh stats
+    coins++;
+    refresh_stats(info_win, player, coins);
+
     // refresh
     wrefresh(game_win);
 }
 
+void move_player() {
+    // check if next block is a wall
+    int new_y = player.get_y();
+    int new_x = player.get_x();
+
+    switch (player.get_direction()) {
+        case DOWN:
+            new_y++;
+            break;
+        case UP:
+            new_y--;
+            break;
+        case RIGHT:
+            new_x++;
+            break;
+        case LEFT:
+            new_x--;
+            break;
+    }
+
+    if (default_maps[current_map_index]->blocks[new_y][new_x] != WALL_BLOCK) {
+        set_blank_char(game_win, player.get_y(), player.get_x());
+        player.set_y(new_y);
+        player.set_x(new_x);
+
+        if (default_maps[current_map_index]->blocks[new_y][new_x] == COIN_BLOCK) {
+            // get coin
+        } else if (default_maps[current_map_index]->blocks[new_y][new_x] == ENTRANCE_BLOCK) {
+            // previous level
+        } else if (default_maps[current_map_index]->blocks[new_y][new_x] == EXIT_BLOCK) {
+            // new level
+        }
+    }
+    
+    // display player in new block
+    display_player(game_win, player);
+}
+
 void death() {
-    player->decrease_life();
+    player.decrease_life();
     refresh_stats(info_win, player, coins);
 
     destroy_map_with_animation(game_win);
-    if (player->get_life() > 0) load_random_level();
+    if (player.get_life() > 0) load_random_level();
     else {
         // game over
         switch (show_game_over_screen(game_win)) {
@@ -181,30 +222,45 @@ int main() {
     // game loop
     unsigned int tick = 0;
     const unsigned int ANIM_PERIOD = 1;
-    while (1) {
-        char c = wgetch(game_win);
-        
-        if (tick == ANIM_PERIOD) {
-            if (c != -1) {
-                switch (c) {
-                    case 27:
-                        // esc
-                        switch (show_esc_screen(game_win)) {
-                            case 0:
-                                endwin();
-                                exit(0);
-                                break;
-                            case 1:
-                                // resume_game();
-                                break;
-                        }
-                        break;
-                }
-            }
 
-            tick = 0; 
+    wmove(stdscr, 0, 0);
+    while (1) {
+        int c = wgetch(game_win);
+
+        if (c != -1) {
+            switch (c) {
+                case KEY_DOWN:
+                    player.set_direction(DOWN);
+                    move_player();
+                    break;
+                case KEY_UP:
+                    player.set_direction(UP);
+                    move_player();
+                    break;
+                case KEY_RIGHT:
+                    player.set_direction(RIGHT);
+                    move_player();
+                    break;
+                case KEY_LEFT:
+                    player.set_direction(LEFT);
+                    move_player();
+                    break;
+                case 27:
+                    // esc
+                    switch (show_esc_screen(game_win)) {
+                        case 0:
+                            endwin();
+                            exit(0);
+                            break;
+                        case 1:
+                            // resume_game();
+                            break;
+                    }
+                    break;
+            }
         }
-        else tick++;
+
+        napms(10);
     };
 
     return 0;

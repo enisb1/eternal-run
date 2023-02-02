@@ -354,10 +354,10 @@ void set_blank_char(WINDOW *game_win, int y, int x) {
     mvwaddch(game_win, y, x, ' ');
 }
 
-void display_player(WINDOW *game_win, Player *player) {
+void display_player(WINDOW *game_win, Player player) {
     char player_char;
 
-    switch (player->get_direction()) {
+    switch (player.get_direction()) {
         case LEFT:
             player_char = '<';
             break;
@@ -372,7 +372,7 @@ void display_player(WINDOW *game_win, Player *player) {
             break;
     }
 
-    mvwaddch(game_win, player->get_y(), player->get_x(), player_char);
+    mvwaddch(game_win, player.get_y(), player.get_x(), player_char);
 }
 
 /* Info window */
@@ -410,15 +410,15 @@ void refresh_title(WINDOW *info_win, int level, bool is_market_level) {
     wrefresh(info_win);
 }
 
-void refresh_stats(WINDOW *info_win, Player *player, int coins) {
+void refresh_stats(WINDOW *info_win, Player player, int coins) {
     // life
     wattron(info_win, COLOR_PAIR(RED_PAIR));
-    mvwprintw(info_win, 3, 2, "LIFE: %d", player->get_life());
+    mvwprintw(info_win, 3, 2, "LIFE: %d", player.get_life());
     wattroff(info_win, COLOR_PAIR(RED_PAIR));
 
     // shield
     wattron(info_win, COLOR_PAIR(CYAN_PAIR));
-    mvwprintw(info_win, 4, 2, "SHIELD: %d", player->get_shield());
+    mvwprintw(info_win, 4, 2, "SHIELD: %d", player.get_shield());
     wattroff(info_win, COLOR_PAIR(CYAN_PAIR));
     
     // coins

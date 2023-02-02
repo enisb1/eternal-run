@@ -23,11 +23,6 @@ int Entity::get_x() {
     return this->x; 
 }
 
-void Entity::move(int dy, int dx) {
-    this->y += dy;
-    this->x += dx;
-}
-
 // Methods of class Player
 
 Player::Player(

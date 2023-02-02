@@ -3,10 +3,10 @@
 
 /* Vars */
 
-const int LEFT = 1;
-const int RIGHT = 2;
-const int UP = 3;
-const int DOWN = 4;
+const int DOWN = 1;
+const int UP = 2;
+const int RIGHT = 3;
+const int LEFT = 4;
 
 /* Classes */
 
@@ -24,9 +24,6 @@ class Entity {
 
         void set_x(int x);
         int get_x();
-        
-        // move the entity inside the map
-        void move(int dy, int dx);
 };
 
 class Player: public Entity {
