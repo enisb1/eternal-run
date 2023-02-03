@@ -2,6 +2,8 @@
 
 // Methods of class Entity
 
+Entity::Entity() {};
+
 Entity::Entity(int y, int x) {
     this->y = y;
     this->x = x;
@@ -24,6 +26,8 @@ int Entity::get_x() {
 }
 
 // Methods of class Player
+
+Player::Player() {};
 
 Player::Player(
     int y, int x, int direction, bool is_moving,
@@ -94,4 +98,37 @@ void Player::decrease_life() {
 
 void Player::shoot() {
 
+}
+
+// Methods of class Enemy
+
+Enemy::Enemy() {};
+
+Enemy::Enemy(int y, int x, int level):Entity(y, x) {
+    this->level = level; 
+    this->life = level; 
+    this->damage = level;
+};
+        
+int Enemy::get_life() {
+    return this->life; 
+}
+
+int Enemy::get_damage() {
+    return this->damage;
+}
+
+void Enemy::decrease_level() {
+    this->level -= 1; 
+    this->life -= 1; 
+    this->damage -= 1;
+}
+
+/* Struct enemy methods */
+
+void add_enemy(enemy_node *head, Enemy new_enemy) {
+    enemy_node *new_head = new enemy_node; 
+    new_head->current_enemy = new_enemy;
+    new_head->next = head; 
+    head = new_head;
 }

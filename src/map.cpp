@@ -60,7 +60,7 @@ void add_exit(map *map, bool is_vertical, int y, int x) {
 }
 
 void add_coin(map *map, int y, int x) {
-	coin *new_head = new coin;
+	coin_node *new_head = new coin_node;
 	new_head->y = y;
 	new_head->x = x;
 	new_head->next = map->coin_list;

@@ -16,6 +16,7 @@ class Entity {
         int x;
 
     public:
+        Entity();
         Entity(int y, int x);
 
         // getter and setter
@@ -36,6 +37,7 @@ class Player: public Entity {
         int bullet_speed;
 
     public:
+        Player();
         Player(
             int y, int x, int direction, bool is_moving,
             int life, int shield, bool has_weapon
@@ -75,6 +77,7 @@ class Enemy: public Entity {
         int damage;
 
     public:
+        Enemy();
         Enemy(int y, int x, int level);
         
         // getter and setter
@@ -100,5 +103,16 @@ class Bullet: public Entity {
         // following the bullet movement
         void move();
 };
+
+/* Structs */
+
+struct enemy_node {
+    Enemy current_enemy;
+    enemy_node *next;
+};
+
+/* Methods */
+
+void add_enemy(enemy_node *head, Enemy new_enemy);
 
 #endif

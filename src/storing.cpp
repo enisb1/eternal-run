@@ -9,7 +9,7 @@ using namespace std;
 
 /* Methods */
 
-void store_coins(int level, coin *cHead) {
+void store_coins(int level, coin_node *cHead) {
     ofstream outputFile;
     outputFile.open("coins_map_lvl_" + to_string(level) + ".txt");
 

@@ -21,14 +21,14 @@ const int game_win_height = 20;
 const int game_win_width = 60;
 const int info_win_width = 18;
 
-Player player = Player(0, 0, 0, false, 0, 0, false);
+Player player;
 
 int coins;
 int level;
 
 map *default_maps[6];
 int current_map_index = 0;
-coin *current_coin_list = NULL;
+coin_node *current_coin_list = NULL;
 
 /* Methods */
 
@@ -111,16 +111,16 @@ bool collect_coin(int y, int x) {
 
     if (current_coin_list != NULL) {
         if (current_coin_list->y == y && current_coin_list->x == x) {
-            coin *tmp = current_coin_list; 
+            coin_node *tmp = current_coin_list; 
             current_coin_list = current_coin_list->next;
             delete tmp;
             found = true;
         } else {
-            coin *previous_coin = current_coin_list;
-            coin *current_coin = current_coin_list->next;
+            coin_node *previous_coin = current_coin_list;
+            coin_node *current_coin = current_coin_list->next;
             while (current_coin != NULL && !found) {
                 if (current_coin->y == y && current_coin->x == x) {
-                    coin *tmp = current_coin;
+                    coin_node *tmp = current_coin;
                     previous_coin->next = current_coin->next;
                     delete tmp;
                     found = true;

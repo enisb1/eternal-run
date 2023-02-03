@@ -255,7 +255,7 @@ void display_map(WINDOW *game_win, map *map) {
     }
 
     // display coins
-    coin *iterator = map->coin_list;
+    coin_node *iterator = map->coin_list;
 	while (iterator != NULL) {
 		wmove(game_win, iterator->y, iterator->x);
 		wattron(game_win, COLOR_PAIR(YELLOW_PAIR));
@@ -315,7 +315,7 @@ void display_map_with_anim(WINDOW *game_win, map *map) {
     }
     
     // display coins
-    coin *iterator = map->coin_list;
+    coin_node *iterator = map->coin_list;
 	while (iterator!=NULL) {
 		wmove(game_win, iterator->y, iterator->x);
 		wattron(game_win, COLOR_PAIR(YELLOW_PAIR));

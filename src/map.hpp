@@ -11,16 +11,16 @@ const int COIN_BLOCK = 4;
 
 /* Structs */
 
-struct coin {
+struct coin_node {
 	int y;
 	int x; 
-	coin *next;	
+	coin_node *next;	
 };
 
 struct map {
     int blocks[20][60];
 	int entrance_exit_positions[4]; // [entrance_y, entrance_x, exit_y, exit_x]
-	coin *coin_list;
+	coin_node *coin_list;
 };
 
 /* Methods */
