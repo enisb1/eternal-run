@@ -26,10 +26,11 @@ int Entity::get_x() {
 // Methods of class Player
 
 Player::Player(
-    int y, int x, int direction,
+    int y, int x, int direction, bool is_moving,
     int life, int shield, bool has_weapon
 ):Entity(y, x) {
     this->direction = direction;
+    this->is_moving = is_moving; 
     this->life = life;
     this->shield = shield; 
     this->has_weapon = has_weapon;
@@ -41,6 +42,14 @@ void Player::set_direction(int direction) {
 
 int Player::get_direction() {
     return this->direction;
+}
+
+void Player::set_is_moving(bool is_moving) {
+    this->is_moving = is_moving;
+}
+
+bool Player::get_is_moving() {
+    return this->is_moving;
 }
 
 void Player::set_life(int life) {

@@ -29,6 +29,7 @@ class Entity {
 class Player: public Entity {
     protected:
         int direction;
+        bool is_moving;
         int life;
         int shield;
         bool has_weapon;
@@ -36,13 +37,16 @@ class Player: public Entity {
 
     public:
         Player(
-            int y, int x, int direction,
+            int y, int x, int direction, bool is_moving,
             int life, int shield, bool has_weapon
         );
 
         // getter and setter
         void set_direction(int direction);
         int get_direction();
+
+        void set_is_moving(bool is_moving);
+        bool get_is_moving();
 
         void set_life(int life);
         int get_life();

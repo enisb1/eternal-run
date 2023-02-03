@@ -21,7 +21,7 @@ const int game_win_height = 20;
 const int game_win_width = 60;
 const int info_win_width = 18;
 
-Player player = Player(0, 0, 0, 0, 0, false);
+Player player = Player(0, 0, 0, false, 0, 0, false);
 
 int coins;
 int level;
@@ -94,7 +94,7 @@ void new_game() {
     player = Player(
         default_maps[current_map_index]->entrance_exit_positions[0],
         default_maps[current_map_index]->entrance_exit_positions[1],
-        get_player_starting_direction(),
+        get_player_starting_direction(), false,
         3, 0, false
     );
 
@@ -111,7 +111,6 @@ bool collect_coin(int y, int x) {
 
     if (current_coin_list != NULL) {
         if (current_coin_list->y == y && current_coin_list->x == x) {
-            set_blank_char(game_win, current_coin_list->y, current_coin_list->x);
             coin *tmp = current_coin_list; 
             current_coin_list = current_coin_list->next;
             delete tmp;
@@ -121,7 +120,6 @@ bool collect_coin(int y, int x) {
             coin *current_coin = current_coin_list->next;
             while (current_coin != NULL && !found) {
                 if (current_coin->y == y && current_coin->x == x) {
-                    set_blank_char(game_win, current_coin->y, current_coin->x);
                     coin *tmp = current_coin;
                     previous_coin->next = current_coin->next;
                     delete tmp;
@@ -136,9 +134,7 @@ bool collect_coin(int y, int x) {
 
     if (found) {
         coins++;
-        // refresh
         refresh_stats(info_win, player, coins);
-        wrefresh(game_win);
     }
 
     return found;
@@ -170,6 +166,7 @@ void move_player() {
         player.set_x(new_x);
 
         bool is_coin = collect_coin(new_y, new_x);
+        //bool is_coin = false;
         if (!is_coin) {
             if (default_maps[current_map_index]->blocks[new_y][new_x] == ENTRANCE_BLOCK) {
             // previous level
@@ -235,19 +232,19 @@ int main() {
             switch (c) {
                 case KEY_DOWN:
                     player.set_direction(DOWN);
-                    move_player();
+                    if (!player.get_is_moving()) player.set_is_moving(true);
                     break;
                 case KEY_UP:
                     player.set_direction(UP);
-                    move_player();
+                    if (!player.get_is_moving()) player.set_is_moving(true);
                     break;
                 case KEY_RIGHT:
                     player.set_direction(RIGHT);
-                    move_player();
+                    if (!player.get_is_moving()) player.set_is_moving(true);
                     break;
                 case KEY_LEFT:
                     player.set_direction(LEFT);
-                    move_player();
+                    if (!player.get_is_moving()) player.set_is_moving(true);
                     break;
                 case 27:
                     // esc
@@ -264,7 +261,9 @@ int main() {
             }
         }
 
-        napms(10);
+        if (player.get_is_moving()) move_player();
+
+        napms(160);
     };
 
     return 0;
