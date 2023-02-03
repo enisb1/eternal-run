@@ -104,26 +104,28 @@ void new_game() {
     refresh_stats(info_win, player, coins);
 }
 
-void collect_coin(int y, int x) {
-    // find the coin in the list, remove it and set blank char in that position
+bool collect_coin(int y, int x) {
+    // if coin in list -> coin removed, coin counter incremented, return=True
+    // else return=False
+    bool found = false;
+
     if (current_coin_list != NULL) {
         if (current_coin_list->y == y && current_coin_list->x == x) {
             set_blank_char(game_win, current_coin_list->y, current_coin_list->x);
             coin *tmp = current_coin_list; 
             current_coin_list = current_coin_list->next;
             delete tmp;
+            found = true;
         } else {
-            bool found = false;
             coin *previous_coin = current_coin_list;
             coin *current_coin = current_coin_list->next;
-
             while (current_coin != NULL && !found) {
                 if (current_coin->y == y && current_coin->x == x) {
                     set_blank_char(game_win, current_coin->y, current_coin->x);
                     coin *tmp = current_coin;
-                    previous_coin = current_coin->next;
+                    previous_coin->next = current_coin->next;
                     delete tmp;
-                    found = true; 
+                    found = true;
                 } else {
                     previous_coin = current_coin; 
                     current_coin = previous_coin->next; 
@@ -132,12 +134,14 @@ void collect_coin(int y, int x) {
         }
     }
 
-    // add coin and refresh stats
-    coins++;
-    refresh_stats(info_win, player, coins);
+    if (found) {
+        coins++;
+        // refresh
+        refresh_stats(info_win, player, coins);
+        wrefresh(game_win);
+    }
 
-    // refresh
-    wrefresh(game_win);
+    return found;
 }
 
 void move_player() {
@@ -165,12 +169,13 @@ void move_player() {
         player.set_y(new_y);
         player.set_x(new_x);
 
-        if (default_maps[current_map_index]->blocks[new_y][new_x] == COIN_BLOCK) {
-            // get coin
-        } else if (default_maps[current_map_index]->blocks[new_y][new_x] == ENTRANCE_BLOCK) {
+        bool is_coin = collect_coin(new_y, new_x);
+        if (!is_coin) {
+            if (default_maps[current_map_index]->blocks[new_y][new_x] == ENTRANCE_BLOCK) {
             // previous level
-        } else if (default_maps[current_map_index]->blocks[new_y][new_x] == EXIT_BLOCK) {
+            } else if (default_maps[current_map_index]->blocks[new_y][new_x] == EXIT_BLOCK) {
             // new level
+            }
         }
     }
     
@@ -223,7 +228,6 @@ int main() {
     unsigned int tick = 0;
     const unsigned int ANIM_PERIOD = 1;
 
-    wmove(stdscr, 0, 0);
     while (1) {
         int c = wgetch(game_win);
 
