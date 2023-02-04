@@ -41,30 +41,6 @@ void create_colors() {
     init_pair(YELLOW_PAIR, COLOR_YELLOW, 0);
 }
 
-void load_random_level() {
-    // get a new random index
-    int next_map_index = rand() % 6;
-	while (next_map_index == current_map_index) next_map_index = rand() % 6;
-	current_map_index = 2;
-
-    // get coins list based on current map index
-    current_coin_list = default_maps[current_map_index]->coin_list;
-
-    // display new level map and player
-	display_map_with_anim(game_win, default_maps[current_map_index]);
-}
-
-void load_next_level() {
-    //TODO: save previous level's data in a file
-
-    // increment vars
-    level++;
-	refresh_title(info_win, level, true);
-
-    // load a new level based on a random index
-	load_random_level();
-}
-
 int get_player_starting_direction() {
     int direction;
 
@@ -80,6 +56,42 @@ int get_player_starting_direction() {
     return direction;
 }
 
+void set_player_starting_properties() {
+    player.set_y(default_maps[current_map_index]->entrance_exit_positions[0]);
+    player.set_x(default_maps[current_map_index]->entrance_exit_positions[1]);
+    player.set_direction(get_player_starting_direction());
+    player.set_is_moving(false);
+}
+
+void load_random_level() {
+    // get a new random index
+    int next_map_index = rand() % 6;
+	while (next_map_index == current_map_index) next_map_index = rand() % 6;
+	current_map_index = next_map_index;
+
+    // get coins list based on current map index
+    current_coin_list = default_maps[current_map_index]->coin_list;
+
+    // display the new level's map
+    if (level>=2) display_map(game_win, default_maps[current_map_index]);
+	else display_map_with_anim(game_win, default_maps[current_map_index]);
+}
+
+void load_next_level() {
+    //TODO: save previous level's data in a file
+
+    // increment level
+    level++;
+	refresh_title(info_win, level, true);
+
+    // load a new level based on a random index
+	load_random_level();
+
+    // set player's starting properties and display it
+    set_player_starting_properties();
+    display_player(game_win, player);
+}
+
 void new_game() {
     // initialize vars
     coins = 0;
@@ -87,10 +99,7 @@ void new_game() {
 
     srand(time(0));
 
-    // load next level
-    load_next_level();
-    
-    // create and display player
+    // create player
     player = Player(
         default_maps[current_map_index]->entrance_exit_positions[0],
         default_maps[current_map_index]->entrance_exit_positions[1],
@@ -98,9 +107,8 @@ void new_game() {
         3, 0, false
     );
 
-    display_player(game_win, player);
+    load_next_level();
     
-    // refresh stats
     refresh_stats(info_win, player, coins);
 }
 
@@ -166,12 +174,12 @@ void move_player() {
         player.set_x(new_x);
 
         bool is_coin = collect_coin(new_y, new_x);
-        //bool is_coin = false;
         if (!is_coin) {
             if (default_maps[current_map_index]->blocks[new_y][new_x] == ENTRANCE_BLOCK) {
-            // previous level
+                // previous level
             } else if (default_maps[current_map_index]->blocks[new_y][new_x] == EXIT_BLOCK) {
-            // new level
+                // new level
+                load_next_level();
             }
         }
     }
