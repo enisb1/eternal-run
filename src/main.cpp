@@ -22,6 +22,7 @@ const int game_win_width = 60;
 const int info_win_width = 18;
 
 Player player;
+enemy_node *current_enemy_list = NULL;
 
 int coins;
 int level;
@@ -63,7 +64,7 @@ void set_player_starting_properties() {
     player.set_is_moving(false);
 }
 
-void load_random_level() {
+void load_random_map() {
     // get a new random index
     int next_map_index = rand() % 6;
 	while (next_map_index == current_map_index) next_map_index = rand() % 6;
@@ -82,14 +83,18 @@ void load_next_level() {
 
     // increment level
     level++;
-	refresh_title(info_win, level, true);
+	refresh_title(info_win, level, false);
 
     // load a new level based on a random index
-	load_random_level();
+	load_random_map();
 
     // set player's starting properties and display it
     set_player_starting_properties();
     display_player(game_win, player);
+
+    // create enemy list and display it
+    create_enemy_list(default_maps[current_map_index], player, current_enemy_list, level);
+    display_enemies(game_win, current_enemy_list);
 }
 
 void new_game() {
@@ -193,7 +198,7 @@ void death() {
     refresh_stats(info_win, player, coins);
 
     destroy_map_with_animation(game_win);
-    if (player.get_life() > 0) load_random_level();
+    if (player.get_life() > 0) load_random_map();
     else {
         // game over
         switch (show_game_over_screen(game_win)) {

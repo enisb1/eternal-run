@@ -373,6 +373,18 @@ void display_player(WINDOW *game_win, Player player) {
     }
 
     mvwaddch(game_win, player.get_y(), player.get_x(), player_char);
+    wrefresh(game_win);
+}
+
+void display_enemies(WINDOW *game_win, enemy_node *current_enemy_list) {
+    enemy_node* iterator = current_enemy_list;
+    while (iterator!=NULL) {
+        mvwaddch(game_win, iterator->current_enemy.get_y(), iterator->current_enemy.get_x(), 
+        iterator->current_enemy.get_level() + '0');
+        iterator = iterator->next;
+    }
+    
+    wrefresh(game_win);
 }
 
 /* Info window */

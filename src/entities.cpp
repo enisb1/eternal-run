@@ -1,3 +1,8 @@
+#include <cstdlib>
+#include <cmath>
+#include <ncursesw/ncurses.h>
+
+#include "map.hpp"
 #include "entities.hpp"
 
 // Methods of class Entity
@@ -118,6 +123,10 @@ int Enemy::get_damage() {
     return this->damage;
 }
 
+int Enemy::get_level() {
+    return this->level;
+}
+
 void Enemy::decrease_level() {
     this->level -= 1; 
     this->life -= 1; 
@@ -126,9 +135,48 @@ void Enemy::decrease_level() {
 
 /* Struct enemy methods */
 
-void add_enemy(enemy_node *head, Enemy new_enemy) {
+void add_enemy(enemy_node* &head, Enemy new_enemy) {
     enemy_node *new_head = new enemy_node; 
     new_head->current_enemy = new_enemy;
     new_head->next = head; 
     head = new_head;
+}
+
+void delete_enemy_list(enemy_node* &head) {
+    enemy_node *iterator = head; 
+
+    while (iterator!=NULL) {
+        enemy_node *tmp = iterator; 
+        iterator = iterator->next; 
+        delete tmp; 
+    }
+
+    head = NULL; 
+}
+
+void get_enemy_position(map* map, Player player, int &y, int &x) {
+    bool valid = false; 
+
+    while (!valid) {
+        y = (rand() % 19) + 1;
+        x = (rand() % 59) + 1;
+
+        if (map->blocks[y][x]!=WALL_BLOCK && (abs(player.get_y()-y)>=10 
+        || abs(player.get_x()-x)>=10)) valid = true; 
+    }
+}
+
+void create_enemy_list(map *map, Player player, enemy_node* &head, int level) {
+    if (head!=NULL) delete_enemy_list(head);
+
+    for (int i = 1; i <= level; i++) {
+        int y; 
+        int x; 
+        int enemy_level = i/2;
+        if (enemy_level<1) enemy_level = 1; 
+        get_enemy_position(map, player, y, x);
+        
+        Enemy new_enemy = Enemy(y, x, enemy_level);
+        add_enemy(head, new_enemy);
+    }
 }

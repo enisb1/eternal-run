@@ -83,6 +83,7 @@ class Enemy: public Entity {
         // getter and setter
         int get_life();
         int get_damage();
+        int get_level();
 
         // decrease the level by one
         void decrease_level();
@@ -111,8 +112,10 @@ struct enemy_node {
     enemy_node *next;
 };
 
-/* Methods */
+/* Enemy methods */
 
-void add_enemy(enemy_node *head, Enemy new_enemy);
+void add_enemy(enemy_node* &head, Enemy new_enemy);
+
+void create_enemy_list(map *map, Player player, enemy_node* &head, int level);
 
 #endif
