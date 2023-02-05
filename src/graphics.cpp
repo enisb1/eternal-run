@@ -223,7 +223,7 @@ int show_esc_screen(WINDOW *game_win) {
     return selected_option;
 }
 
-void display_map(WINDOW *game_win, map *map) {
+void display_map(WINDOW *game_win, map *map, coin_node *coin_list) {
     // diplay map border
     wclear(game_win);
     wattron(game_win, COLOR_PAIR(WALL_PAIR));
@@ -255,19 +255,18 @@ void display_map(WINDOW *game_win, map *map) {
     }
 
     // display coins
-    coin_node *iterator = map->coin_list;
-	while (iterator != NULL) {
-		wmove(game_win, iterator->y, iterator->x);
+	while (coin_list != NULL) {
+		wmove(game_win, coin_list->y, coin_list->x);
 		wattron(game_win, COLOR_PAIR(YELLOW_PAIR));
 		waddch(game_win, '*');
 		wattroff(game_win, COLOR_PAIR(YELLOW_PAIR));
-		iterator = iterator->next;
+		coin_list = coin_list->next;
 	}
 
     wrefresh(game_win);
 }
 
-void display_map_with_anim(WINDOW *game_win, map *map) {
+void display_map_with_anim(WINDOW *game_win, map *map, coin_node *coin_list) {
     // display map border
     wclear(game_win);
     wattron(game_win, COLOR_PAIR(WALL_PAIR));
@@ -315,13 +314,12 @@ void display_map_with_anim(WINDOW *game_win, map *map) {
     }
     
     // display coins
-    coin_node *iterator = map->coin_list;
-	while (iterator!=NULL) {
-		wmove(game_win, iterator->y, iterator->x);
+	while (coin_list!=NULL) {
+		wmove(game_win, coin_list->y, coin_list->x);
 		wattron(game_win, COLOR_PAIR(YELLOW_PAIR));
 		waddch(game_win, '*');
 		wattroff(game_win, COLOR_PAIR(YELLOW_PAIR));
-		iterator = iterator->next;
+		coin_list = coin_list->next;
 	}
 
     wrefresh(game_win);

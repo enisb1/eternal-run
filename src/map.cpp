@@ -59,13 +59,13 @@ void add_exit(map *map, bool is_vertical, int y, int x) {
 	map->entrance_exit_positions[3] = x;
 }
 
-void add_coin(map *map, int y, int x) {
+void add_coin(coin_node* &head, int y, int x) {
 	coin_node *new_head = new coin_node;
 	new_head->y = y;
 	new_head->x = x;
-	new_head->next = map->coin_list;
+	new_head->next = head;
 
-	map->coin_list = new_head;
+	head = new_head;
 }
 
 map *create_default_map1() {
@@ -145,73 +145,77 @@ map *create_default_map1() {
 	add_entrance(default_map1, true, 3, 0);
 	add_exit(default_map1, true, 3, 59);
 
-	// add coins
-	default_map1->coin_list = NULL;
-	add_coin(default_map1, 4, 12);
-	add_coin(default_map1, 7, 12);
-	add_coin(default_map1, 10, 12);
-	add_coin(default_map1, 13, 12);
-	add_coin(default_map1, 4, 47);
-	add_coin(default_map1, 7, 47);
-	add_coin(default_map1, 10, 47);
-	add_coin(default_map1, 13, 47);
-	add_coin(default_map1, 4, 17);
-	add_coin(default_map1, 8, 16);
-	add_coin(default_map1, 12, 17);
-	add_coin(default_map1, 4, 42);
-	add_coin(default_map1, 8, 43);
-	add_coin(default_map1, 12, 42);
-	add_coin(default_map1, 11, 20);
-	add_coin(default_map1, 6, 21);
-	add_coin(default_map1, 11, 39);
-	add_coin(default_map1, 6, 38);
-	add_coin(default_map1, 1, 21);
-	add_coin(default_map1, 1, 38);
-	add_coin(default_map1, 1, 29);
-	add_coin(default_map1, 7, 28);
-	add_coin(default_map1, 8, 31);
-	add_coin(default_map1, 16, 21);
-	add_coin(default_map1, 16, 38);
-	add_coin(default_map1, 18, 1);
-    add_coin(default_map1, 18, 58);
-	add_coin(default_map1, 18, 8);
-	add_coin(default_map1, 18, 17);
-	add_coin(default_map1, 18, 25);
-	add_coin(default_map1, 18, 51);
-	add_coin(default_map1, 18, 42);
-	add_coin(default_map1, 18, 34);
-	add_coin(default_map1, 15, 27);
-	add_coin(default_map1, 15, 32);
-	add_coin(default_map1, 15, 1);
-	add_coin(default_map1, 15, 58);
-    add_coin(default_map1, 16, 13);
-    add_coin(default_map1, 16, 46);
-    add_coin(default_map1, 12, 6);
-    add_coin(default_map1, 12, 53);
-    add_coin(default_map1, 2, 16);
-    add_coin(default_map1, 2, 43);
-    add_coin(default_map1, 6, 25);
-    add_coin(default_map1, 9, 25);
-    add_coin(default_map1, 6, 34);
-    add_coin(default_map1, 9, 34);
-    add_coin(default_map1, 1, 10);
-    add_coin(default_map1, 2, 5);
-    add_coin(default_map1, 4, 7);
-    add_coin(default_map1, 5, 3);
-    add_coin(default_map1, 7, 2);
-    add_coin(default_map1, 10, 2);
-    add_coin(default_map1, 13, 1);
-	add_coin(default_map1, 1, 49);
-    add_coin(default_map1, 2, 54);
-    add_coin(default_map1, 4, 52);
-    add_coin(default_map1, 5, 56);
-    add_coin(default_map1, 7, 57);
-    add_coin(default_map1, 10, 57);
-    add_coin(default_map1, 13, 58);
-    add_coin(default_map1, 13, 25);
-    add_coin(default_map1, 13, 34);
-
 	return default_map1;
+}
+
+coin_node *create_coin_list_map1() {
+	coin_node *head = NULL;
+
+	add_coin(head, 4, 12);
+	add_coin(head, 7, 12);
+	add_coin(head, 10, 12);
+	add_coin(head, 13, 12);
+	add_coin(head, 4, 47);
+	add_coin(head, 7, 47);
+	add_coin(head, 10, 47);
+	add_coin(head, 13, 47);
+	add_coin(head, 4, 17);
+	add_coin(head, 8, 16);
+	add_coin(head, 12, 17);
+	add_coin(head, 4, 42);
+	add_coin(head, 8, 43);
+	add_coin(head, 12, 42);
+	add_coin(head, 11, 20);
+	add_coin(head, 6, 21);
+	add_coin(head, 11, 39);
+	add_coin(head, 6, 38);
+	add_coin(head, 1, 21);
+	add_coin(head, 1, 38);
+	add_coin(head, 1, 29);
+	add_coin(head, 7, 28);
+	add_coin(head, 8, 31);
+	add_coin(head, 16, 21);
+	add_coin(head, 16, 38);
+	add_coin(head, 18, 1);
+    add_coin(head, 18, 58);
+	add_coin(head, 18, 8);
+	add_coin(head, 18, 17);
+	add_coin(head, 18, 25);
+	add_coin(head, 18, 51);
+	add_coin(head, 18, 42);
+	add_coin(head, 18, 34);
+	add_coin(head, 15, 27);
+	add_coin(head, 15, 32);
+	add_coin(head, 15, 1);
+	add_coin(head, 15, 58);
+    add_coin(head, 16, 13);
+    add_coin(head, 16, 46);
+    add_coin(head, 12, 6);
+    add_coin(head, 12, 53);
+    add_coin(head, 2, 16);
+    add_coin(head, 2, 43);
+    add_coin(head, 6, 25);
+    add_coin(head, 9, 25);
+    add_coin(head, 6, 34);
+    add_coin(head, 9, 34);
+    add_coin(head, 1, 10);
+    add_coin(head, 2, 5);
+    add_coin(head, 4, 7);
+    add_coin(head, 5, 3);
+    add_coin(head, 7, 2);
+    add_coin(head, 10, 2);
+    add_coin(head, 13, 1);
+	add_coin(head, 1, 49);
+    add_coin(head, 2, 54);
+    add_coin(head, 4, 52);
+    add_coin(head, 5, 56);
+    add_coin(head, 7, 57);
+    add_coin(head, 10, 57);
+    add_coin(head, 13, 58);
+    add_coin(head, 13, 25);
+    add_coin(head, 13, 34);
+
+	return head;
 }
 
 map *create_default_map2() {
@@ -318,56 +322,59 @@ map *create_default_map2() {
 	add_entrance(default_map2, true, 17, 0); 
 	add_exit(default_map2, true, 17, 59);
 
-	// add coins
-	default_map2->coin_list = NULL;
-	add_coin(default_map2, 1, 1);
-    add_coin(default_map2, 4, 2);
-    add_coin(default_map2, 8, 1);
-    add_coin(default_map2, 12, 2);
-    add_coin(default_map2, 1, 12);
-    add_coin(default_map2, 3, 10);
-    add_coin(default_map2, 7, 9);
-    add_coin(default_map2, 9, 9);
-    add_coin(default_map2, 11, 13);
-    add_coin(default_map2, 2, 23);
-    add_coin(default_map2, 4, 20);
-    add_coin(default_map2, 7, 16);
-    add_coin(default_map2, 12, 19);
-    add_coin(default_map2, 16, 10);
-    add_coin(default_map2, 18, 9);
-    add_coin(default_map2, 18, 18);
-    add_coin(default_map2, 18, 27);
-    add_coin(default_map2, 16, 30);
-    add_coin(default_map2, 14, 26);
-    add_coin(default_map2, 14, 33);
-    add_coin(default_map2, 8, 28);
-    add_coin(default_map2, 8, 31);
-    add_coin(default_map2, 4, 40);
-    add_coin(default_map2, 4, 32);
-    add_coin(default_map2, 4, 44);
-    add_coin(default_map2, 11, 44);
-    add_coin(default_map2, 14, 41);
-    add_coin(default_map2, 18, 40);
-    add_coin(default_map2, 18, 50);
-    add_coin(default_map2, 5, 58);
-    add_coin(default_map2, 10, 57);
-    add_coin(default_map2, 15, 58);
-    add_coin(default_map2, 1, 28);
-    add_coin(default_map2, 1, 31);
-    add_coin(default_map2, 5, 9);
-    add_coin(default_map2, 18, 37);
-    add_coin(default_map2, 9, 37);
-    add_coin(default_map2, 9, 40);
-    add_coin(default_map2, 15, 15);
-    add_coin(default_map2, 3, 54);
-    add_coin(default_map2, 16, 48);
-    add_coin(default_map2, 13, 50);
-    add_coin(default_map2, 8, 54);
-    add_coin(default_map2, 7, 22);
-
 	return default_map2;
 }
 
+coin_node *create_coin_list_map2() {
+	coin_node *head = NULL; 
+
+	add_coin(head, 1, 1);
+    add_coin(head, 4, 2);
+    add_coin(head, 8, 1);
+    add_coin(head, 12, 2);
+    add_coin(head, 1, 12);
+    add_coin(head, 3, 10);
+    add_coin(head, 7, 9);
+    add_coin(head, 9, 9);
+    add_coin(head, 11, 13);
+    add_coin(head, 2, 23);
+    add_coin(head, 4, 20);
+    add_coin(head, 7, 16);
+    add_coin(head, 12, 19);
+    add_coin(head, 16, 10);
+    add_coin(head, 18, 9);
+    add_coin(head, 18, 18);
+    add_coin(head, 18, 27);
+    add_coin(head, 16, 30);
+    add_coin(head, 14, 26);
+    add_coin(head, 14, 33);
+    add_coin(head, 8, 28);
+    add_coin(head, 8, 31);
+    add_coin(head, 4, 40);
+    add_coin(head, 4, 32);
+    add_coin(head, 4, 44);
+    add_coin(head, 11, 44);
+    add_coin(head, 14, 41);
+    add_coin(head, 18, 40);
+    add_coin(head, 18, 50);
+    add_coin(head, 5, 58);
+    add_coin(head, 10, 57);
+    add_coin(head, 15, 58);
+    add_coin(head, 1, 28);
+    add_coin(head, 1, 31);
+    add_coin(head, 5, 9);
+    add_coin(head, 18, 37);
+    add_coin(head, 9, 37);
+    add_coin(head, 9, 40);
+    add_coin(head, 15, 15);
+    add_coin(head, 3, 54);
+    add_coin(head, 16, 48);
+    add_coin(head, 13, 50);
+    add_coin(head, 8, 54);
+    add_coin(head, 7, 22);
+
+	return head;
+}
 map *create_default_map3() {
 	map *default_map3 = new_map();
 
@@ -446,62 +453,66 @@ map *create_default_map3() {
 	add_entrance(default_map3, false, 19, 4);
 	add_exit(default_map3, false, 19, 54);
 
-	// add coins
-	default_map3->coin_list = NULL;
-	add_coin(default_map3, 12, 20);
-    add_coin(default_map3, 12, 39);
-    add_coin(default_map3, 9, 24);
-    add_coin(default_map3, 9, 35);
-    add_coin(default_map3, 7, 16);
-    add_coin(default_map3, 7, 43);
-    add_coin(default_map3, 5, 12);
-    add_coin(default_map3, 5, 47);
-    add_coin(default_map3, 1, 1);
-    add_coin(default_map3, 1, 58);
-    add_coin(default_map3, 3, 30);
-    add_coin(default_map3, 17, 2);
-    add_coin(default_map3, 13, 9);
-    add_coin(default_map3, 14, 3);
-    add_coin(default_map3, 15, 7);
-    add_coin(default_map3, 17, 57);
-    add_coin(default_map3, 13, 50);
-    add_coin(default_map3, 14, 56);
-    add_coin(default_map3, 15, 52);
-    add_coin(default_map3, 18, 15);
-    add_coin(default_map3, 18, 28);
-    add_coin(default_map3, 13, 27);
-    add_coin(default_map3, 8, 28);
-    add_coin(default_map3, 18, 44);
-    add_coin(default_map3, 18, 31);
-    add_coin(default_map3, 13, 32);
-    add_coin(default_map3, 8, 31);
-    add_coin(default_map3, 16, 22);
-    add_coin(default_map3, 16, 37);
-    add_coin(default_map3, 12, 23);
-    add_coin(default_map3, 12, 36);
-    add_coin(default_map3, 5, 23);
-    add_coin(default_map3, 3, 21);
-    add_coin(default_map3, 5, 36);
-    add_coin(default_map3, 3, 38);
-    add_coin(default_map3, 1, 10);
-    add_coin(default_map3, 2, 5);
-    add_coin(default_map3, 3, 7);
-    add_coin(default_map3, 4, 3);
-    add_coin(default_map3, 5, 5);
-    add_coin(default_map3, 6, 1);
-	add_coin(default_map3, 1, 49);
-    add_coin(default_map3, 2, 54);
-    add_coin(default_map3, 3, 52);
-    add_coin(default_map3, 4, 56);
-    add_coin(default_map3, 5, 54);
-    add_coin(default_map3, 6, 58);
-    add_coin(default_map3, 7, 10);
-    add_coin(default_map3, 7, 49);
-    add_coin(default_map3, 4, 16);
-    add_coin(default_map3, 4, 43);
-    add_coin(default_map3, 3, 29);
-
 	return default_map3;
+}
+
+coin_node *create_coin_list_map3() {
+	coin_node *head = NULL; 
+
+	add_coin(head, 12, 20);
+    add_coin(head, 12, 39);
+    add_coin(head, 9, 24);
+    add_coin(head, 9, 35);
+    add_coin(head, 7, 16);
+    add_coin(head, 7, 43);
+    add_coin(head, 5, 12);
+    add_coin(head, 5, 47);
+    add_coin(head, 1, 1);
+    add_coin(head, 1, 58);
+    add_coin(head, 3, 30);
+    add_coin(head, 17, 2);
+    add_coin(head, 13, 9);
+    add_coin(head, 14, 3);
+    add_coin(head, 15, 7);
+    add_coin(head, 17, 57);
+    add_coin(head, 13, 50);
+    add_coin(head, 14, 56);
+    add_coin(head, 15, 52);
+    add_coin(head, 18, 15);
+    add_coin(head, 18, 28);
+    add_coin(head, 13, 27);
+    add_coin(head, 8, 28);
+    add_coin(head, 18, 44);
+    add_coin(head, 18, 31);
+    add_coin(head, 13, 32);
+    add_coin(head, 8, 31);
+    add_coin(head, 16, 22);
+    add_coin(head, 16, 37);
+    add_coin(head, 12, 23);
+    add_coin(head, 12, 36);
+    add_coin(head, 5, 23);
+    add_coin(head, 3, 21);
+    add_coin(head, 5, 36);
+    add_coin(head, 3, 38);
+    add_coin(head, 1, 10);
+    add_coin(head, 2, 5);
+    add_coin(head, 3, 7);
+    add_coin(head, 4, 3);
+    add_coin(head, 5, 5);
+    add_coin(head, 6, 1);
+	add_coin(head, 1, 49);
+    add_coin(head, 2, 54);
+    add_coin(head, 3, 52);
+    add_coin(head, 4, 56);
+    add_coin(head, 5, 54);
+    add_coin(head, 6, 58);
+    add_coin(head, 7, 10);
+    add_coin(head, 7, 49);
+    add_coin(head, 4, 16);
+    add_coin(head, 4, 43);
+    add_coin(head, 3, 29);
+
+	return head; 
 }
 
 map *create_default_map4() {
@@ -611,57 +622,61 @@ map *create_default_map4() {
 	add_entrance(default_map4, true, 10, 0);
 	add_exit(default_map4, true, 10, 59);
 
-	// add coins
-	default_map4->coin_list = NULL;
-	add_coin(default_map4, 7, 3);
-	add_coin(default_map4, 12, 3);
-	add_coin(default_map4, 4, 32);
-	add_coin(default_map4, 6, 33);
-	add_coin(default_map4, 8, 33);
-	add_coin(default_map4, 6, 28);
-	add_coin(default_map4, 8, 28);
-	add_coin(default_map4, 4, 29);
-	add_coin(default_map4, 10, 32);
-	add_coin(default_map4, 10, 29);
-	add_coin(default_map4, 16, 26);
-	add_coin(default_map4, 16, 41);
-	add_coin(default_map4, 18, 6);
-	add_coin(default_map4, 16, 7);
-	add_coin(default_map4, 12, 9);
-	add_coin(default_map4, 12, 21);
-	add_coin(default_map4, 12, 28);
-	add_coin(default_map4, 12, 33);
-	add_coin(default_map4, 12, 40);
-	add_coin(default_map4, 8, 9);
-	add_coin(default_map4, 8, 14);
-	add_coin(default_map4, 1, 6);
-	add_coin(default_map4, 1, 16);
-	add_coin(default_map4, 1, 30);
-	add_coin(default_map4, 1, 45);
-	add_coin(default_map4, 1, 54);
-	add_coin(default_map4, 8, 51);
-	add_coin(default_map4, 5, 57);
-	add_coin(default_map4, 18, 56);
-	add_coin(default_map4, 17, 51);
-	add_coin(default_map4, 14, 52);
-	add_coin(default_map4, 14, 55);
-	add_coin(default_map4, 10, 57);
-	add_coin(default_map4, 12, 48);
-	add_coin(default_map4, 4, 51);
-	add_coin(default_map4, 14, 52);
-	add_coin(default_map4, 18, 15);
-	add_coin(default_map4, 15, 32);
-	add_coin(default_map4, 15, 46);
-	add_coin(default_map4, 15, 21);
-	add_coin(default_map4, 3, 40);
-	add_coin(default_map4, 7, 40);
-	add_coin(default_map4, 7, 21);
-	add_coin(default_map4, 3, 19);
-	add_coin(default_map4, 14, 15);
-	add_coin(default_map4, 4, 6);
-	add_coin(default_map4, 4, 11);
-
 	return default_map4;
+}
+
+coin_node *create_coin_list_map4() {
+	coin_node *head = NULL; 
+
+	add_coin(head, 7, 3);
+	add_coin(head, 12, 3);
+	add_coin(head, 4, 32);
+	add_coin(head, 6, 33);
+	add_coin(head, 8, 33);
+	add_coin(head, 6, 28);
+	add_coin(head, 8, 28);
+	add_coin(head, 4, 29);
+	add_coin(head, 10, 32);
+	add_coin(head, 10, 29);
+	add_coin(head, 16, 26);
+	add_coin(head, 16, 41);
+	add_coin(head, 18, 6);
+	add_coin(head, 16, 7);
+	add_coin(head, 12, 9);
+	add_coin(head, 12, 21);
+	add_coin(head, 12, 28);
+	add_coin(head, 12, 33);
+	add_coin(head, 12, 40);
+	add_coin(head, 8, 9);
+	add_coin(head, 8, 14);
+	add_coin(head, 1, 6);
+	add_coin(head, 1, 16);
+	add_coin(head, 1, 30);
+	add_coin(head, 1, 45);
+	add_coin(head, 1, 54);
+	add_coin(head, 8, 51);
+	add_coin(head, 5, 57);
+	add_coin(head, 18, 56);
+	add_coin(head, 17, 51);
+	add_coin(head, 14, 52);
+	add_coin(head, 14, 55);
+	add_coin(head, 10, 57);
+	add_coin(head, 12, 48);
+	add_coin(head, 4, 51);
+	add_coin(head, 14, 52);
+	add_coin(head, 18, 15);
+	add_coin(head, 15, 32);
+	add_coin(head, 15, 46);
+	add_coin(head, 15, 21);
+	add_coin(head, 3, 40);
+	add_coin(head, 7, 40);
+	add_coin(head, 7, 21);
+	add_coin(head, 3, 19);
+	add_coin(head, 14, 15);
+	add_coin(head, 4, 6);
+	add_coin(head, 4, 11);
+
+	return head; 
 }
 
 map *create_default_map5() {
@@ -795,54 +810,58 @@ map *create_default_map5() {
 	add_entrance(default_map5, true, 10, 0);
 	add_exit(default_map5, true, 10, 59);
 
-	// add coins
-	default_map5->coin_list = NULL;
-	add_coin(default_map5, 9, 2);
-	add_coin(default_map5, 9, 57);
-	add_coin(default_map5, 1, 1);
-	add_coin(default_map5, 1, 19);
-	add_coin(default_map5, 1, 28);
-	add_coin(default_map5, 1, 58);
-	add_coin(default_map5, 18, 58);
-	add_coin(default_map5, 18, 1);
-	add_coin(default_map5, 4, 13);
-	add_coin(default_map5, 7, 8);
-	add_coin(default_map5, 10, 19);
-	add_coin(default_map5, 18, 19);
-	add_coin(default_map5, 4, 18);
-	add_coin(default_map5, 4, 28);
-	add_coin(default_map5, 4, 41);
-	add_coin(default_map5, 13, 5);
-	add_coin(default_map5, 10, 42);
-	add_coin(default_map5, 10, 54);
-	add_coin(default_map5, 15, 53);
-	add_coin(default_map5, 18, 40);
-	add_coin(default_map5, 15, 42);
-	add_coin(default_map5, 16, 28);
-	add_coin(default_map5, 4, 54);
-	add_coin(default_map5, 1, 45);
-	add_coin(default_map5, 16, 33);
-	add_coin(default_map5, 14, 12);
-	add_coin(default_map5, 12, 24);
-	add_coin(default_map5, 8, 24);
-	add_coin(default_map5, 8, 37);
-	add_coin(default_map5, 12, 37);
-	add_coin(default_map5, 8, 28);
-	add_coin(default_map5, 8, 33);
-	add_coin(default_map5, 12, 28);
-	add_coin(default_map5, 12, 33);
-	add_coin(default_map5, 4, 33);
-	add_coin(default_map5, 18, 48);
-	add_coin(default_map5, 13, 50);
-	add_coin(default_map5, 7, 47);
-	add_coin(default_map5, 4, 5);
-	add_coin(default_map5, 17, 11);
-	add_coin(default_map5, 10, 12);
-	add_coin(default_map5, 7, 14);
-	add_coin(default_map5, 2, 37);
-	add_coin(default_map5, 1, 10);
-
 	return default_map5;
+}
+
+coin_node *create_coin_list_map5() {
+	coin_node *head = NULL; 
+
+	add_coin(head, 9, 2);
+	add_coin(head, 9, 57);
+	add_coin(head, 1, 1);
+	add_coin(head, 1, 19);
+	add_coin(head, 1, 28);
+	add_coin(head, 1, 58);
+	add_coin(head, 18, 58);
+	add_coin(head, 18, 1);
+	add_coin(head, 4, 13);
+	add_coin(head, 7, 8);
+	add_coin(head, 10, 19);
+	add_coin(head, 18, 19);
+	add_coin(head, 4, 18);
+	add_coin(head, 4, 28);
+	add_coin(head, 4, 41);
+	add_coin(head, 13, 5);
+	add_coin(head, 10, 42);
+	add_coin(head, 10, 54);
+	add_coin(head, 15, 53);
+	add_coin(head, 18, 40);
+	add_coin(head, 15, 42);
+	add_coin(head, 16, 28);
+	add_coin(head, 4, 54);
+	add_coin(head, 1, 45);
+	add_coin(head, 16, 33);
+	add_coin(head, 14, 12);
+	add_coin(head, 12, 24);
+	add_coin(head, 8, 24);
+	add_coin(head, 8, 37);
+	add_coin(head, 12, 37);
+	add_coin(head, 8, 28);
+	add_coin(head, 8, 33);
+	add_coin(head, 12, 28);
+	add_coin(head, 12, 33);
+	add_coin(head, 4, 33);
+	add_coin(head, 18, 48);
+	add_coin(head, 13, 50);
+	add_coin(head, 7, 47);
+	add_coin(head, 4, 5);
+	add_coin(head, 17, 11);
+	add_coin(head, 10, 12);
+	add_coin(head, 7, 14);
+	add_coin(head, 2, 37);
+	add_coin(head, 1, 10);
+	
+	return head;
 }
 
 map *create_default_map6() {
@@ -960,55 +979,59 @@ map *create_default_map6() {
 	add_entrance(default_map6, true, 10, 0);
 	add_exit(default_map6, true, 10, 59);
 
-	// add coins
-	default_map6->coin_list = NULL;
-	add_coin(default_map6, 10, 57);
-	add_coin(default_map6, 18, 58);
-	add_coin(default_map6, 17, 10);
-	add_coin(default_map6, 17, 26);
-	add_coin(default_map6, 15, 30);
-	add_coin(default_map6, 17, 34);
-	add_coin(default_map6, 12, 30);
-	add_coin(default_map6, 12, 36);
-	add_coin(default_map6, 12, 24);
-	add_coin(default_map6, 9, 30);
-	add_coin(default_map6, 7, 28);
-	add_coin(default_map6, 9, 35);
-	add_coin(default_map6, 9, 25);
-	add_coin(default_map6, 7, 5);
-	add_coin(default_map6, 7, 15);
-	add_coin(default_map6, 4, 9);
-	add_coin(default_map6, 10, 20);
-	add_coin(default_map6, 14, 14);
-	add_coin(default_map6, 12, 17);
-	add_coin(default_map6, 10, 2);
-	add_coin(default_map6, 10, 39);
-	add_coin(default_map6, 10, 48);
-	add_coin(default_map6, 12, 54);
-	add_coin(default_map6, 12, 43);
-	add_coin(default_map6, 18, 44);
-	add_coin(default_map6, 18, 51);
-	add_coin(default_map6, 17, 18);
-	add_coin(default_map6, 12, 8);
-	add_coin(default_map6, 16, 53);
-	add_coin(default_map6, 5, 57);
-	add_coin(default_map6, 4, 49);
-	add_coin(default_map6, 1, 48);
-	add_coin(default_map6, 4, 40);
-	add_coin(default_map6, 4, 36);
-	add_coin(default_map6, 4, 33);
-	add_coin(default_map6, 4, 24);
-	add_coin(default_map6, 4, 20);
-	add_coin(default_map6, 1, 14);
-	add_coin(default_map6, 2, 29);
-	add_coin(default_map6, 2, 26);
-	add_coin(default_map6, 1, 34);
-	add_coin(default_map6, 7, 43);
-	add_coin(default_map6, 5, 54);
-	add_coin(default_map6, 3, 54);
-	add_coin(default_map6, 7, 52);
-
 	return default_map6;
+}
+
+coin_node *create_coin_list_map6() {
+	coin_node *head = NULL;
+
+	add_coin(head, 10, 57);
+	add_coin(head, 18, 58);
+	add_coin(head, 17, 10);
+	add_coin(head, 17, 26);
+	add_coin(head, 15, 30);
+	add_coin(head, 17, 34);
+	add_coin(head, 12, 30);
+	add_coin(head, 12, 36);
+	add_coin(head, 12, 24);
+	add_coin(head, 9, 30);
+	add_coin(head, 7, 28);
+	add_coin(head, 9, 35);
+	add_coin(head, 9, 25);
+	add_coin(head, 7, 5);
+	add_coin(head, 7, 15);
+	add_coin(head, 4, 9);
+	add_coin(head, 10, 20);
+	add_coin(head, 14, 14);
+	add_coin(head, 12, 17);
+	add_coin(head, 10, 2);
+	add_coin(head, 10, 39);
+	add_coin(head, 10, 48);
+	add_coin(head, 12, 54);
+	add_coin(head, 12, 43);
+	add_coin(head, 18, 44);
+	add_coin(head, 18, 51);
+	add_coin(head, 17, 18);
+	add_coin(head, 12, 8);
+	add_coin(head, 16, 53);
+	add_coin(head, 5, 57);
+	add_coin(head, 4, 49);
+	add_coin(head, 1, 48);
+	add_coin(head, 4, 40);
+	add_coin(head, 4, 36);
+	add_coin(head, 4, 33);
+	add_coin(head, 4, 24);
+	add_coin(head, 4, 20);
+	add_coin(head, 1, 14);
+	add_coin(head, 2, 29);
+	add_coin(head, 2, 26);
+	add_coin(head, 1, 34);
+	add_coin(head, 7, 43);
+	add_coin(head, 5, 54);
+	add_coin(head, 3, 54);
+	add_coin(head, 7, 52);
+
+	return head;
 }
 
 void create_default_maps(map *default_maps[]) {

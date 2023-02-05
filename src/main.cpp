@@ -64,18 +64,45 @@ void set_player_starting_properties() {
     player.set_is_moving(false);
 }
 
+coin_node *get_default_coin_list() {
+    coin_node *coin_list = NULL; 
+
+    switch (current_map_index) {
+        case 0:
+            coin_list = create_coin_list_map1();
+            break;
+        case 1:
+            coin_list = create_coin_list_map2();
+            break;
+        case 2:
+            coin_list = create_coin_list_map3();
+            break;
+        case 3:
+            coin_list = create_coin_list_map4();
+            break;
+        case 4:
+            coin_list = create_coin_list_map5();
+            break;
+        case 5:
+            coin_list = create_coin_list_map6();
+            break;                       
+    }
+
+    return coin_list;
+}
+
 void load_random_map() {
     // get a new random index
     int next_map_index = rand() % 6;
 	while (next_map_index == current_map_index) next_map_index = rand() % 6;
 	current_map_index = next_map_index;
 
-    // get coins list based on current map index
-    current_coin_list = default_maps[current_map_index]->coin_list;
+    // get coin list based on current map index
+    current_coin_list = get_default_coin_list();
 
     // display the new level's map
-    if (level>=2) display_map(game_win, default_maps[current_map_index]);
-	else display_map_with_anim(game_win, default_maps[current_map_index]);
+    if (level>=2) display_map(game_win, default_maps[current_map_index], current_coin_list);
+	else display_map_with_anim(game_win, default_maps[current_map_index], current_coin_list);
 }
 
 void load_next_level() {
