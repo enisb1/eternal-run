@@ -229,6 +229,24 @@ void move_player() {
     display_player(game_win, player);
 }
 
+bool can_move_in_block(int y, int x) {
+    return default_maps[current_map_index]->blocks[y][x] != WALL_BLOCK
+        && default_maps[current_map_index]->blocks[y][x] != ENTRANCE_BLOCK
+        && default_maps[current_map_index]->blocks[y][x] != EXIT_BLOCK;
+}
+
+bool can_move_in_next_two_blocks(int direction, int start_y, int start_x) {
+    int next_y1 = start_y;
+    int next_x1 = start_x;
+    get_next_position(direction, next_y1, next_x1);
+
+    int next_y2 = next_y1;
+    int next_x2 = next_x1;
+    get_next_position(direction, next_y2, next_x2);
+
+    return can_move_in_block(next_y1, next_x1) && can_move_in_block(next_y2, next_x2);
+}
+
 void move_enemies() {
     enemy_node *enemy_list_iterator = current_enemy_list;
 
@@ -236,48 +254,33 @@ void move_enemies() {
         bool can_cross = false;
 
         if (enemy_list_iterator->current_enemy.get_blocks_traveled() > 8) {
-            // check if can cross
+            // check if can cross in one direction
             int new_direction = (enemy_list_iterator->current_enemy.get_direction() + 1) % 4;
-
-            int next_y1 = enemy_list_iterator->current_enemy.get_y();
-            int next_x1 = enemy_list_iterator->current_enemy.get_x();
-            get_next_position(new_direction, next_y1, next_x1);
-
-            int next_y2 = next_y1;
-            int next_x2 = next_x1;
-            get_next_position(new_direction, next_y2, next_x2);
-
-            if (default_maps[current_map_index]->blocks[next_y1][next_x1] != WALL_BLOCK
-                && default_maps[current_map_index]->blocks[next_y2][next_x2] != WALL_BLOCK
-                && default_maps[current_map_index]->blocks[next_y1][next_x1] != ENTRANCE_BLOCK
-                && default_maps[current_map_index]->blocks[next_y2][next_x2] != ENTRANCE_BLOCK
-                && default_maps[current_map_index]->blocks[next_y1][next_x1] != EXIT_BLOCK
-                && default_maps[current_map_index]->blocks[next_y2][next_x2] != EXIT_BLOCK) {
+            
+            if (can_move_in_next_two_blocks(
+                new_direction, 
+                enemy_list_iterator->current_enemy.get_y(), 
+                enemy_list_iterator->current_enemy.get_x()
+            )) {
                 enemy_list_iterator->current_enemy.set_direction(new_direction);
                 can_cross = true;
             } else {
+                // check if can cross in the other direction
                 int new_direction = (enemy_list_iterator->current_enemy.get_direction() + 3) % 4;
 
-                int next_y1 = enemy_list_iterator->current_enemy.get_y();
-                int next_x1 = enemy_list_iterator->current_enemy.get_x();
-                get_next_position(new_direction, next_y1, next_x1);
-
-                int next_y2 = next_y1;
-                int next_x2 = next_x1;
-                get_next_position(new_direction, next_y2, next_x2);
-
-                if (default_maps[current_map_index]->blocks[next_y1][next_x1] != WALL_BLOCK
-                    && default_maps[current_map_index]->blocks[next_y2][next_x2] != WALL_BLOCK
-                    && default_maps[current_map_index]->blocks[next_y1][next_x1] != ENTRANCE_BLOCK
-                    && default_maps[current_map_index]->blocks[next_y2][next_x2] != ENTRANCE_BLOCK
-                    && default_maps[current_map_index]->blocks[next_y1][next_x1] != EXIT_BLOCK
-                    && default_maps[current_map_index]->blocks[next_y2][next_x2] != EXIT_BLOCK) {
+                if (can_move_in_next_two_blocks(
+                    new_direction, 
+                    enemy_list_iterator->current_enemy.get_y(), 
+                    enemy_list_iterator->current_enemy.get_x()
+                    )
+                ) {
                     enemy_list_iterator->current_enemy.set_direction(new_direction);
                     can_cross = true;
                 }
             }
         }
 
+        // get next blocks position based on current direction
         int next_y = enemy_list_iterator->current_enemy.get_y();
         int next_x = enemy_list_iterator->current_enemy.get_x();
 
@@ -287,10 +290,10 @@ void move_enemies() {
         );
 
         // change enemy direction if next block is a wall
-        if (!can_cross) {
-            if (default_maps[current_map_index]->blocks[next_y][next_x] == WALL_BLOCK
-                || default_maps[current_map_index]->blocks[next_y][next_x] == ENTRANCE_BLOCK
-                || default_maps[current_map_index]->blocks[next_y][next_x] == EXIT_BLOCK) {
+        if (can_cross) enemy_list_iterator->current_enemy.reset_blocks_traveled();
+        else {
+            if (!can_move_in_block(next_y, next_x)) {
+                // if next block is a wall change to a random direction
                 enemy_list_iterator->current_enemy.set_direction(
                     get_random_enemy_direction(
                         default_maps[current_map_index], 
@@ -309,7 +312,7 @@ void move_enemies() {
             }
 
             enemy_list_iterator->current_enemy.increment_blocks_traveled();
-        } else enemy_list_iterator->current_enemy.reset_blocks_traveled();
+        }
 
         // move enemy
         set_blank_char(
