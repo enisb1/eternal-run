@@ -3,10 +3,10 @@
 
 /* Vars */
 
-const int DOWN = 1;
+const int DOWN = 0;
+const int RIGHT = 1;
 const int UP = 2;
-const int RIGHT = 3;
-const int LEFT = 4;
+const int LEFT = 3;
 
 /* Classes */
 
@@ -14,10 +14,11 @@ class Entity {
     protected:
         int y;
         int x;
+        int direction;
 
     public:
         Entity();
-        Entity(int y, int x);
+        Entity(int y, int x, int direction);
 
         // getter and setter
         void set_y(int y);
@@ -25,11 +26,13 @@ class Entity {
 
         void set_x(int x);
         int get_x();
+
+        void set_direction(int direction);
+        int get_direction();
 };
 
 class Player: public Entity {
     protected:
-        int direction;
         bool is_moving;
         int life;
         int shield;
@@ -44,9 +47,6 @@ class Player: public Entity {
         );
 
         // getter and setter
-        void set_direction(int direction);
-        int get_direction();
-
         void set_is_moving(bool is_moving);
         bool get_is_moving();
 
@@ -75,30 +75,34 @@ class Enemy: public Entity {
         int level;
         int life;
         int damage;
+        int blocks_traveled;
 
     public:
         Enemy();
-        Enemy(int y, int x, int level);
+        Enemy(int y, int x, int direction, int level);
         
         // getter and setter
         int get_life();
         int get_damage();
         int get_level();
+        int get_blocks_traveled();
 
         // decrease the level by one
         void decrease_level();
+
+        // increase the blocks_traveled by one
+        void increment_blocks_traveled();
+
+        // set blocks_traveled to 0
+        void reset_blocks_traveled();
 };
 
 class Bullet: public Entity {
     protected:
-        int direction_y;
-        int direction_x;
         int speed;
 
     public:
-        Bullet(
-            int y, int x, 
-            int direction_y, int direction_x, int speed);
+        Bullet(int y, int x, int direction, int speed);
         
         // move the entity inside the map
         // following the bullet movement
@@ -114,8 +118,13 @@ struct enemy_node {
 
 /* Enemy methods */
 
+// add a new enemy to enemy list
 void add_enemy(enemy_node* &head, Enemy new_enemy);
 
+// get a random direction for the enemy
+int get_random_enemy_direction(map *map, int y, int x);
+
+// create a new enemy list based on the level
 void create_enemy_list(map *map, Player player, enemy_node* &head, int level);
 
 #endif
