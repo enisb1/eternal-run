@@ -47,7 +47,6 @@ void create_colors() {
 
 int get_player_starting_direction(bool is_at_entrance) {
     int direction;
-
     int y; 
     int x;
 
@@ -118,6 +117,7 @@ void load_saved_map(bool is_entering_level) {
     set_player_starting_properties(is_entering_level);
     display_player(game_win, player);
 
+    // TODO: display saved enemies
     create_enemy_list(default_maps[current_map_index], player, current_enemy_list, level);
     display_enemies(game_win, current_enemy_list);
 }

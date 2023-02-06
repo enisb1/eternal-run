@@ -128,6 +128,9 @@ struct bullet_node {
 // add a new enemy to enemy list
 void add_enemy(enemy_node* &head, Enemy new_enemy);
 
+// get a random position for the enemy
+void get_random_enemy_position(map *map, Player player, int &y, int &x);
+
 // get a random direction for the enemy
 int get_random_enemy_direction(map *map, int y, int x);
 
