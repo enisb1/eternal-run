@@ -1057,3 +1057,26 @@ void create_default_maps(map *default_maps[]) {
     default_maps[4] = default_map5;
     default_maps[5] = default_map6;
 }
+
+void get_default_coin_list(coin_node* &coin_list, int map_index) {
+    switch (map_index) {
+        case 0:
+            coin_list = create_coin_list_map1();
+            break;
+        case 1:
+            coin_list = create_coin_list_map2();
+            break;
+        case 2:
+            coin_list = create_coin_list_map3();
+            break;
+        case 3:
+            coin_list = create_coin_list_map4();
+            break;
+        case 4:
+            coin_list = create_coin_list_map5();
+            break;
+        case 5:
+            coin_list = create_coin_list_map6();
+            break;                       
+    }
+}

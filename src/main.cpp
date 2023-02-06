@@ -86,29 +86,6 @@ void delete_coin_list() {
     }
 }
 
-void get_default_coin_list() {
-    switch (current_map_index) {
-        case 0:
-            current_coin_list = create_coin_list_map1();
-            break;
-        case 1:
-            current_coin_list = create_coin_list_map2();
-            break;
-        case 2:
-            current_coin_list = create_coin_list_map3();
-            break;
-        case 3:
-            current_coin_list = create_coin_list_map4();
-            break;
-        case 4:
-            current_coin_list = create_coin_list_map5();
-            break;
-        case 5:
-            current_coin_list = create_coin_list_map6();
-            break;                       
-    }
-}
-
 void load_saved_map(bool is_entering_level) {
     current_map_index = get_stored_map_index(level);
     current_coin_list = get_stored_coin_list(level);
@@ -130,7 +107,7 @@ void load_random_map(bool is_entering_level, bool is_death) {
 
     // set a new default coin list to current_coin_list based on current map index
     delete_coin_list();
-    get_default_coin_list();
+    get_default_coin_list(current_coin_list, current_map_index);
 
     // display the new level's map
     if (level>=2 && !is_death) display_map(game_win, default_maps[current_map_index], current_coin_list);
