@@ -15,7 +15,7 @@ using namespace std;
 
 void store_coins(int level, coin_node *coin_list) {
     ofstream outputFile;
-    outputFile.open("coins_map_lvl" + to_string(level) + ".txt");
+    outputFile.open("storingFiles/coins_map_lvl" + to_string(level) + ".txt");
 
     while (coin_list!=NULL) {
         outputFile << coin_list->y << " " << coin_list->x << " ";
@@ -27,14 +27,14 @@ void store_coins(int level, coin_node *coin_list) {
 
 void store_map_index(int level, int mapIndex) {
     ofstream outputFile;
-    outputFile.open("index_map_lvl" + to_string(level) + ".txt");
+    outputFile.open("storingFiles/index_map_lvl" + to_string(level) + ".txt");
     outputFile << mapIndex;
     outputFile.close();
 }
 
 coin_node *get_stored_coin_list(int level) {
     ifstream inputFile;
-    inputFile.open("coins_map_lvl" + to_string(level) + ".txt");
+    inputFile.open("storingFiles/coins_map_lvl" + to_string(level) + ".txt");
 
     coin_node *coin_list = NULL;
     int coordinate;
@@ -55,7 +55,7 @@ coin_node *get_stored_coin_list(int level) {
 
 int get_stored_map_index(int level) {
     ifstream inputFile;
-    inputFile.open("index_map_lvl" + to_string(level) + ".txt");
+    inputFile.open("storingFiles/index_map_lvl" + to_string(level) + ".txt");
 
     char mapIndexChar;
     while(!inputFile.eof()){
