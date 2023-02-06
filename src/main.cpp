@@ -1,15 +1,16 @@
 /* Includes */
 
 #include <ncursesw/ncurses.h>
+
 #include <stdlib.h>
 #include <cstring>
-
 #include <ctime>
 #include <cstdlib>
 
 #include "graphics.hpp"
 #include "map.hpp"
 #include "entities.hpp"
+#include "storing.hpp"
 
 using namespace std; 
 
@@ -26,6 +27,7 @@ enemy_node *current_enemy_list = NULL;
 
 int coins;
 int level;
+int max_level = 0;
 
 map *default_maps[6];
 int current_map_index = 0;
@@ -42,25 +44,41 @@ void create_colors() {
     init_pair(YELLOW_PAIR, COLOR_YELLOW, 0);
 }
 
-int get_player_starting_direction() {
+int get_player_starting_direction(bool is_at_entrance) {
     int direction;
 
-    if (default_maps[current_map_index]->entrance_exit_positions[0] == 0)
-        direction = DOWN;
-    else if (default_maps[current_map_index]->entrance_exit_positions[0] == 19)
-        direction = UP;
-    else if (default_maps[current_map_index]->entrance_exit_positions[1] == 0)
-        direction = RIGHT;
-    else if (default_maps[current_map_index]->entrance_exit_positions[1] == 59)
-        direction = LEFT;
+    if (is_at_entrance) {
+        if (default_maps[current_map_index]->entrance_exit_positions[0] == 0)
+            direction = DOWN;
+        else if (default_maps[current_map_index]->entrance_exit_positions[0] == 19)
+            direction = UP;
+        else if (default_maps[current_map_index]->entrance_exit_positions[1] == 0)
+            direction = RIGHT;
+        else if (default_maps[current_map_index]->entrance_exit_positions[1] == 59)
+            direction = LEFT;
+    } else {
+        if (default_maps[current_map_index]->entrance_exit_positions[2] == 0)
+            direction = DOWN;
+        else if (default_maps[current_map_index]->entrance_exit_positions[2] == 19)
+            direction = UP;
+        else if (default_maps[current_map_index]->entrance_exit_positions[3] == 0)
+            direction = RIGHT;
+        else if (default_maps[current_map_index]->entrance_exit_positions[3] == 59)
+            direction = LEFT;
+    }
     
     return direction;
 }
 
-void set_player_starting_properties() {
-    player.set_y(default_maps[current_map_index]->entrance_exit_positions[0]);
-    player.set_x(default_maps[current_map_index]->entrance_exit_positions[1]);
-    player.set_direction(get_player_starting_direction());
+void set_player_starting_properties(bool is_at_entrance) {
+    if (is_at_entrance) {
+        player.set_y(default_maps[current_map_index]->entrance_exit_positions[0]);
+        player.set_x(default_maps[current_map_index]->entrance_exit_positions[1]);
+    } else {
+        player.set_y(default_maps[current_map_index]->entrance_exit_positions[2]);
+        player.set_x(default_maps[current_map_index]->entrance_exit_positions[3]);
+    }
+    player.set_direction(get_player_starting_direction(is_at_entrance));
     player.set_is_moving(false);
 }
 
@@ -95,6 +113,18 @@ void get_default_coin_list() {
     }
 }
 
+void load_saved_map(bool is_entering_level) {
+    current_map_index = get_stored_map_index(level);
+    current_coin_list = get_stored_coin_list(level);
+
+    display_map(game_win, default_maps[current_map_index], current_coin_list);
+    set_player_starting_properties(is_entering_level);
+    display_player(game_win, player);
+
+    create_enemy_list(default_maps[current_map_index], player, current_enemy_list, level);
+    display_enemies(game_win, current_enemy_list);
+}
+
 void load_random_map() {
     // get a new random index
     int next_map_index = rand() % 6;
@@ -110,23 +140,43 @@ void load_random_map() {
 	else display_map_with_anim(game_win, default_maps[current_map_index], current_coin_list);
 }
 
-void load_next_level() {
-    //TODO: save previous level's data in a file
-
-    // increment level
+void load_next_level() {    
     level++;
-	refresh_title(info_win, level, false);
+    refresh_title(info_win, level, false);
 
-    // load a new level based on a random index
-	load_random_map();
+    // store level's data in files
+    if (level > 1) {
+        store_map_index(level-1, current_map_index);
+        store_coins(level-1, current_coin_list);
+    }
 
-    // set player's starting properties and display it
-    set_player_starting_properties();
-    display_player(game_win, player);
+    // checks if it's a new level or not
+    if (level > max_level) {
+        max_level++;
 
-    // create enemy list and display it
-    create_enemy_list(default_maps[current_map_index], player, current_enemy_list, level);
-    display_enemies(game_win, current_enemy_list);
+        // load a new map based on a random index
+	    load_random_map();
+
+        // set player's starting properties and display it
+        set_player_starting_properties(true);
+        display_player(game_win, player);
+
+        // create enemy list and display it
+        create_enemy_list(default_maps[current_map_index], player, current_enemy_list, level);
+        display_enemies(game_win, current_enemy_list);
+    }
+    else load_saved_map(true);
+}
+
+void load_previous_level() {
+    // store level's data in files
+    store_map_index(level, current_map_index);
+    store_coins(level, current_coin_list);
+
+    level--;
+    refresh_title(info_win, level, false);
+
+    load_saved_map(false);
 }
 
 void new_game() {
@@ -140,7 +190,7 @@ void new_game() {
     player = Player(
         default_maps[current_map_index]->entrance_exit_positions[0],
         default_maps[current_map_index]->entrance_exit_positions[1],
-        get_player_starting_direction(), false,
+        get_player_starting_direction(true), false,
         3, 0, false
     );
 
@@ -218,6 +268,8 @@ void move_player() {
         if (!is_coin) {
             if (default_maps[current_map_index]->blocks[next_y][next_x] == ENTRANCE_BLOCK) {
                 // previous level
+                //player.set_is_moving(false);
+                if (level > 1) load_previous_level();
             } else if (default_maps[current_map_index]->blocks[next_y][next_x] == EXIT_BLOCK) {
                 // new level
                 load_next_level();
@@ -392,7 +444,7 @@ void start_game_loop() {
         if (player.get_is_moving()) move_player();
         move_enemies();
 
-        napms(160);
+        napms(50);
     };
 }
 

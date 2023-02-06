@@ -24,6 +24,9 @@ struct map {
 
 /* Methods */
 
+// adds coin to coin list
+void add_coin(coin_node* &head, int y, int x);
+
 // methods to create each map's default coin list
 coin_node *create_coin_list_map1();
 
