@@ -1,6 +1,5 @@
 /* Includes */
 
-#include <ncursesw/ncurses.h>
 #include <fstream>
 #include <iostream>
 

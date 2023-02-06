@@ -393,6 +393,14 @@ map *create_default_map3() {
     add_blocks_vertically(default_map3, 2, 3, 33, WALL_BLOCK);
     add_blocks_vertically(default_map3, 2, 3, 34, WALL_BLOCK);
 
+	add_blocks_horizontally(default_map3, 11, 1, 16, WALL_BLOCK);
+	add_blocks_vertically(default_map3, 12, 16, 16, WALL_BLOCK);
+	add_blocks_vertically(default_map3, 12, 16, 15, WALL_BLOCK);
+
+	add_blocks_horizontally(default_map3, 11, 43, 58, WALL_BLOCK);
+	add_blocks_vertically(default_map3, 12, 16, 43, WALL_BLOCK);
+	add_blocks_vertically(default_map3, 12, 16, 44, WALL_BLOCK);
+	
     add_blocks_vertically(default_map3, 14, 18, 9, WALL_BLOCK);
     add_blocks_vertically(default_map3, 14, 18, 10, WALL_BLOCK);
     

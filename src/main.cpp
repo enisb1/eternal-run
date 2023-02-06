@@ -47,25 +47,21 @@ void create_colors() {
 int get_player_starting_direction(bool is_at_entrance) {
     int direction;
 
+    int y; 
+    int x;
+
     if (is_at_entrance) {
-        if (default_maps[current_map_index]->entrance_exit_positions[0] == 0)
-            direction = DOWN;
-        else if (default_maps[current_map_index]->entrance_exit_positions[0] == 19)
-            direction = UP;
-        else if (default_maps[current_map_index]->entrance_exit_positions[1] == 0)
-            direction = RIGHT;
-        else if (default_maps[current_map_index]->entrance_exit_positions[1] == 59)
-            direction = LEFT;
+        y = default_maps[current_map_index]->entrance_exit_positions[0];
+        x = default_maps[current_map_index]->entrance_exit_positions[1];
     } else {
-        if (default_maps[current_map_index]->entrance_exit_positions[2] == 0)
-            direction = DOWN;
-        else if (default_maps[current_map_index]->entrance_exit_positions[2] == 19)
-            direction = UP;
-        else if (default_maps[current_map_index]->entrance_exit_positions[3] == 0)
-            direction = RIGHT;
-        else if (default_maps[current_map_index]->entrance_exit_positions[3] == 59)
-            direction = LEFT;
+        y = default_maps[current_map_index]->entrance_exit_positions[2];
+        x = default_maps[current_map_index]->entrance_exit_positions[3];
     }
+
+    if (y == 0) direction = DOWN;
+    else if (y == 19) direction = UP;
+    else if (x == 0) direction = RIGHT;
+    else if (x == 59) direction = LEFT;
     
     return direction;
 }
@@ -129,7 +125,7 @@ void load_random_map() {
     // get a new random index
     int next_map_index = rand() % 6;
 	while (next_map_index == current_map_index) next_map_index = rand() % 6;
-	current_map_index = next_map_index;
+	current_map_index = 2;
 
     // set a new default coin list to current_coin_list based on current map index
     delete_coin_list();
