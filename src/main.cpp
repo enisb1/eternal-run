@@ -24,7 +24,7 @@ const int info_win_width = 18;
 
 Player player;
 enemy_node *current_enemy_list = NULL;
-bullet_node *bullet_list = NULL;
+bullet_node *current_bullet_list = NULL;
 
 int coins;
 int level;
@@ -432,37 +432,35 @@ void move_enemies() {
 }
 
 void move_bullets() {
-    bullet_node *bullet_list_iterator = bullet_list;
+    bullet_node *bullet_list_iterator = current_bullet_list;
     bullet_node *new_bullet_list = NULL;
 
+    // create new list with valid bullets
     while (bullet_list_iterator!=NULL) {
-        // check if next block is a wall
         Bullet *current_bullet = &bullet_list_iterator->current_bullet;
-        wprintw(stdscr, "accesso\n");
-        refresh();
+        
         int new_bullet_y = current_bullet->get_y();
         int new_bullet_x = current_bullet->get_x();
-        wprintw(stdscr, "test\n");
-        refresh();
+       
         set_blank_char(game_win, new_bullet_y, new_bullet_x);
 
         get_next_position(current_bullet->get_direction(), new_bullet_y, new_bullet_x);
+
+        // check if next block is a wall
         if (default_maps[current_map_index]->blocks[new_bullet_y][new_bullet_x] != WALL_BLOCK) {
             current_bullet->set_y(new_bullet_y);
             current_bullet->set_x(new_bullet_x);
             add_bullet(new_bullet_list, *current_bullet);
-            mvwaddch(game_win, new_bullet_y, new_bullet_x, '.');
+            mvwaddch(game_win, new_bullet_y, new_bullet_x, '+');
         }
 
-        wprintw(stdscr, "prima\n");
-        refresh();
-        delete current_bullet;
-        wprintw(stdscr, "dopo\n");
-        refresh();
+        bullet_node *tmp = bullet_list_iterator;
         bullet_list_iterator = bullet_list_iterator->next;
+        delete tmp;
     }
 
-    bullet_list = new_bullet_list;
+    // set new list to bullet list
+    current_bullet_list = new_bullet_list;
 }
 
 void create_bullet() {
@@ -475,14 +473,13 @@ void create_bullet() {
         player.get_direction(), 
         player.get_bullet_speed()
     );
-    add_bullet(bullet_list, new_bullet);
+    add_bullet(current_bullet_list, new_bullet);
 }
 
 void start_game_loop() {
     unsigned int tick = 0;
     const unsigned int ANIM_PERIOD = 1;
     const unsigned int KEY_SPACEBAR = 32;
-    move(0,0);
 
     while (1) {
         int c = wgetch(game_win);
