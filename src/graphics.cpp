@@ -223,6 +223,17 @@ int show_esc_screen(WINDOW *game_win) {
     return selected_option;
 }
 
+void display_coins(WINDOW *game_win, coin_node *coin_list) {
+    while (coin_list!=NULL) {
+		wmove(game_win, coin_list->y, coin_list->x);
+		wattron(game_win, COLOR_PAIR(YELLOW_PAIR));
+		waddch(game_win, '*');
+		wattroff(game_win, COLOR_PAIR(YELLOW_PAIR));
+		
+        coin_list = coin_list->next;
+	}
+}
+
 void display_map(WINDOW *game_win, map *map, coin_node *coin_list) {
     // diplay map border
     wclear(game_win);
@@ -254,16 +265,7 @@ void display_map(WINDOW *game_win, map *map, coin_node *coin_list) {
         }
     }
 
-    // display coins
-	while (coin_list != NULL) {
-		wmove(game_win, coin_list->y, coin_list->x);
-		wattron(game_win, COLOR_PAIR(YELLOW_PAIR));
-		waddch(game_win, '*');
-		wattroff(game_win, COLOR_PAIR(YELLOW_PAIR));
-		coin_list = coin_list->next;
-	}
-
-    wrefresh(game_win);
+    display_coins(game_win, coin_list);
 }
 
 void display_map_with_anim(WINDOW *game_win, map *map, coin_node *coin_list) {
@@ -313,16 +315,7 @@ void display_map_with_anim(WINDOW *game_win, map *map, coin_node *coin_list) {
         napms(1);
     }
     
-    // display coins
-	while (coin_list!=NULL) {
-		wmove(game_win, coin_list->y, coin_list->x);
-		wattron(game_win, COLOR_PAIR(YELLOW_PAIR));
-		waddch(game_win, '*');
-		wattroff(game_win, COLOR_PAIR(YELLOW_PAIR));
-		coin_list = coin_list->next;
-	}
-
-    wrefresh(game_win);
+    display_coins(game_win, coin_list);
 }
 
 void destroy_map_with_animation(WINDOW *game_win) {
@@ -371,18 +364,22 @@ void display_player(WINDOW *game_win, Player player) {
     }
 
     mvwaddch(game_win, player.get_y(), player.get_x(), player_char);
-    wrefresh(game_win);
 }
 
 void display_enemies(WINDOW *game_win, enemy_node *current_enemy_list) {
     enemy_node* iterator = current_enemy_list;
+    
     while (iterator!=NULL) {
-        mvwaddch(game_win, iterator->current_enemy.get_y(), iterator->current_enemy.get_x(), 
-        iterator->current_enemy.get_level() + '0');
+        wattron(game_win, COLOR_PAIR(RED_PAIR));
+        mvwaddch(
+            game_win, 
+            iterator->current_enemy.get_y(), 
+            iterator->current_enemy.get_x(), 
+            iterator->current_enemy.get_level() + '0'
+        );
+        wattroff(game_win, COLOR_PAIR(RED_PAIR));
         iterator = iterator->next;
     }
-    
-    wrefresh(game_win);
 }
 
 /* Info window */

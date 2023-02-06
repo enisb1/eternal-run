@@ -125,7 +125,7 @@ void load_random_map() {
     // get a new random index
     int next_map_index = rand() % 6;
 	while (next_map_index == current_map_index) next_map_index = rand() % 6;
-	current_map_index = 2;
+	current_map_index = next_map_index;
 
     // set a new default coin list to current_coin_list based on current map index
     delete_coin_list();
@@ -255,7 +255,8 @@ void move_player() {
     int next_x = player.get_x();
     get_next_position(player.get_direction(), next_y, next_x);
 
-    if (default_maps[current_map_index]->blocks[next_y][next_x] != WALL_BLOCK) {
+    if (default_maps[current_map_index]->blocks[next_y][next_x] != WALL_BLOCK
+        && next_y >= 0 && next_y < 20 && next_x >= 0 && next_x < 60) {
         set_blank_char(game_win, player.get_y(), player.get_x());
         player.set_y(next_y);
         player.set_x(next_x);
@@ -295,85 +296,94 @@ bool can_move_in_next_two_blocks(int direction, int start_y, int start_x) {
     return can_move_in_block(next_y1, next_x1) && can_move_in_block(next_y2, next_x2);
 }
 
+bool get_can_cross(Enemy *current_enemy) {
+    // check if can cross in one direction
+    bool can_cross = false;
+
+    int new_direction = (current_enemy->get_direction() + 1) % 4;
+    
+    if (can_move_in_next_two_blocks(
+        new_direction, 
+        current_enemy->get_y(), 
+        current_enemy->get_x()
+    )) {
+        current_enemy->set_direction(new_direction);
+        can_cross = true;
+    } else {
+        // check if can cross in the other direction
+        int new_direction = (current_enemy->get_direction() + 3) % 4;
+
+        if (can_move_in_next_two_blocks(
+            new_direction, 
+            current_enemy->get_y(), 
+            current_enemy->get_x()
+            )
+        ) {
+            current_enemy->set_direction(new_direction);
+            can_cross = true;
+        }
+    }
+
+    return can_cross;
+}
+
 void move_enemies() {
     enemy_node *enemy_list_iterator = current_enemy_list;
 
     while (enemy_list_iterator != NULL) {
+        Enemy *current_enemy = &enemy_list_iterator->current_enemy;
         bool can_cross = false;
 
-        if (enemy_list_iterator->current_enemy.get_blocks_traveled() > 8) {
-            // check if can cross in one direction
-            int new_direction = (enemy_list_iterator->current_enemy.get_direction() + 1) % 4;
-            
-            if (can_move_in_next_two_blocks(
-                new_direction, 
-                enemy_list_iterator->current_enemy.get_y(), 
-                enemy_list_iterator->current_enemy.get_x()
-            )) {
-                enemy_list_iterator->current_enemy.set_direction(new_direction);
-                can_cross = true;
-            } else {
-                // check if can cross in the other direction
-                int new_direction = (enemy_list_iterator->current_enemy.get_direction() + 3) % 4;
-
-                if (can_move_in_next_two_blocks(
-                    new_direction, 
-                    enemy_list_iterator->current_enemy.get_y(), 
-                    enemy_list_iterator->current_enemy.get_x()
-                    )
-                ) {
-                    enemy_list_iterator->current_enemy.set_direction(new_direction);
-                    can_cross = true;
-                }
-            }
-        }
+        if (current_enemy->get_blocks_traveled() > 8) 
+            can_cross = get_can_cross(current_enemy);
 
         // get next blocks position based on current direction
-        int next_y = enemy_list_iterator->current_enemy.get_y();
-        int next_x = enemy_list_iterator->current_enemy.get_x();
+        int next_y = current_enemy->get_y();
+        int next_x = current_enemy->get_x();
 
         get_next_position(
-            enemy_list_iterator->current_enemy.get_direction(), 
+            current_enemy->get_direction(), 
             next_y, next_x
         );
 
         // change enemy direction if next block is a wall
-        if (can_cross) enemy_list_iterator->current_enemy.reset_blocks_traveled();
+        if (can_cross) current_enemy->reset_blocks_traveled();
         else {
             if (!can_move_in_block(next_y, next_x)) {
                 // if next block is a wall change to a random direction
-                enemy_list_iterator->current_enemy.set_direction(
+                current_enemy->set_direction(
                     get_random_enemy_direction(
                         default_maps[current_map_index], 
-                        enemy_list_iterator->current_enemy.get_y(),
-                        enemy_list_iterator->current_enemy.get_x()
+                        current_enemy->get_y(),
+                        current_enemy->get_x()
                     )
                 );
 
-                next_y = enemy_list_iterator->current_enemy.get_y();
-                next_x = enemy_list_iterator->current_enemy.get_x();
+                next_y = current_enemy->get_y();
+                next_x = current_enemy->get_x();
 
                 get_next_position(
-                    enemy_list_iterator->current_enemy.get_direction(), 
+                    current_enemy->get_direction(), 
                     next_y, next_x
                 );
             }
 
-            enemy_list_iterator->current_enemy.increment_blocks_traveled();
+            current_enemy->increment_blocks_traveled();
         }
 
         // move enemy
         set_blank_char(
             game_win, 
-            enemy_list_iterator->current_enemy.get_y(), 
-            enemy_list_iterator->current_enemy.get_x()
+            current_enemy->get_y(), 
+            current_enemy->get_x()
         );
-        enemy_list_iterator->current_enemy.set_y(next_y);
-        enemy_list_iterator->current_enemy.set_x(next_x);
+        current_enemy->set_y(next_y);
+        current_enemy->set_x(next_x);
 
         enemy_list_iterator = enemy_list_iterator->next;
     }
 
+    display_coins(game_win, current_coin_list);
     display_enemies(game_win, current_enemy_list);
 }
 
@@ -407,20 +417,32 @@ void start_game_loop() {
         if (c != -1) {
             switch (c) {
                 case KEY_DOWN:
-                    player.set_direction(DOWN);
-                    if (!player.get_is_moving()) player.set_is_moving(true);
+                    if (!player.get_is_moving()){
+                        if (player.get_direction()==DOWN) 
+                            player.set_is_moving(true);
+                    }
+                    else player.set_direction(DOWN);
                     break;
                 case KEY_UP:
-                    player.set_direction(UP);
-                    if (!player.get_is_moving()) player.set_is_moving(true);
+                    if (!player.get_is_moving()){
+                        if (player.get_direction()==UP) 
+                            player.set_is_moving(true);
+                    }
+                    else player.set_direction(UP);
                     break;
                 case KEY_RIGHT:
-                    player.set_direction(RIGHT);
-                    if (!player.get_is_moving()) player.set_is_moving(true);
+                    if (!player.get_is_moving()){
+                        if (player.get_direction()==RIGHT) 
+                            player.set_is_moving(true);
+                    }
+                    else player.set_direction(RIGHT);
                     break;
                 case KEY_LEFT:
-                    player.set_direction(LEFT);
-                    if (!player.get_is_moving()) player.set_is_moving(true);
+                    if (!player.get_is_moving()){
+                        if (player.get_direction()==LEFT) 
+                            player.set_is_moving(true);
+                    }
+                    else player.set_direction(LEFT);
                     break;
                 case 27:
                     // esc
@@ -437,10 +459,13 @@ void start_game_loop() {
             }
         }
 
-        if (player.get_is_moving()) move_player();
-        move_enemies();
+        if (player.get_is_moving()) {
+            move_player();
+            move_enemies();
+        }
 
-        napms(50);
+        wrefresh(game_win);
+        napms(160);
     };
 }
 

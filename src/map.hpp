@@ -7,7 +7,6 @@ const int EMPTY_BLOCK = -1;
 const int ENTRANCE_BLOCK = 1;
 const int EXIT_BLOCK = 2;
 const int WALL_BLOCK = 3;
-const int COIN_BLOCK = 4;
 
 /* Structs */
 

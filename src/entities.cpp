@@ -220,8 +220,10 @@ void create_enemy_list(map *map, Player player, enemy_node* &head, int level) {
         int y; 
         int x; 
         int enemy_level = i/2;
+        
         if (enemy_level < 1) enemy_level = 1;
         if (enemy_level > 9) enemy_level = 9;
+        
         get_random_enemy_position(map, player, y, x);
         
         Enemy new_enemy = Enemy(y, x, get_random_enemy_direction(map, y, x), enemy_level);

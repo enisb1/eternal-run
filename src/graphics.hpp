@@ -31,6 +31,9 @@ int show_game_over_screen(WINDOW *game_win);
 // ask the user if want to exit
 int show_esc_screen(WINDOW *game_win);
 
+// display coins in map
+void display_coins(WINDOW *game_win, coin_node *coin_list);
+
 // display map without animation
 void display_map(WINDOW *game_win, map *map, coin_node *coin_list);
 
