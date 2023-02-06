@@ -51,6 +51,7 @@ Player::Player(
     this->life = life;
     this->shield = shield; 
     this->has_weapon = has_weapon;
+    this->bullet_speed = 1;
 }
 
 void Player::set_is_moving(bool is_moving) {
@@ -89,7 +90,7 @@ void Player::set_bullet_speed(int bullet_speed) {
     this->bullet_speed = bullet_speed; 
 }
 
-int Player::get_bullet_speed(int bullet_speed) {
+int Player::get_bullet_speed() {
     return this->bullet_speed;
 }
 
@@ -144,6 +145,25 @@ void Enemy::increment_blocks_traveled() {
 
 void Enemy::reset_blocks_traveled() {
     this->blocks_traveled = 0;
+}
+
+// Methods of class Bullet
+
+Bullet::Bullet() {};
+
+Bullet::Bullet(int y, int x, int direction, int speed) {
+    this->y = y;
+    this->x = x;
+    this->direction = direction;
+    this->speed = speed;
+}
+
+int Bullet::get_speed() {
+    return this->speed;
+}
+
+void Bullet::set_speed(int speed) {
+    this->speed = speed;
 }
 
 /* Struct enemy methods */
@@ -229,4 +249,13 @@ void create_enemy_list(map *map, Player player, enemy_node* &head, int level) {
         Enemy new_enemy = Enemy(y, x, get_random_enemy_direction(map, y, x), enemy_level);
         add_enemy(head, new_enemy);
     }
+}
+
+/* Struct bullet methods */
+
+void add_bullet(bullet_node* &head, Bullet new_bullet) {
+    bullet_node *new_head = new bullet_node;
+    new_head->current_bullet = new_bullet;
+    new_head->next = head;
+    head = new_head;
 }

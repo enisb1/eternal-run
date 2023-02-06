@@ -60,7 +60,7 @@ class Player: public Entity {
         int get_has_weapon();
 
         void set_bullet_speed(int bullet_speed);
-        int get_bullet_speed(int bullet_speed);
+        int get_bullet_speed();
 
         // increase and decrease the life by one
         void increase_life();
@@ -102,11 +102,13 @@ class Bullet: public Entity {
         int speed;
 
     public:
+        Bullet();
         Bullet(int y, int x, int direction, int speed);
-        
-        // move the entity inside the map
-        // following the bullet movement
-        void move();
+
+        // getter and setter
+        int get_speed();
+        void set_speed(int speed);
+
 };
 
 /* Structs */
@@ -116,7 +118,12 @@ struct enemy_node {
     enemy_node *next;
 };
 
-/* Enemy methods */
+struct bullet_node {
+    Bullet current_bullet;
+    bullet_node *next;
+};
+
+/* Struct enemy methods */
 
 // add a new enemy to enemy list
 void add_enemy(enemy_node* &head, Enemy new_enemy);
@@ -126,5 +133,10 @@ int get_random_enemy_direction(map *map, int y, int x);
 
 // create a new enemy list based on the level
 void create_enemy_list(map *map, Player player, enemy_node* &head, int level);
+
+/* Struct bullet methods */
+
+// add a bullet to the bullet list
+void add_bullet(bullet_node* &head, Bullet new_bullet);
 
 #endif

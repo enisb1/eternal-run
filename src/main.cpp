@@ -24,6 +24,7 @@ const int info_win_width = 18;
 
 Player player;
 enemy_node *current_enemy_list = NULL;
+bullet_node *bullet_list = NULL;
 
 int coins;
 int level;
@@ -280,8 +281,6 @@ void move_player() {
         }
     }
     
-    // display player in new block
-    display_player(game_win, player);
 }
 
 bool can_move_in_block(int y, int x) {
@@ -430,16 +429,60 @@ void move_enemies() {
             enemy_list_iterator = enemy_list_iterator->next;
         }
     }
+}
 
-    if (!is_death) {
-        display_coins(game_win, current_coin_list);
-        display_enemies(game_win, current_enemy_list);
+void move_bullets() {
+    bullet_node *bullet_list_iterator = bullet_list;
+    bullet_node *new_bullet_list = NULL;
+
+    while (bullet_list_iterator!=NULL) {
+        // check if next block is a wall
+        Bullet *current_bullet = &bullet_list_iterator->current_bullet;
+        wprintw(stdscr, "accesso\n");
+        refresh();
+        int new_bullet_y = current_bullet->get_y();
+        int new_bullet_x = current_bullet->get_x();
+        wprintw(stdscr, "test\n");
+        refresh();
+        set_blank_char(game_win, new_bullet_y, new_bullet_x);
+
+        get_next_position(current_bullet->get_direction(), new_bullet_y, new_bullet_x);
+        if (default_maps[current_map_index]->blocks[new_bullet_y][new_bullet_x] != WALL_BLOCK) {
+            current_bullet->set_y(new_bullet_y);
+            current_bullet->set_x(new_bullet_x);
+            add_bullet(new_bullet_list, *current_bullet);
+            mvwaddch(game_win, new_bullet_y, new_bullet_x, '.');
+        }
+
+        wprintw(stdscr, "prima\n");
+        refresh();
+        delete current_bullet;
+        wprintw(stdscr, "dopo\n");
+        refresh();
+        bullet_list_iterator = bullet_list_iterator->next;
     }
+
+    bullet_list = new_bullet_list;
+}
+
+void create_bullet() {
+    int bullet_y = player.get_y();
+    int bullet_x = player.get_x();
+    get_next_position(player.get_direction(), bullet_y, bullet_x);
+    Bullet new_bullet = Bullet(
+        bullet_y, 
+        bullet_x, 
+        player.get_direction(), 
+        player.get_bullet_speed()
+    );
+    add_bullet(bullet_list, new_bullet);
 }
 
 void start_game_loop() {
     unsigned int tick = 0;
     const unsigned int ANIM_PERIOD = 1;
+    const unsigned int KEY_SPACEBAR = 32;
+    move(0,0);
 
     while (1) {
         int c = wgetch(game_win);
@@ -474,6 +517,10 @@ void start_game_loop() {
                     }
                     else player.set_direction(LEFT);
                     break;
+                case KEY_SPACEBAR:
+                    if (player.get_is_moving())
+                        create_bullet();
+                    break;
                 case 27:
                     // esc
                     switch (show_esc_screen(game_win)) {
@@ -490,13 +537,19 @@ void start_game_loop() {
         }
 
         if (player.get_is_moving()) {
+            move_bullets();
             move_player();
             move_enemies();
+
+            display_player(game_win, player);
+            display_coins(game_win, current_coin_list);
+            display_enemies(game_win, current_enemy_list);
         }
 
         wrefresh(game_win);
         napms(160);
     };
+
 }
 
 /* Main method */
