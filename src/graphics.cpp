@@ -132,9 +132,16 @@ void show_market_screen(WINDOW *game_win, Player *player) {
     strcpy(menu_options[0], "Pozione vita (+1)");
     strcpy(menu_options[1], "Pozione scudo (+1)");
     strcpy(menu_options[2], "Pistola");
-    strcpy(menu_options[3], "Velocità proiettili");
+    strcpy(menu_options[3], "Velocita' proiettili");
     strcpy(menu_options[4], "Danno proiettili");
-    strcpy(menu_options[5], "Pozione scudo (+1)");
+    strcpy(menu_options[5], "Prossimo livello");
+
+    show_menu(game_win, menu_options, 6, 4, 0);
+
+    while (true) {
+
+    }
+
 }
 
 void print_game_over_text(WINDOW *game_win, int COLOR_PAIR_NUM) {
@@ -436,7 +443,7 @@ WINDOW *create_info_window(WINDOW *game_win) {
 }
 
 void refresh_title(WINDOW *info_win, int level, bool is_market_level) {
-    if (is_market_level) mvwprintw(info_win, 1, 2, "MERCATO");
+    if (is_market_level) mvwprintw(info_win, 1, 2, "MERCATO  ");
     else mvwprintw(info_win, 1, 2, "LIVELLO %d", level);
     wrefresh(info_win);
 }

@@ -123,23 +123,29 @@ void load_random_map(bool is_entering_level, bool is_death) {
 }
 
 void load_next_level() {    
-    level++;
-    refresh_title(info_win, level, false);
+    // If it's market level 
+    if (level%2 == 0 && max_level == level && level!=0) {
+        refresh_title(info_win, level, true);
+        show_market_screen(game_win, &player);
+    } else {
+        level++;
+        refresh_title(info_win, level, false);
 
-    // store level's data in files
-    if (level > 1) {
-        store_map_index(level-1, current_map_index);
-        store_coins(level-1, current_coin_list);
+        // store level's data in files
+        if (level > 1) {
+            store_map_index(level-1, current_map_index);
+            store_coins(level-1, current_coin_list);
+        }
+
+        // checks if it's a new level or not
+        if (level > max_level) {
+            max_level++;
+
+            // load a new map based on a random index
+	        load_random_map(true, false);
+        }
+        else load_saved_map(true);
     }
-
-    // checks if it's a new level or not
-    if (level > max_level) {
-        max_level++;
-
-        // load a new map based on a random index
-	    load_random_map(true, false);
-    }
-    else load_saved_map(true);
 }
 
 void load_previous_level() {

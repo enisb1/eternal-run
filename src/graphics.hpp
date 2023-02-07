@@ -18,8 +18,10 @@ const int YELLOW_PAIR = 4;
 
 // market
 const int INCREMENT_LIFE = 0;
-const int INCREMENT_SHIELD = 0;
-const int 
+const int INCREMENT_SHIELD = 1;
+const int PISTOL = 2;
+const int BULLET_SPEED = 3;
+const int BULLET_DAMAGE = 4;
 
 /* Standard screen */
 
@@ -31,7 +33,7 @@ void show_splash_screen();
 WINDOW *create_game_window();
 
 // show the market screen
-void show_market_screen(WINDOW *game_win);
+void show_market_screen(WINDOW *game_win, Player *player);
 
 // show the game over screen,
 // returns the index of the selected option from the menu
