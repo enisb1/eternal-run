@@ -366,6 +366,17 @@ void display_player(WINDOW *game_win, Player player) {
     mvwaddch(game_win, player.get_y(), player.get_x(), player_char);
 }
 
+void display_enemy(WINDOW *game_win, Enemy enemy) {
+    wattron(game_win, COLOR_PAIR(RED_PAIR));
+    mvwaddch(
+        game_win, 
+        enemy.get_y(), 
+        enemy.get_x(), 
+        enemy.get_level() + '0'
+    );
+    wattroff(game_win, COLOR_PAIR(RED_PAIR));
+}
+
 void display_enemies(WINDOW *game_win, enemy_node *current_enemy_list) {
     enemy_node* iterator = current_enemy_list;
     

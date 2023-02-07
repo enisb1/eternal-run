@@ -234,25 +234,29 @@ void get_next_position(int direction, int &y, int &x) {
 }
 
 void move_player() {
-    // check if next block is a wall
+    // get next block based on direction
     int next_y = player.get_y();
     int next_x = player.get_x();
     get_next_position(player.get_direction(), next_y, next_x);
 
+    // check if next block is not a wall && is inside the map
     if (default_maps[current_map_index]->blocks[next_y][next_x] != WALL_BLOCK
         && next_y >= 0 && next_y < 20 && next_x >= 0 && next_x < 60) {
+        // move player to next position and display it
         set_blank_char(game_win, player.get_y(), player.get_x());
         player.set_y(next_y);
         player.set_x(next_x);
 
+        // check if next block is a special block (coin, entrance or exit)
         bool is_coin = collect_coin(next_y, next_x);
         if (!is_coin) {
-            if (default_maps[current_map_index]->blocks[next_y][next_x] == ENTRANCE_BLOCK) {
+            if (default_maps[current_map_index]->blocks[next_y][next_x] == ENTRANCE_BLOCK
+                && level > 1) {
                 // previous level
-                //player.set_is_moving(false);
-                if (level > 1) load_previous_level();
+                player.set_is_moving(false);
+                load_previous_level();
             } else if (default_maps[current_map_index]->blocks[next_y][next_x] == EXIT_BLOCK) {
-                // new level
+                // next level
                 load_next_level();
             }
         }
@@ -278,7 +282,9 @@ bool can_move_in_next_two_blocks(int direction, int start_y, int start_x) {
     return can_move_in_block(next_y1, next_x1) && can_move_in_block(next_y2, next_x2);
 }
 
-bool get_can_cross(Enemy *current_enemy) {
+// change enemy direction if can cross,
+// and returns 1 if can cross, 0 otherwise
+bool change_direction_to_cross(Enemy *current_enemy) {
     // check if can cross in one direction
     bool can_cross = false;
 
@@ -309,7 +315,13 @@ bool get_can_cross(Enemy *current_enemy) {
     return can_cross;
 }
 
+bool are_entities_in_same_position(Entity entity_1, Entity entity_2) {
+    return entity_1.get_x() == entity_2.get_x() 
+        && entity_1.get_y() == entity_2.get_y();
+}
+
 void death() {
+    player.set_is_moving(false);
     player.decrease_life();
     refresh_stats(info_win, player, coins);
 
@@ -317,8 +329,7 @@ void death() {
     if (player.get_life() > 0) {
         load_random_map(true, true);
         wrefresh(game_win);
-    }
-    else {
+    } else {
         // game over
         switch (show_game_over_screen(game_win)) {
             case 0:
@@ -339,20 +350,19 @@ void move_enemies() {
     while (enemy_list_iterator != NULL && !is_death) {
         Enemy *current_enemy = &enemy_list_iterator->current_enemy;
         
-        // if enemy is in the player's position before moving
-        if (current_enemy->get_y() == player.get_y() 
-            && current_enemy->get_x() == player.get_x()) {
+        // check if enemy is in the player's position before moving
+        if (are_entities_in_same_position(player, *current_enemy)) {
+            // enemy position = player position, before moving
             is_death = true;
             death();
-        }
-        // if it's not in the player's position before moving
-        else {
+        } else {
+            // enemy position != player position, before moving
             bool can_cross = false;
 
             if (current_enemy->get_blocks_traveled() > 8) 
-                can_cross = get_can_cross(current_enemy);
+                can_cross = change_direction_to_cross(current_enemy);
 
-            // get next blocks position based on current direction
+            // get next block position based on current direction
             int next_y = current_enemy->get_y();
             int next_x = current_enemy->get_x();
 
@@ -361,11 +371,12 @@ void move_enemies() {
                 next_y, next_x
             );
 
-            // change enemy direction if next block is a wall
             if (can_cross) current_enemy->reset_blocks_traveled();
             else {
+                // change enemy direction randomically
+                // if player can't move to next block
+                // and get next block position
                 if (!can_move_in_block(next_y, next_x)) {
-                    // if next block is a wall change to a random direction
                     current_enemy->set_direction(
                         get_random_enemy_direction(
                             default_maps[current_map_index], 
@@ -396,48 +407,15 @@ void move_enemies() {
             current_enemy->set_y(next_y);
             current_enemy->set_x(next_x);
 
+            display_enemy(game_win, *current_enemy);
+
             // check if enemy is in the player's position after moving
-            if (current_enemy->get_y() == player.get_y() 
-                && current_enemy->get_x() == player.get_x()) {
+            if (are_entities_in_same_position(player, *current_enemy)) {
                 is_death = true;
                 death();
-            }
-
-            enemy_list_iterator = enemy_list_iterator->next;
+            } else enemy_list_iterator = enemy_list_iterator->next;
         }
     }
-}
-
-void move_bullets() {
-    bullet_node *bullet_list_iterator = current_bullet_list;
-    bullet_node *new_bullet_list = NULL;
-
-    // create new list with valid bullets
-    while (bullet_list_iterator!=NULL) {
-        Bullet *current_bullet = &bullet_list_iterator->current_bullet;
-        
-        int new_bullet_y = current_bullet->get_y();
-        int new_bullet_x = current_bullet->get_x();
-       
-        set_blank_char(game_win, new_bullet_y, new_bullet_x);
-
-        get_next_position(current_bullet->get_direction(), new_bullet_y, new_bullet_x);
-
-        // check if next block is a wall
-        if (default_maps[current_map_index]->blocks[new_bullet_y][new_bullet_x] != WALL_BLOCK) {
-            current_bullet->set_y(new_bullet_y);
-            current_bullet->set_x(new_bullet_x);
-            add_bullet(new_bullet_list, *current_bullet);
-            mvwaddch(game_win, new_bullet_y, new_bullet_x, '+');
-        }
-
-        bullet_node *tmp = bullet_list_iterator;
-        bullet_list_iterator = bullet_list_iterator->next;
-        delete tmp;
-    }
-
-    // set new list to bullet list
-    current_bullet_list = new_bullet_list;
 }
 
 void create_bullet() {
@@ -451,6 +429,38 @@ void create_bullet() {
         player.get_bullet_speed()
     );
     add_bullet(current_bullet_list, new_bullet);
+}
+
+void move_bullets() {
+    bullet_node *new_bullet_list = NULL;
+    bullet_node *bullet_list_iterator = current_bullet_list;
+
+    // create new list with valid bullets
+    while (bullet_list_iterator!=NULL) {
+        Bullet *current_bullet = &bullet_list_iterator->current_bullet;
+        
+        int next_y = current_bullet->get_y();
+        int next_x = current_bullet->get_x();
+       
+        set_blank_char(game_win, next_y, next_x);
+
+        get_next_position(current_bullet->get_direction(), next_y, next_x);
+
+        // move if next block is valid
+        if (can_move_in_block(next_y, next_x)) {
+            current_bullet->set_y(next_y);
+            current_bullet->set_x(next_x);
+            add_bullet(new_bullet_list, *current_bullet);
+            mvwaddch(game_win, next_y, next_x, '.');
+        }
+
+        bullet_node *tmp = bullet_list_iterator;
+        bullet_list_iterator = bullet_list_iterator->next;
+        delete tmp;
+    }
+
+    // set new list to bullet list
+    current_bullet_list = new_bullet_list;
 }
 
 void start_game_loop() {
@@ -511,13 +521,12 @@ void start_game_loop() {
         }
 
         if (player.get_is_moving()) {
-            move_bullets();
             move_player();
-            move_enemies();
-
-            display_player(game_win, player);
             display_coins(game_win, current_coin_list);
-            display_enemies(game_win, current_enemy_list);
+            display_player(game_win, player);
+
+            move_enemies();
+            move_bullets();
         }
 
         wrefresh(game_win);

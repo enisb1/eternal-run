@@ -49,6 +49,9 @@ void set_blank_char(WINDOW *game_win, int y, int x);
 // display player in game window
 void display_player(WINDOW *game_win, Player player);
 
+// display a single enemy in game window
+void display_enemy(WINDOW *game_win, Enemy enemy);
+
 // display enemies in game window
 void display_enemies(WINDOW *game_win, enemy_node *current_enemy_list);
 
