@@ -422,47 +422,96 @@ void create_bullet() {
     int bullet_y = player.get_y();
     int bullet_x = player.get_x();
     get_next_position(player.get_direction(), bullet_y, bullet_x);
+    
+    if (can_move_in_block(bullet_y, bullet_x)) {
+        Bullet new_bullet = Bullet(
+            bullet_y, bullet_x, 
+            player.get_direction(), 
+            player.get_bullet_speed()
+        );
 
-    Bullet new_bullet = Bullet(
-        bullet_y, 
-        bullet_x, 
-        player.get_direction(), 
-        player.get_bullet_speed()
-    );
-
-    add_bullet(current_bullet_list, new_bullet);
+        add_bullet(current_bullet_list, new_bullet);
+    }
 }
 
 void move_bullets() {
-    bullet_node *new_bullet_list = NULL;
-    bullet_node *bullet_list_iterator = current_bullet_list;
+    if (current_bullet_list != NULL) {
+        bullet_node *new_bullet_list = NULL;
 
-    // create new list with valid bullets
-    while (bullet_list_iterator!=NULL) {
-        Bullet *current_bullet = &bullet_list_iterator->current_bullet;
+        bullet_node *bullet_list_iterator = current_bullet_list;
+
+        // create new bullet list with valid bullets
+        // and new enemy list with valid enemies
+        while (bullet_list_iterator != NULL) {
+            Bullet *current_bullet = &bullet_list_iterator->current_bullet;
+            bool valid_bullet = true;
+            
+            // check if bullet is in enemy position before moving
+            enemy_node *new_enemy_list = NULL;
+            enemy_node *enemy_list_iterator = current_enemy_list;
+            while (enemy_list_iterator != NULL) {
+                if (are_entities_in_same_position(
+                    *current_bullet, 
+                    enemy_list_iterator->current_enemy
+                )) valid_bullet = false;
+                else add_enemy(
+                    new_enemy_list, 
+                    enemy_list_iterator->current_enemy
+                );
+
+                enemy_node *tmp_enemy = enemy_list_iterator;
+                enemy_list_iterator = enemy_list_iterator->next;
+                delete tmp_enemy;
+            }
+
+            // set blank char for the current position and get next position
+            int next_y = current_bullet->get_y();
+            int next_x = current_bullet->get_x();
         
-        int next_y = current_bullet->get_y();
-        int next_x = current_bullet->get_x();
-       
-        set_blank_char(game_win, next_y, next_x);
+            set_blank_char(game_win, next_y, next_x);
 
-        get_next_position(current_bullet->get_direction(), next_y, next_x);
+            get_next_position(current_bullet->get_direction(), next_y, next_x);
 
-        // move if next block is valid
-        if (can_move_in_block(next_y, next_x)) {
-            current_bullet->set_y(next_y);
-            current_bullet->set_x(next_x);
-            add_bullet(new_bullet_list, *current_bullet);
-            mvwaddch(game_win, next_y, next_x, '.');
+            // move if next block is valid
+            if (can_move_in_block(next_y, next_x)) {
+                current_bullet->set_y(next_y);
+                current_bullet->set_x(next_x);
+            } else valid_bullet = false;
+
+            // check if bullet is in enemy position after moving
+            enemy_node *new_enemy_list_after_moving = new_enemy_list;
+            new_enemy_list = NULL;
+            while (enemy_list_iterator != NULL) {
+                if (!are_entities_in_same_position(
+                    *current_bullet, 
+                    enemy_list_iterator->current_enemy
+                )) valid_bullet = false;
+                else add_enemy(
+                    new_enemy_list_after_moving, 
+                    enemy_list_iterator->current_enemy
+                );
+
+                enemy_node *tmp_enemy = enemy_list_iterator;
+                enemy_list_iterator = enemy_list_iterator->next;
+                delete tmp_enemy;
+            }
+
+            if (valid_bullet) {
+                add_bullet(new_bullet_list, *current_bullet);
+                mvwaddch(game_win, next_y, next_x, '.');
+            }
+
+            // set new list to enemy list
+            current_enemy_list = new_enemy_list_after_moving;
+
+            bullet_node *tmp_bullet = bullet_list_iterator;
+            bullet_list_iterator = bullet_list_iterator->next;
+            delete tmp_bullet;
         }
 
-        bullet_node *tmp = bullet_list_iterator;
-        bullet_list_iterator = bullet_list_iterator->next;
-        delete tmp;
+        // set new list to bullet list
+        current_bullet_list = new_bullet_list;
     }
-
-    // set new list to bullet list
-    current_bullet_list = new_bullet_list;
 }
 
 void start_game_loop() {
