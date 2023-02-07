@@ -48,10 +48,13 @@ Player::Player(
     int life, int shield, bool has_weapon
 ):Entity(y, x, direction) {
     this->is_moving = is_moving; 
+
     this->life = life;
-    this->shield = shield; 
+    this->shield = shield;
+
     this->has_weapon = has_weapon;
     this->bullet_speed = 1;
+    this->bullet_damage = 1;
 }
 
 void Player::set_is_moving(bool is_moving) {
@@ -95,15 +98,15 @@ int Player::get_bullet_speed() {
 }
 
 void Player::increase_life() {
-    this->life += 1;
+    this->life++;
 }
 
 void Player::decrease_life() {
-    this->life -= 1; 
+    this->life--; 
 }
 
-void Player::shoot() {
-
+void Player::increase_bullet_damage() {
+    this->bullet_damage++;
 }
 
 // Methods of class Enemy
@@ -134,9 +137,9 @@ int Enemy::get_blocks_traveled() {
 }
 
 void Enemy::decrease_level() {
-    this->level -= 1; 
-    this->life -= 1; 
-    this->damage -= 1;
+    this->level--; 
+    this->life--; 
+    this->damage--;
 }
 
 void Enemy::increment_blocks_traveled() {
@@ -237,8 +240,8 @@ void create_enemy_list(map *map, Player player, enemy_node* &head, int level) {
     if (head != NULL) delete_enemy_list(head);
 
     for (int i = 1; i <= level; i++) {
-        int y; 
-        int x; 
+        int y;
+        int x;
         int enemy_level = i/2;
         
         if (enemy_level < 1) enemy_level = 1;

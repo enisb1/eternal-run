@@ -38,6 +38,7 @@ class Player: public Entity {
         int shield;
         bool has_weapon;
         int bullet_speed;
+        int bullet_damage;
 
     public:
         Player();
@@ -66,8 +67,8 @@ class Player: public Entity {
         void increase_life();
         void decrease_life();
 
-        // create a new Bullet and shoot
-        void shoot();
+        // increase bullet damage
+        void increase_bullet_damage();
 };
 
 class Enemy: public Entity {

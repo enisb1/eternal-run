@@ -98,7 +98,7 @@ void show_menu(
     int options_length, 
     int starty, 
     int selected_option
-    ) {
+) {
     // get max strlen() of options
     int max_option_length = strlen(options[0]);
     for (int i = 1; i < options_length; i++) {
@@ -122,6 +122,19 @@ void show_menu(
     }
 
     wrefresh(game_win);
+}
+
+void show_market_screen(WINDOW *game_win, Player *player) {
+    wclear(game_win);
+
+    // create menu options array
+    char menu_options[6][50] = {};
+    strcpy(menu_options[0], "Pozione vita (+1)");
+    strcpy(menu_options[1], "Pozione scudo (+1)");
+    strcpy(menu_options[2], "Pistola");
+    strcpy(menu_options[3], "Velocità proiettili");
+    strcpy(menu_options[4], "Danno proiettili");
+    strcpy(menu_options[5], "Pozione scudo (+1)");
 }
 
 void print_game_over_text(WINDOW *game_win, int COLOR_PAIR_NUM) {
@@ -423,25 +436,25 @@ WINDOW *create_info_window(WINDOW *game_win) {
 }
 
 void refresh_title(WINDOW *info_win, int level, bool is_market_level) {
-    if (is_market_level) mvwprintw(info_win, 1, 2, "MARKET LEVEL");
-    else mvwprintw(info_win, 1, 2, "LEVEL %d", level);
+    if (is_market_level) mvwprintw(info_win, 1, 2, "MERCATO");
+    else mvwprintw(info_win, 1, 2, "LIVELLO %d", level);
     wrefresh(info_win);
 }
 
 void refresh_stats(WINDOW *info_win, Player player, int coins) {
     // life
     wattron(info_win, COLOR_PAIR(RED_PAIR));
-    mvwprintw(info_win, 3, 2, "LIFE: %d", player.get_life());
+    mvwprintw(info_win, 3, 2, "VITA: %d", player.get_life());
     wattroff(info_win, COLOR_PAIR(RED_PAIR));
 
     // shield
     wattron(info_win, COLOR_PAIR(CYAN_PAIR));
-    mvwprintw(info_win, 4, 2, "SHIELD: %d", player.get_shield());
+    mvwprintw(info_win, 4, 2, "SCUDO: %d", player.get_shield());
     wattroff(info_win, COLOR_PAIR(CYAN_PAIR));
     
     // coins
     wattron(info_win, COLOR_PAIR(YELLOW_PAIR));
-    mvwprintw(info_win, 5, 2, "COINS: %d", coins);
+    mvwprintw(info_win, 5, 2, "MONETE: %d", coins);
     wattroff(info_win, COLOR_PAIR(YELLOW_PAIR));
 
     wrefresh(info_win);

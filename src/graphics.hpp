@@ -10,10 +10,16 @@
 
 /* Vars */
 
+// pairs
 const int WALL_PAIR = 1;
 const int RED_PAIR = 2;
 const int CYAN_PAIR = 3;
 const int YELLOW_PAIR = 4;
+
+// market
+const int INCREMENT_LIFE = 0;
+const int INCREMENT_SHIELD = 0;
+const int 
 
 /* Standard screen */
 
@@ -24,8 +30,11 @@ void show_splash_screen();
 // create and return the window for the game
 WINDOW *create_game_window();
 
+// show the market screen
+void show_market_screen(WINDOW *game_win);
+
 // show the game over screen,
-// returns the index of the option selected from the menu
+// returns the index of the selected option from the menu
 int show_game_over_screen(WINDOW *game_win);
 
 // ask the user if want to exit
