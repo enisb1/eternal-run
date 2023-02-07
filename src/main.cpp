@@ -422,12 +422,14 @@ void create_bullet() {
     int bullet_y = player.get_y();
     int bullet_x = player.get_x();
     get_next_position(player.get_direction(), bullet_y, bullet_x);
+
     Bullet new_bullet = Bullet(
         bullet_y, 
         bullet_x, 
         player.get_direction(), 
         player.get_bullet_speed()
     );
+
     add_bullet(current_bullet_list, new_bullet);
 }
 
@@ -466,40 +468,41 @@ void move_bullets() {
 void start_game_loop() {
     unsigned int tick = 0;
     const unsigned int ANIM_PERIOD = 1;
+
     const unsigned int KEY_SPACEBAR = 32;
+    int old_input_char = -1;
 
     while (1) {
-        int c = wgetch(game_win);
+        int input_char = wgetch(game_win);
 
-        if (c != -1) {
-            switch (c) {
+        if (input_char != -1) {
+            while (input_char == old_input_char)
+                input_char = wgetch(game_win);
+
+            switch (input_char) {
                 case KEY_DOWN:
-                    if (!player.get_is_moving()){
-                        if (player.get_direction()==DOWN) 
+                    if (!player.get_is_moving()) {
+                        if (player.get_direction() == DOWN) 
                             player.set_is_moving(true);
-                    }
-                    else player.set_direction(DOWN);
+                    } else player.set_direction(DOWN);
                     break;
                 case KEY_UP:
-                    if (!player.get_is_moving()){
-                        if (player.get_direction()==UP) 
+                    if (!player.get_is_moving()) {
+                        if (player.get_direction() == UP) 
                             player.set_is_moving(true);
-                    }
-                    else player.set_direction(UP);
+                    } else player.set_direction(UP);
                     break;
                 case KEY_RIGHT:
-                    if (!player.get_is_moving()){
-                        if (player.get_direction()==RIGHT) 
+                    if (!player.get_is_moving()) {
+                        if (player.get_direction() == RIGHT) 
                             player.set_is_moving(true);
-                    }
-                    else player.set_direction(RIGHT);
+                    } else player.set_direction(RIGHT);
                     break;
                 case KEY_LEFT:
-                    if (!player.get_is_moving()){
-                        if (player.get_direction()==LEFT) 
+                    if (!player.get_is_moving()) {
+                        if (player.get_direction() == LEFT) 
                             player.set_is_moving(true);
-                    }
-                    else player.set_direction(LEFT);
+                    } else player.set_direction(LEFT);
                     break;
                 case KEY_SPACEBAR:
                     if (player.get_is_moving())
@@ -521,13 +524,14 @@ void start_game_loop() {
         }
 
         if (player.get_is_moving()) {
-            move_player();
             display_coins(game_win, current_coin_list);
-            display_player(game_win, player);
-
             move_enemies();
             move_bullets();
+            move_player();
+            display_player(game_win, player);
         }
+
+        old_input_char = input_char;
 
         wrefresh(game_win);
         napms(160);
