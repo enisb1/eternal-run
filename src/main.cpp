@@ -132,29 +132,23 @@ void load_random_map(bool is_entering_level, bool is_death) {
     display_enemies(game_win, current_enemy_list);
 }
 
-void load_next_level() {    
-    // check if it's market level or not
-    if (level % 2 == 0 && max_level == level && level != 0) {
-        refresh_title(info_win, level, true);
-        show_market_screen(game_win, &player);
-    } else {
-        level++;
-        refresh_title(info_win, level, false);
+void load_next_level() {
+    level++;
+    refresh_title(info_win, level, false);
 
-        // store level's data in files
-        if (level > 1) {
-            store_map_index(level - 1, current_map_index);
-            store_coins(level - 1, current_coin_list);
-        }
-
-        // checks if it's a new level or not
-        if (level > max_level) {
-            max_level++;
-
-            // load a new map based on a random index
-	        load_random_map(true, false);
-        } else load_saved_map(true);
+    // store level's data in files
+    if (level > 1) {
+        store_map_index(level - 1, current_map_index);
+        store_coins(level - 1, current_coin_list);
     }
+
+    // checks if it's a new level or not
+    if (level > max_level) {
+        max_level++;
+
+        // load a new map based on a random index
+        load_random_map(true, false);
+    } else load_saved_map(true);
 }
 
 void load_previous_level() {
@@ -270,7 +264,13 @@ void move_player() {
                 load_previous_level();
             } else if (default_maps[current_map_index]->blocks[next_y][next_x] == EXIT_BLOCK) {
                 // next level
-                load_next_level();
+                if (level % 2 == 0 && max_level == level) {
+                    // market level
+                    refresh_title(info_win, level, true);
+                    show_market_screen(game_win, &player);
+
+                    load_next_level();
+                } else load_next_level();
             }
         }
     }
@@ -318,8 +318,7 @@ bool change_direction_to_cross(Enemy *current_enemy) {
             new_direction, 
             current_enemy->get_y(), 
             current_enemy->get_x()
-            )
-        ) {
+        )) {
             current_enemy->set_direction(new_direction);
             can_cross = true;
         }

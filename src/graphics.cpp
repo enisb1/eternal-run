@@ -44,10 +44,10 @@ void show_splash_screen() {
     int textx = (getmaxx(stdscr) - 14) / 2;
     int texty = (getmaxy(stdscr) - 10) / 2 + 8;
     while (!exit_splash_screen) {
-        char c = getch();
+        char input_char = getch();
         
         // if char entered exit the loop, otherwise blink the text
-        if (c != -1) exit_splash_screen = true;
+        if (input_char != -1) exit_splash_screen = true;
         else if (tick == BLINK_PERIOD) {
             if (visible) {
                 mvprintw(texty, textx, "              ");
@@ -96,8 +96,9 @@ void show_menu(
     WINDOW *game_win, 
     char options[][50], 
     int options_length, 
-    int starty, 
-    int selected_option
+    int start_y, 
+    int selected_option,
+    bool separate_last_option
 ) {
     // get max strlen() of options
     int max_option_length = strlen(options[0]);
@@ -111,14 +112,19 @@ void show_menu(
     int x = (getmaxx(game_win) - max_option_length) / 2 - 1;
 
     // print options
+    int y = start_y;
     for (int i = 0; i < options_length; i++) {
-        int y = starty + i * 2;
+        if (i == options_length - 1 && separate_last_option) {
+            y += 3;
+            x = (getmaxx(game_win) - strlen(options[i])) / 2;
+        }
+        else y += 2;
         
         if (i == selected_option) {
             wattron(game_win, A_REVERSE);
-            mvwprintw(game_win, y, x, "- %s", options[i]);
+            mvwprintw(game_win, y, x, "%s", options[i]);
             wattroff(game_win, A_REVERSE);
-        } else mvwprintw(game_win, y, x, "- %s", options[i]);
+        } else mvwprintw(game_win, y, x, "%s", options[i]);
     }
 
     wrefresh(game_win);
@@ -126,22 +132,51 @@ void show_menu(
 
 void show_market_screen(WINDOW *game_win, Player *player) {
     wclear(game_win);
+    box(game_win, 0, 0);
 
     // create menu options array
     char menu_options[6][50] = {};
-    strcpy(menu_options[0], "Pozione vita (+1)");
-    strcpy(menu_options[1], "Pozione scudo (+1)");
-    strcpy(menu_options[2], "Pistola");
-    strcpy(menu_options[3], "Velocita' proiettili");
-    strcpy(menu_options[4], "Danno proiettili");
-    strcpy(menu_options[5], "Prossimo livello");
+    strcpy(menu_options[0], "- Pozione vita (+1)       10M");
+    strcpy(menu_options[1], "- Pozione scudo (+1)      10M");
+    strcpy(menu_options[2], "- Pistola                 10M");
+    strcpy(menu_options[3], "- Velocita' proiettili    10M");
+    strcpy(menu_options[4], "- Danno proiettili        10M");
+    strcpy(menu_options[5], "Prossimo livello ->");
+    
+    // show menu and start menu loop
+    int selected_option = 0;
+    show_menu(game_win, menu_options, 
+        6, 2, selected_option, true);
 
-    show_menu(game_win, menu_options, 6, 4, 0);
+    bool exit_market_screen = false;
+    while (!exit_market_screen) {
+        char input_char = wgetch(game_win);
 
-    while (true) {
+        // check if key entered
+        if (input_char != -1) {
+            switch (input_char) {
+                case 2:
+                    // increase selected option
+                    if (selected_option < 5) selected_option++;
+                    else selected_option = 0;
+                    show_menu(game_win, menu_options, 
+                        6, 2, selected_option, true);
+                    break;
+                case 3:
+                    // decrease selected option
+                    if (selected_option > 0) selected_option--;
+                    else selected_option = 5;
+                    show_menu(game_win, menu_options, 
+                        6, 2, selected_option, true);
+                    break;
+                case 10:
+                    // enter option
+                    exit_market_screen = true;
+            }
+        }
 
+        napms(10);
     }
-
 }
 
 void print_game_over_text(WINDOW *game_win, int COLOR_PAIR_NUM) {
@@ -160,31 +195,34 @@ int show_game_over_screen(WINDOW *game_win) {
 
     // create menu options array
     char menu_options[2][50] = {};
-    strcpy(menu_options[0], "Nuova partita");
-    strcpy(menu_options[1], "Esci dal gioco");
+    strcpy(menu_options[0], "- Nuova partita");
+    strcpy(menu_options[1], "- Esci dal gioco");
 
     // show menu and start menu loop
     int selected_option = 0;
-    show_menu(game_win, menu_options, 2, 12, selected_option);
+    show_menu(game_win, menu_options, 
+        2, 12, selected_option, false);
 
-    int exit_game_over_screen = 0;
+    bool exit_game_over_screen = false;
     while (!exit_game_over_screen) {
-        char c = wgetch(game_win);
+        char input_char = wgetch(game_win);
 
         // check if key entered
-        if (c != -1) {
-            switch (c) {
+        if (input_char != -1) {
+            switch (input_char) {
                 case 2:
                     // increase selected option
                     if (selected_option < 1) selected_option++;
                     else selected_option = 0;
-                    show_menu(game_win, menu_options, 2, 12, selected_option);
+                    show_menu(game_win, menu_options, 
+                        2, 12, selected_option, false);
                     break;
                 case 3:
                     // decrease selected option
                     if (selected_option > 0) selected_option--;
                     else selected_option = 1;
-                    show_menu(game_win, menu_options, 2, 12, selected_option);
+                    show_menu(game_win, menu_options, 
+                        2, 12, selected_option, false);
                     break;
                 case 10:
                     // enter option
@@ -205,31 +243,34 @@ int show_esc_screen(WINDOW *game_win) {
 
     // create menu options array
     char menu_options[2][50] = {};
-    strcpy(menu_options[0], "Si");
-    strcpy(menu_options[1], "No");
+    strcpy(menu_options[0], "- Si");
+    strcpy(menu_options[1], "- No");
 
     // show menu and start menu cicle
     int selected_option = 0;
-    show_menu(game_win, menu_options, 2, 10, selected_option);
+    show_menu(game_win, menu_options, 
+        2, 10, selected_option, false);
 
     int exit_esc_screen = 0;
     while (!exit_esc_screen) {
-        char c = wgetch(game_win);
+        char input_char = wgetch(game_win);
 
         // check if key entered
-        if (c != -1) {
-            switch (c) {
+        if (input_char != -1) {
+            switch (input_char) {
                 case 2:
                     // increase selected option
                     if (selected_option < 1) selected_option++;
                     else selected_option = 0;
-                    show_menu(game_win, menu_options, 2, 10, selected_option);
+                    show_menu(game_win, menu_options, 
+                        2, 10, selected_option, false);
                     break;
                 case 3:
                     // decrease selected option
                     if (selected_option > 0) selected_option--;
                     else selected_option = 1;
-                    show_menu(game_win, menu_options, 2, 10, selected_option);
+                    show_menu(game_win, menu_options, 
+                        2, 10, selected_option, false);
                     break;
                 case 10:
                     // enter option
