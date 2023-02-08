@@ -110,8 +110,18 @@ void load_random_map(bool is_entering_level, bool is_death) {
     get_default_coin_list(current_coin_list, current_map_index);
 
     // display the new level's map
-    if (level>=2 && !is_death) display_map(game_win, default_maps[current_map_index], current_coin_list);
-	else display_map_with_anim(game_win, default_maps[current_map_index], current_coin_list);
+    if (level >= 2 && !is_death)
+        display_map(
+            game_win, 
+            default_maps[current_map_index], 
+            current_coin_list
+        );
+	else
+        display_map_with_anim(
+            game_win, 
+            default_maps[current_map_index], 
+            current_coin_list
+        );
 
     // set player's starting properties and display it
     set_player_starting_properties(is_entering_level);
@@ -123,8 +133,8 @@ void load_random_map(bool is_entering_level, bool is_death) {
 }
 
 void load_next_level() {    
-    // If it's market level 
-    if (level%2 == 0 && max_level == level && level!=0) {
+    // check if it's market level or not
+    if (level % 2 == 0 && max_level == level && level != 0) {
         refresh_title(info_win, level, true);
         show_market_screen(game_win, &player);
     } else {
@@ -133,8 +143,8 @@ void load_next_level() {
 
         // store level's data in files
         if (level > 1) {
-            store_map_index(level-1, current_map_index);
-            store_coins(level-1, current_coin_list);
+            store_map_index(level - 1, current_map_index);
+            store_coins(level - 1, current_coin_list);
         }
 
         // checks if it's a new level or not
@@ -143,8 +153,7 @@ void load_next_level() {
 
             // load a new map based on a random index
 	        load_random_map(true, false);
-        }
-        else load_saved_map(true);
+        } else load_saved_map(true);
     }
 }
 
@@ -163,8 +172,6 @@ void new_game() {
     // initialize vars
     coins = 0;
     level = 0;
-
-    srand(time(0));
 
     // create player
     player = Player(
@@ -571,7 +578,11 @@ void start_game_loop() {
                             exit(0);
                             break;
                         case 1:
-                            // resume_game();
+                            display_map(
+                                game_win, 
+                                default_maps[current_map_index], 
+                                current_coin_list
+                            );
                             break;
                     }
                     break;
@@ -597,6 +608,8 @@ void start_game_loop() {
 /* Main method */
 
 int main() {
+    srand(time(0));
+
     // start ncurses
     initscr();
     curs_set(0); // cursor invisible
