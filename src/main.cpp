@@ -370,9 +370,16 @@ void move_enemies() {
         // check if enemy is in the player's position before moving
         if (are_entities_in_same_position(player, *current_enemy)) {
             // enemy position = player position, before moving
-            is_death = true;
-            death();
-        } else {
+            if (player.get_shield() > 0) {
+                player.decrease_shield();
+                refresh_stats(info_win, player, coins);
+            } else {
+                is_death = true;
+                death();
+            }
+        }
+        
+        if (!is_death) {
             // enemy position != player position, before moving
             bool can_cross = false;
 
