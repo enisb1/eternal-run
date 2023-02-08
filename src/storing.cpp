@@ -11,14 +11,14 @@ using namespace std;
 
 void store_map_index(int level, int mapIndex) {
     ofstream outputFile;
-    outputFile.open("storingFiles/index_map_lvl" + to_string(level) + ".txt");
+    outputFile.open("storing_files/index_map_lvl" + to_string(level) + ".txt");
     outputFile << mapIndex;
     outputFile.close();
 }
 
 void store_coins(int level, coin_node *coin_list) {
     ofstream outputFile;
-    outputFile.open("storingFiles/coins_map_lvl" + to_string(level) + ".txt");
+    outputFile.open("storing_files/coins_map_lvl" + to_string(level) + ".txt");
 
     while (coin_list!=NULL) {
         outputFile << coin_list->y << " " << coin_list->x << " ";
@@ -30,7 +30,7 @@ void store_coins(int level, coin_node *coin_list) {
 
 void store_enemies(int level, enemy_node *enemy_list) {
     ofstream outputFile;
-    outputFile.open("storingFiles/enemies_map_lvl" + to_string(level) + ".txt");
+    outputFile.open("storing_files/enemies_map_lvl" + to_string(level) + ".txt");
 
     while (enemy_list!=NULL) {
         outputFile << enemy_list->current_enemy.get_level() << " ";
@@ -42,7 +42,7 @@ void store_enemies(int level, enemy_node *enemy_list) {
 
 int get_stored_map_index(int level) {
     ifstream inputFile;
-    inputFile.open("storingFiles/index_map_lvl" + to_string(level) + ".txt");
+    inputFile.open("storing_files/index_map_lvl" + to_string(level) + ".txt");
 
     char mapIndexChar;
     while(!inputFile.eof()){
@@ -55,7 +55,7 @@ int get_stored_map_index(int level) {
 
 coin_node *get_stored_coin_list(int level) {
     ifstream inputFile;
-    inputFile.open("storingFiles/coins_map_lvl" + to_string(level) + ".txt");
+    inputFile.open("storing_files/coins_map_lvl" + to_string(level) + ".txt");
 
     coin_node *coin_list = NULL;
     int coordinate;
@@ -76,7 +76,7 @@ coin_node *get_stored_coin_list(int level) {
 
 enemy_node *get_stored_enemy_list(map *map, Player player, int level) {
     ifstream inputFile;
-    inputFile.open("storingFiles/enemies_map_lvl" + to_string(level) + ".txt");
+    inputFile.open("storing_files/enemies_map_lvl" + to_string(level) + ".txt");
 
     enemy_node *enemy_list = NULL;
     int enemy_level;
