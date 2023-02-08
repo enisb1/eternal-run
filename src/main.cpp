@@ -30,7 +30,7 @@ int coins;
 int level;
 int max_level = 0;
 
-map *default_maps[6];
+map *maps[6];
 int current_map_index = 0;
 coin_node *current_coin_list = NULL;
 
@@ -51,11 +51,11 @@ int get_player_starting_direction(bool is_at_entrance) {
     int x;
 
     if (is_at_entrance) {
-        y = default_maps[current_map_index]->entrance_exit_positions[0];
-        x = default_maps[current_map_index]->entrance_exit_positions[1];
+        y = maps[current_map_index]->entrance_exit_positions[0];
+        x = maps[current_map_index]->entrance_exit_positions[1];
     } else {
-        y = default_maps[current_map_index]->entrance_exit_positions[2];
-        x = default_maps[current_map_index]->entrance_exit_positions[3];
+        y = maps[current_map_index]->entrance_exit_positions[2];
+        x = maps[current_map_index]->entrance_exit_positions[3];
     }
 
     if (y == 0) direction = DOWN;
@@ -68,11 +68,11 @@ int get_player_starting_direction(bool is_at_entrance) {
 
 void set_player_starting_properties(bool is_at_entrance) {
     if (is_at_entrance) {
-        player.set_y(default_maps[current_map_index]->entrance_exit_positions[0]);
-        player.set_x(default_maps[current_map_index]->entrance_exit_positions[1]);
+        player.set_y(maps[current_map_index]->entrance_exit_positions[0]);
+        player.set_x(maps[current_map_index]->entrance_exit_positions[1]);
     } else {
-        player.set_y(default_maps[current_map_index]->entrance_exit_positions[2]);
-        player.set_x(default_maps[current_map_index]->entrance_exit_positions[3]);
+        player.set_y(maps[current_map_index]->entrance_exit_positions[2]);
+        player.set_x(maps[current_map_index]->entrance_exit_positions[3]);
     }
     player.set_direction(get_player_starting_direction(is_at_entrance));
     player.set_is_moving(false);
@@ -93,12 +93,12 @@ void load_saved_map(bool is_entering_level) {
     display_coins(game_win, current_coin_list);
 
     current_map_index = get_stored_map_index(level);
-    display_map(game_win, default_maps[current_map_index], current_coin_list);
+    display_map(game_win, maps[current_map_index], current_coin_list);
     
     set_player_starting_properties(is_entering_level);
     display_player(game_win, player);
 
-    current_enemy_list = get_stored_enemy_list(default_maps[current_map_index], player, level);
+    current_enemy_list = get_stored_enemy_list(maps[current_map_index], player, level);
     display_enemies(game_win, current_enemy_list);
 }
 
@@ -116,13 +116,13 @@ void load_random_map(bool is_entering_level, bool is_death) {
     if (level >= 2 && !is_death)
         display_map(
             game_win, 
-            default_maps[current_map_index], 
+            maps[current_map_index], 
             current_coin_list
         );
 	else
         display_map_with_anim(
             game_win, 
-            default_maps[current_map_index], 
+            maps[current_map_index], 
             current_coin_list
         );
 
@@ -131,7 +131,7 @@ void load_random_map(bool is_entering_level, bool is_death) {
     display_player(game_win, player);
 
     // create enemy list and display it
-    create_enemy_list(default_maps[current_map_index], player, current_enemy_list, level);
+    create_enemy_list(maps[current_map_index], player, current_enemy_list, level);
     display_enemies(game_win, current_enemy_list);
 }
 
@@ -174,8 +174,8 @@ void new_game() {
 
     // create player
     player = Player(
-        default_maps[current_map_index]->entrance_exit_positions[0],
-        default_maps[current_map_index]->entrance_exit_positions[1],
+        maps[current_map_index]->entrance_exit_positions[0],
+        maps[current_map_index]->entrance_exit_positions[1],
         get_player_starting_direction(true), false,
         3, 0
     );
@@ -257,7 +257,7 @@ void move_player() {
     get_next_position(player.get_direction(), next_y, next_x);
 
     // check if next block is not a wall && is inside the map
-    if (default_maps[current_map_index]->blocks[next_y][next_x] != WALL_BLOCK
+    if (maps[current_map_index]->blocks[next_y][next_x] != WALL_BLOCK
         && next_y >= 0 && next_y < 20 && next_x >= 0 && next_x < 60) {
         // move player to next position and display it
         set_blank_char(game_win, player.get_y(), player.get_x());
@@ -267,12 +267,12 @@ void move_player() {
         // check if next block is a special block (coin, entrance or exit)
         bool is_coin = collect_coin(next_y, next_x);
         if (!is_coin) {
-            if (default_maps[current_map_index]->blocks[next_y][next_x] == ENTRANCE_BLOCK
+            if (maps[current_map_index]->blocks[next_y][next_x] == ENTRANCE_BLOCK
                 && level > 1) {
                 // previous level
                 player.set_is_moving(false);
                 load_previous_level();
-            } else if (default_maps[current_map_index]->blocks[next_y][next_x] == EXIT_BLOCK) {
+            } else if (maps[current_map_index]->blocks[next_y][next_x] == EXIT_BLOCK) {
                 // next level
                 if (level % 2 == 0 && max_level == level) {
                     // market level
@@ -288,9 +288,9 @@ void move_player() {
 }
 
 bool can_move_in_block(int y, int x) {
-    return default_maps[current_map_index]->blocks[y][x] != WALL_BLOCK
-        && default_maps[current_map_index]->blocks[y][x] != ENTRANCE_BLOCK
-        && default_maps[current_map_index]->blocks[y][x] != EXIT_BLOCK;
+    return maps[current_map_index]->blocks[y][x] != WALL_BLOCK
+        && maps[current_map_index]->blocks[y][x] != ENTRANCE_BLOCK
+        && maps[current_map_index]->blocks[y][x] != EXIT_BLOCK;
 }
 
 bool can_move_in_next_two_blocks(int direction, int start_y, int start_x) {
@@ -408,7 +408,7 @@ void move_enemies() {
                 if (!can_move_in_block(next_y, next_x)) {
                     current_enemy->set_direction(
                         get_random_enemy_direction(
-                            default_maps[current_map_index], 
+                            maps[current_map_index], 
                             current_enemy->get_y(),
                             current_enemy->get_x()
                         )
@@ -615,7 +615,7 @@ void start_game_loop() {
                         case 1:
                             display_map(
                                 game_win, 
-                                default_maps[current_map_index], 
+                                maps[current_map_index], 
                                 current_coin_list
                             );
                             break;
@@ -630,16 +630,15 @@ void start_game_loop() {
             else move_player_enemies_tick = 1;
 
             if (tick == move_player_enemies_tick) {
+                move_player();
                 display_coins(game_win, current_coin_list);
                 move_enemies();
             }
 
             move_bullets();
 
-            if (tick == move_player_enemies_tick) {
-                move_player();
+            if (tick == move_player_enemies_tick)
                 display_player(game_win, player);
-            }
 
             tick++;
             if (tick > move_player_enemies_tick) tick = 0;
@@ -651,7 +650,7 @@ void start_game_loop() {
 
         if (player.get_faster_bullet_speed())
             napms(53);
-        else napms(20);
+        else napms(80);
     };
 
 }
@@ -669,7 +668,7 @@ int main() {
     create_colors(); // create color pairs
 
     // create the 6 default_maps and show splash screen
-    create_default_maps(default_maps);
+    create_maps(maps);
 
     show_splash_screen();
 

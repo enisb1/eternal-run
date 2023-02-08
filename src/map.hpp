@@ -30,6 +30,6 @@ void add_coin(coin_node* &head, int y, int x);
 void get_default_coin_list(coin_node* &coin_list, int map_index);
 
 // create default_maps for the game and put them inside an array
-void create_default_maps(map *default_maps[]);
+void create_maps(map *maps[]);
 
 #endif
