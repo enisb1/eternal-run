@@ -45,15 +45,15 @@ Player::Player() {};
 
 Player::Player(
     int y, int x, int direction, bool is_moving,
-    int life, int shield, bool has_weapon
+    int life, int shield
 ):Entity(y, x, direction) {
     this->is_moving = is_moving; 
 
     this->life = life;
     this->shield = shield;
 
-    this->has_weapon = has_weapon;
-    this->bullet_speed = 1;
+    this->has_weapon = false;
+    this->faster_bullet_speed = false;
     this->bullet_damage = 1;
 }
 
@@ -81,20 +81,20 @@ int Player::get_shield() {
     return this->shield; 
 }
 
-void Player::set_has_weapon(bool has_weapon) {
-    this->has_weapon = has_weapon;
+void Player::set_has_weapon() {
+    this->has_weapon = true;
 }
 
 int Player::get_has_weapon() {
     return this->has_weapon;
 }
 
-void Player::set_bullet_speed(int bullet_speed) {
-    this->bullet_speed = bullet_speed; 
+void Player::set_faster_bullet_speed() {
+    this->faster_bullet_speed = true;
 }
 
-int Player::get_bullet_speed() {
-    return this->bullet_speed;
+int Player::get_faster_bullet_speed() {
+    return this->faster_bullet_speed;
 }
 
 void Player::set_bullet_damage(int bullet_damage) {
@@ -111,6 +111,14 @@ void Player::increment_life() {
 
 void Player::decrease_life() {
     this->life--; 
+}
+
+void Player::increment_shield() {
+    this->shield++;
+}
+
+void Player::decrease_shield() {
+    this->shield--; 
 }
 
 void Player::increment_bullet_damage() {
@@ -156,25 +164,6 @@ void Enemy::increment_blocks_traveled() {
 
 void Enemy::reset_blocks_traveled() {
     this->blocks_traveled = 0;
-}
-
-// Methods of class Bullet
-
-Bullet::Bullet() {};
-
-Bullet::Bullet(int y, int x, int direction, int speed) {
-    this->y = y;
-    this->x = x;
-    this->direction = direction;
-    this->speed = speed;
-}
-
-int Bullet::get_speed() {
-    return this->speed;
-}
-
-void Bullet::set_speed(int speed) {
-    this->speed = speed;
 }
 
 /* Struct enemy methods */
@@ -264,7 +253,7 @@ void create_enemy_list(map *map, Player player, enemy_node* &head, int level) {
 
 /* Struct bullet methods */
 
-void add_bullet(bullet_node* &head, Bullet new_bullet) {
+void add_bullet(bullet_node* &head, Entity new_bullet) {
     bullet_node *new_head = new bullet_node;
     new_head->current_bullet = new_bullet;
     new_head->next = head;

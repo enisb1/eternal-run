@@ -141,57 +141,89 @@ void show_menu(
     wrefresh(game_win);
 }
 
-void show_market_screen(WINDOW *game_win, Player *player, int coins) {
+int get_next_valid_option(
+    menu_option menu_options[], 
+    int options_num, 
+    int selected_option
+) {
+    int next_valid_option = selected_option;
+
+    while (!menu_options[next_valid_option].valid) {
+        if (next_valid_option < options_num - 1) next_valid_option++;
+        else next_valid_option = 0;
+    }
+
+    return next_valid_option;
+}
+
+int get_previous_valid_option(
+    menu_option menu_options[], 
+    int options_num, 
+    int selected_option
+) {
+    int previous_valid_option = selected_option;
+
+    while (!menu_options[previous_valid_option].valid) {
+        if (previous_valid_option > 0) previous_valid_option--;
+        else previous_valid_option = options_num - 1;
+    }
+
+    return previous_valid_option;
+}
+
+void refresh_market_options(menu_option market_options[], Player player, int coins) {
+    if (coins < 30 || player.get_life() >= 3) market_options[0].valid = false;
+    else  market_options[0].valid = true;
+
+    if (coins < 40) market_options[1].valid = false;
+    else  market_options[1].valid = true;
+
+    if (coins < 50) market_options[2].valid = false;
+    else  market_options[2].valid = true;
+
+    if (coins < 100 || !player.get_has_weapon())
+        market_options[3].valid = false;
+    else  market_options[3].valid = true;
+
+    int bullet_damage_coins_num;
+    if (player.get_bullet_damage() > 2) {
+        bullet_damage_coins_num = 180;
+        strcpy(market_options[4].name, "- Danno proiettili        180M");
+    } else {
+        bullet_damage_coins_num = 120;
+        strcpy(market_options[4].name, "- Danno proiettili        120M");
+    }
+
+    if (coins < bullet_damage_coins_num  || !player.get_has_weapon())
+        market_options[4].valid = false;
+    else  market_options[4].valid = true;
+}
+
+void show_market_screen(WINDOW *game_win, WINDOW *info_win, Player *player, int &coins) {
     wclear(game_win);
     box(game_win, 0, 0);
 
     // create menu options array
     menu_option option_1;
     strcpy(option_1.name, "- Pozione vita (+1)       30M");
-    if (coins < 30 || player->get_life() >= 3) option_1.valid = false;
-    else  option_1.valid = true;
-
     menu_option option_2;
     strcpy(option_2.name, "- Pozione scudo (+1)      40M");
-    if (coins < 40) option_2.valid = false;
-    else  option_2.valid = true;
-
     menu_option option_3;
     strcpy(option_3.name, "- Pistola                 50M");
-    if (coins < 50) option_3.valid = false;
-    else  option_3.valid = true;
-
     menu_option option_4;
     strcpy(option_4.name, "- Velocita' proiettili    100M");
-    if (coins < 100) option_4.valid = false;
-    else  option_4.valid = true;
-
     menu_option option_5;
-    int option_5_coins_num;
-    if (player->get_bullet_damage() > 2) {
-        option_5_coins_num = 180;
-        strcpy(option_5.name, "- Danno proiettili        180M");
-    } else {
-        option_5_coins_num = 120;
-        strcpy(option_5.name, "- Danno proiettili        120M");
-    }
 
-    if (coins < option_5_coins_num) option_5.valid = false;
-    else  option_5.valid = true;
-
-
-    menu_option menu_options[6] = {
+    menu_option market_options[6] = {
         option_1, option_2, option_3, option_4,
         option_5, {"Prossimo livello ->", true}
     };
+
+    refresh_market_options(market_options, *player, coins);
     
     // show menu and start menu loop
-    int selected_option = 0;
-    while (!menu_options[selected_option].valid) {
-        if (selected_option < 5) selected_option++;
-        else selected_option = 0;
-    }
-    show_menu(game_win, menu_options, 
+    int selected_option = get_next_valid_option(market_options, 6, 0);
+    show_menu(game_win, market_options, 
         6, 2, selected_option, true);
 
     bool exit_market_screen = false;
@@ -200,56 +232,76 @@ void show_market_screen(WINDOW *game_win, Player *player, int coins) {
 
         // check if key entered
         if (input_char != -1) {
-            int next_selected_option;
             switch (input_char) {
                 case 2:
                     // increment selected option
+                    // only valid options are selectable
+                    int next_option;
                     if (selected_option < 5)
-                        next_selected_option = selected_option + 1;
-                    else next_selected_option = 0;
+                        next_option = selected_option + 1;
+                    else next_option = 0;
 
-                    while (!menu_options[next_selected_option].valid) {
-                        if (next_selected_option < 5) next_selected_option++;
-                        else next_selected_option = 0;
-                    }
-                    selected_option = next_selected_option;
+                    selected_option = get_next_valid_option(
+                        market_options, 6, next_option
+                    );
                     
-                    show_menu(game_win, menu_options, 
+                    show_menu(game_win, market_options, 
                         6, 2, selected_option, true);
                     break;
                 case 3:
                     // decrease selected option
+                    // only valid options are selectable
+                    int previous_option;
                     if (selected_option > 0)
-                        next_selected_option = selected_option - 1;
-                    else next_selected_option = 5;
+                        previous_option = selected_option - 1;
+                    else previous_option = 5;
 
-                    while (!menu_options[next_selected_option].valid) {
-                        if (next_selected_option > 0) next_selected_option--;
-                        else next_selected_option = 5;
-                    }
-                    selected_option = next_selected_option;
+                    selected_option = get_previous_valid_option(
+                        market_options, 6, previous_option
+                    );
 
-                    show_menu(game_win, menu_options, 
+                    show_menu(game_win, market_options, 
                         6, 2, selected_option, true);
                     break;
                 case 10:
                     // enter option
                     switch (selected_option) {
                         case INCREMENT_LIFE:
+                            coins -= 30;
                             player->increment_life();
                             break;
                         case INCREMENT_SHIELD:
+                            coins -= 40;
+                            player->increment_shield();
                             break;
                         case PISTOL:
+                            coins -= 50;
+                            player->set_has_weapon();
                             break;
                         case BULLET_SPEED:
+                            coins -= 100;
+                            player->set_faster_bullet_speed();
                             break;
                         case BULLET_DAMAGE:
+                            if (player->get_bullet_damage() > 2)
+                                coins -= 180;
+                            else coins -= 120;
+
+                            player->increment_bullet_damage();
                             break;
                         case NEXT_LEVEL:
                             exit_market_screen = true;
                             break;
                     }
+
+                    refresh_stats(info_win, *player, coins);
+                    refresh_market_options(market_options, *player, coins);
+                    selected_option = get_next_valid_option(
+                        market_options, 6, selected_option
+                    );
+
+                    show_menu(game_win, market_options, 
+                        6, 2, selected_option, true);
             }
         }
 
@@ -584,6 +636,22 @@ void refresh_stats(WINDOW *info_win, Player player, int coins) {
     wattron(info_win, COLOR_PAIR(YELLOW_PAIR));
     mvwprintw(info_win, 5, 2, "MONETE: %d", coins);
     wattroff(info_win, COLOR_PAIR(YELLOW_PAIR));
+
+    // market upgrades
+    wmove(info_win, 7, 0);
+
+    if (player.get_has_weapon()) {
+        wprintw(info_win, "  - Pistola\n  equipaggiata\n\n");
+        wprintw(
+            info_win, 
+            "  - Danno\n  proiettili: %d\n\n", 
+            player.get_bullet_damage()
+        );
+    }
+    if (player.get_faster_bullet_speed())
+        wprintw(info_win, "  - Velocita'\n  proiettili\n  aumentata\n\n");
+    
+    box(info_win, 0, 0);
 
     wrefresh(info_win);
 }

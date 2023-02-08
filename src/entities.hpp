@@ -37,14 +37,14 @@ class Player: public Entity {
         int life;
         int shield;
         bool has_weapon;
-        int bullet_speed;
+        bool faster_bullet_speed;
         int bullet_damage;
 
     public:
         Player();
         Player(
-            int y, int x, int direction, bool is_moving,
-            int life, int shield, bool has_weapon
+            int y, int x, int direction,
+            bool is_moving, int life, int shield
         );
 
         // getter and setter
@@ -57,11 +57,11 @@ class Player: public Entity {
         void set_shield(int shield);
         int get_shield();
 
-        void set_has_weapon(bool has_weapon);
+        void set_has_weapon();
         int get_has_weapon();
 
-        void set_bullet_speed(int bullet_speed);
-        int get_bullet_speed();
+        void set_faster_bullet_speed();
+        int get_faster_bullet_speed();
 
         void set_bullet_damage(int bullet_damage);
         int get_bullet_damage();
@@ -69,6 +69,10 @@ class Player: public Entity {
         // increment and decrease the life by one
         void increment_life();
         void decrease_life();
+
+        // increment and decrease the shield by one
+        void increment_shield();
+        void decrease_shield();
 
         // increment bullet damage
         void increment_bullet_damage();
@@ -101,20 +105,6 @@ class Enemy: public Entity {
         void reset_blocks_traveled();
 };
 
-class Bullet: public Entity {
-    protected:
-        int speed;
-
-    public:
-        Bullet();
-        Bullet(int y, int x, int direction, int speed);
-
-        // getter and setter
-        int get_speed();
-        void set_speed(int speed);
-
-};
-
 /* Structs */
 
 struct enemy_node {
@@ -123,7 +113,7 @@ struct enemy_node {
 };
 
 struct bullet_node {
-    Bullet current_bullet;
+    Entity current_bullet;
     bullet_node *next;
 };
 
@@ -144,6 +134,6 @@ void create_enemy_list(map *map, Player player, enemy_node* &head, int level);
 /* Struct bullet methods */
 
 // add a bullet to the bullet list
-void add_bullet(bullet_node* &head, Bullet new_bullet);
+void add_bullet(bullet_node* &head, Entity new_bullet);
 
 #endif

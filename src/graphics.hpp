@@ -34,7 +34,12 @@ void show_splash_screen();
 WINDOW *create_game_window();
 
 // show the market screen
-void show_market_screen(WINDOW *game_win, Player *player, int coins);
+void show_market_screen(
+    WINDOW *game_win, 
+    WINDOW *info_win, 
+    Player *player, 
+    int &coins
+);
 
 // show the game over screen,
 // returns the index of the selected option from the menu

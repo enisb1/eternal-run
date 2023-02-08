@@ -172,12 +172,13 @@ void new_game() {
         default_maps[current_map_index]->entrance_exit_positions[0],
         default_maps[current_map_index]->entrance_exit_positions[1],
         get_player_starting_direction(true), false,
-        3, 0, false
+        3, 0
     );
 
     refresh_title(info_win, level, true);
     refresh_stats(info_win, player, coins);
-    show_market_screen(game_win, &player, 40);
+    int coins_2 = 120;
+    show_market_screen(game_win, info_win, &player, coins_2);
 
     load_next_level();
     
@@ -271,7 +272,7 @@ void move_player() {
                 if (level % 2 == 0 && max_level == level) {
                     // market level
                     refresh_title(info_win, level, true);
-                    show_market_screen(game_win, &player, coins);
+                    show_market_screen(game_win, info_win, &player, coins);
 
                     load_next_level();
                 } else load_next_level();
@@ -440,10 +441,9 @@ void create_bullet() {
     get_next_position(player.get_direction(), bullet_y, bullet_x);
     
     if (can_move_in_block(bullet_y, bullet_x)) {
-        Bullet new_bullet = Bullet(
+        Entity new_bullet = Entity(
             bullet_y, bullet_x, 
-            player.get_direction(), 
-            player.get_bullet_speed()
+            player.get_direction()
         );
 
         add_bullet(current_bullet_list, new_bullet);
@@ -459,7 +459,7 @@ void move_bullets() {
         // create new bullet list with valid bullets
         // and new enemy list with valid enemies
         while (bullet_list_iterator != NULL) {
-            Bullet *current_bullet = &bullet_list_iterator->current_bullet;
+            Entity *current_bullet = &bullet_list_iterator->current_bullet;
             bool valid_bullet = true;
             
             // check if bullet is in enemy position before moving
