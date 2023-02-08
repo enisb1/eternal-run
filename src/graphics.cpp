@@ -13,6 +13,13 @@ const int GAME_WIN_HEIGHT = 20;
 const int GAME_WIN_WIDTH = 60;
 const int INFO_WIN_WIDTH = 18;
 
+/* Structs */
+
+struct menu_option {
+    char name[50];
+    bool valid;
+};
+
 /* Standard screen */
 
 void print_game_name_text() {
@@ -94,16 +101,16 @@ WINDOW *create_game_window() {
 
 void show_menu(
     WINDOW *game_win, 
-    char options[][50], 
+    menu_option options[], 
     int options_length, 
     int start_y, 
     int selected_option,
     bool separate_last_option
 ) {
     // get max strlen() of options
-    int max_option_length = strlen(options[0]);
+    int max_option_length = strlen(options[0].name);
     for (int i = 1; i < options_length; i++) {
-        int current_option_length = strlen(options[i]);
+        int current_option_length = strlen(options[i].name);
         if (current_option_length > max_option_length)
             max_option_length = current_option_length;
     }
@@ -116,35 +123,74 @@ void show_menu(
     for (int i = 0; i < options_length; i++) {
         if (i == options_length - 1 && separate_last_option) {
             y += 3;
-            x = (getmaxx(game_win) - strlen(options[i])) / 2;
+            x = (getmaxx(game_win) - strlen(options[i].name)) / 2;
         }
         else y += 2;
         
         if (i == selected_option) {
             wattron(game_win, A_REVERSE);
-            mvwprintw(game_win, y, x, "%s", options[i]);
+            mvwprintw(game_win, y, x, "%s", options[i].name);
             wattroff(game_win, A_REVERSE);
-        } else mvwprintw(game_win, y, x, "%s", options[i]);
+        } else if (!options[i].valid) {
+            wattron(game_win, A_DIM);
+            mvwprintw(game_win, y, x, "%s", options[i].name);
+            wattroff(game_win, A_DIM);
+        } else mvwprintw(game_win, y, x, "%s", options[i].name);
     }
 
     wrefresh(game_win);
 }
 
-void show_market_screen(WINDOW *game_win, Player *player) {
+void show_market_screen(WINDOW *game_win, Player *player, int coins) {
     wclear(game_win);
     box(game_win, 0, 0);
 
     // create menu options array
-    char menu_options[6][50] = {};
-    strcpy(menu_options[0], "- Pozione vita (+1)       10M");
-    strcpy(menu_options[1], "- Pozione scudo (+1)      10M");
-    strcpy(menu_options[2], "- Pistola                 10M");
-    strcpy(menu_options[3], "- Velocita' proiettili    10M");
-    strcpy(menu_options[4], "- Danno proiettili        10M");
-    strcpy(menu_options[5], "Prossimo livello ->");
+    menu_option option_1;
+    strcpy(option_1.name, "- Pozione vita (+1)       30M");
+    if (coins < 30 || player->get_life() >= 3) option_1.valid = false;
+    else  option_1.valid = true;
+
+    menu_option option_2;
+    strcpy(option_2.name, "- Pozione scudo (+1)      40M");
+    if (coins < 40) option_2.valid = false;
+    else  option_2.valid = true;
+
+    menu_option option_3;
+    strcpy(option_3.name, "- Pistola                 50M");
+    if (coins < 50) option_3.valid = false;
+    else  option_3.valid = true;
+
+    menu_option option_4;
+    strcpy(option_4.name, "- Velocita' proiettili    100M");
+    if (coins < 100) option_4.valid = false;
+    else  option_4.valid = true;
+
+    menu_option option_5;
+    int option_5_coins_num;
+    if (player->get_bullet_damage() > 2) {
+        option_5_coins_num = 180;
+        strcpy(option_5.name, "- Danno proiettili        180M");
+    } else {
+        option_5_coins_num = 120;
+        strcpy(option_5.name, "- Danno proiettili        120M");
+    }
+
+    if (coins < option_5_coins_num) option_5.valid = false;
+    else  option_5.valid = true;
+
+
+    menu_option menu_options[6] = {
+        option_1, option_2, option_3, option_4,
+        option_5, {"Prossimo livello ->", true}
+    };
     
     // show menu and start menu loop
     int selected_option = 0;
+    while (!menu_options[selected_option].valid) {
+        if (selected_option < 5) selected_option++;
+        else selected_option = 0;
+    }
     show_menu(game_win, menu_options, 
         6, 2, selected_option, true);
 
@@ -154,24 +200,56 @@ void show_market_screen(WINDOW *game_win, Player *player) {
 
         // check if key entered
         if (input_char != -1) {
+            int next_selected_option;
             switch (input_char) {
                 case 2:
-                    // increase selected option
-                    if (selected_option < 5) selected_option++;
-                    else selected_option = 0;
+                    // increment selected option
+                    if (selected_option < 5)
+                        next_selected_option = selected_option + 1;
+                    else next_selected_option = 0;
+
+                    while (!menu_options[next_selected_option].valid) {
+                        if (next_selected_option < 5) next_selected_option++;
+                        else next_selected_option = 0;
+                    }
+                    selected_option = next_selected_option;
+                    
                     show_menu(game_win, menu_options, 
                         6, 2, selected_option, true);
                     break;
                 case 3:
                     // decrease selected option
-                    if (selected_option > 0) selected_option--;
-                    else selected_option = 5;
+                    if (selected_option > 0)
+                        next_selected_option = selected_option - 1;
+                    else next_selected_option = 5;
+
+                    while (!menu_options[next_selected_option].valid) {
+                        if (next_selected_option > 0) next_selected_option--;
+                        else next_selected_option = 5;
+                    }
+                    selected_option = next_selected_option;
+
                     show_menu(game_win, menu_options, 
                         6, 2, selected_option, true);
                     break;
                 case 10:
                     // enter option
-                    exit_market_screen = true;
+                    switch (selected_option) {
+                        case INCREMENT_LIFE:
+                            player->increment_life();
+                            break;
+                        case INCREMENT_SHIELD:
+                            break;
+                        case PISTOL:
+                            break;
+                        case BULLET_SPEED:
+                            break;
+                        case BULLET_DAMAGE:
+                            break;
+                        case NEXT_LEVEL:
+                            exit_market_screen = true;
+                            break;
+                    }
             }
         }
 
@@ -194,9 +272,10 @@ int show_game_over_screen(WINDOW *game_win) {
     print_game_over_text(game_win, WALL_PAIR);
 
     // create menu options array
-    char menu_options[2][50] = {};
-    strcpy(menu_options[0], "- Nuova partita");
-    strcpy(menu_options[1], "- Esci dal gioco");
+    menu_option menu_options[2] = {
+        {"- Nuova partita", true}, 
+        {"- Esci dal gioco", true}
+    };
 
     // show menu and start menu loop
     int selected_option = 0;
@@ -242,9 +321,10 @@ int show_esc_screen(WINDOW *game_win) {
     mvwprintw(game_win, 6, 17, "Sei sicuro di voler uscire?");
 
     // create menu options array
-    char menu_options[2][50] = {};
-    strcpy(menu_options[0], "- Si");
-    strcpy(menu_options[1], "- No");
+    menu_option menu_options[2] = {
+        {"- Si", true}, 
+        {"- No", true}
+    };
 
     // show menu and start menu cicle
     int selected_option = 0;

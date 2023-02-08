@@ -97,7 +97,15 @@ int Player::get_bullet_speed() {
     return this->bullet_speed;
 }
 
-void Player::increase_life() {
+void Player::set_bullet_damage(int bullet_damage) {
+    this->bullet_damage = bullet_damage;
+}
+
+int Player::get_bullet_damage() {
+    return this->bullet_damage;
+}
+
+void Player::increment_life() {
     this->life++;
 }
 
@@ -105,7 +113,7 @@ void Player::decrease_life() {
     this->life--; 
 }
 
-void Player::increase_bullet_damage() {
+void Player::increment_bullet_damage() {
     this->bullet_damage++;
 }
 

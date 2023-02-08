@@ -175,6 +175,10 @@ void new_game() {
         3, 0, false
     );
 
+    refresh_title(info_win, level, true);
+    refresh_stats(info_win, player, coins);
+    show_market_screen(game_win, &player, 40);
+
     load_next_level();
     
     // refresh info window
@@ -267,7 +271,7 @@ void move_player() {
                 if (level % 2 == 0 && max_level == level) {
                     // market level
                     refresh_title(info_win, level, true);
-                    show_market_screen(game_win, &player);
+                    show_market_screen(game_win, &player, coins);
 
                     load_next_level();
                 } else load_next_level();

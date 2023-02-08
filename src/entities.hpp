@@ -63,12 +63,15 @@ class Player: public Entity {
         void set_bullet_speed(int bullet_speed);
         int get_bullet_speed();
 
-        // increase and decrease the life by one
-        void increase_life();
+        void set_bullet_damage(int bullet_damage);
+        int get_bullet_damage();
+
+        // increment and decrease the life by one
+        void increment_life();
         void decrease_life();
 
-        // increase bullet damage
-        void increase_bullet_damage();
+        // increment bullet damage
+        void increment_bullet_damage();
 };
 
 class Enemy: public Entity {
@@ -91,7 +94,7 @@ class Enemy: public Entity {
         // decrease the level by one
         void decrease_level();
 
-        // increase the blocks_traveled by one
+        // increment the blocks_traveled by one
         void increment_blocks_traveled();
 
         // set blocks_traveled to 0
