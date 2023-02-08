@@ -96,7 +96,7 @@ class Enemy: public Entity {
         int get_blocks_traveled();
 
         // decrease the level by one
-        void decrease_level();
+        void decrease_level(int level_decrease);
 
         // increment the blocks_traveled by one
         void increment_blocks_traveled();

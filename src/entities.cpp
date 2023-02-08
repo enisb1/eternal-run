@@ -152,10 +152,10 @@ int Enemy::get_blocks_traveled() {
     return this->blocks_traveled;
 }
 
-void Enemy::decrease_level() {
-    this->level--; 
-    this->life--; 
-    this->damage--;
+void Enemy::decrease_level(int level_decrease) {
+    this->level -= level_decrease; 
+    this->life -= level_decrease; 
+    this->damage -= level_decrease;
 }
 
 void Enemy::increment_blocks_traveled() {

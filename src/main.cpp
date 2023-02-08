@@ -133,7 +133,7 @@ void load_random_map(bool is_entering_level, bool is_death) {
 }
 
 void load_next_level() {
-    level++;
+    level = 10;
     refresh_title(info_win, level, false);
 
     // store level's data in files
@@ -481,11 +481,17 @@ void move_bullets() {
                 if (are_entities_in_same_position(
                     *current_bullet, 
                     enemy_list_iterator->current_enemy
-                )) valid_bullet = false;
-                else add_enemy(
-                    new_enemy_list, 
-                    enemy_list_iterator->current_enemy
-                );
+                )) {
+                    valid_bullet = false;
+                    
+                    enemy_list_iterator->current_enemy.decrease_level(player.get_bullet_damage());
+                    if (enemy_list_iterator->current_enemy.get_level()>0) 
+                        add_enemy(
+                        new_enemy_list, 
+                        enemy_list_iterator->current_enemy
+                    );
+                }
+                else add_enemy(new_enemy_list, enemy_list_iterator->current_enemy);
 
                 enemy_node *tmp_enemy = enemy_list_iterator;
                 enemy_list_iterator = enemy_list_iterator->next;
@@ -509,18 +515,25 @@ void move_bullets() {
             // check if bullet is in enemy position after moving
             enemy_node *new_enemy_list_after_moving = new_enemy_list;
             new_enemy_list = NULL;
-            while (enemy_list_iterator != NULL) {
-                if (!are_entities_in_same_position(
+            while (new_enemy_list_after_moving != NULL) {
+                if (are_entities_in_same_position(
                     *current_bullet, 
-                    enemy_list_iterator->current_enemy
-                )) valid_bullet = false;
-                else add_enemy(
-                    new_enemy_list_after_moving, 
-                    enemy_list_iterator->current_enemy
-                );
+                    new_enemy_list_after_moving->current_enemy
+                )) {
+                    valid_bullet = false;
+                    
+                    new_enemy_list_after_moving->current_enemy.decrease_level(player.get_bullet_damage());
+                    if (new_enemy_list_after_moving->current_enemy.get_level()>0) 
+                        add_enemy(
+                        new_enemy_list, 
+                        new_enemy_list_after_moving->current_enemy
+                        );
+                    else set_blank_char(game_win, current_bullet->get_y(), current_bullet->get_x());
+                }
+                else add_enemy(new_enemy_list, new_enemy_list_after_moving->current_enemy);
 
-                enemy_node *tmp_enemy = enemy_list_iterator;
-                enemy_list_iterator = enemy_list_iterator->next;
+                enemy_node *tmp_enemy = new_enemy_list_after_moving;
+                new_enemy_list_after_moving = new_enemy_list_after_moving->next;
                 delete tmp_enemy;
             }
 
@@ -530,7 +543,7 @@ void move_bullets() {
             }
 
             // set new list to enemy list
-            current_enemy_list = new_enemy_list_after_moving;
+            current_enemy_list = new_enemy_list;
 
             bullet_node *tmp_bullet = bullet_list_iterator;
             bullet_list_iterator = bullet_list_iterator->next;
