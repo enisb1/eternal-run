@@ -177,7 +177,7 @@ void new_game() {
 
     refresh_title(info_win, level, true);
     refresh_stats(info_win, player, coins);
-    int coins_2 = 120;
+    int coins_2 = 170;
     show_market_screen(game_win, info_win, &player, coins_2);
 
     load_next_level();
@@ -378,7 +378,7 @@ void move_enemies() {
                 death();
             }
         }
-        
+
         if (!is_death) {
             // enemy position != player position, before moving
             bool can_cross = false;
@@ -435,8 +435,13 @@ void move_enemies() {
 
             // check if enemy is in the player's position after moving
             if (are_entities_in_same_position(player, *current_enemy)) {
-                is_death = true;
-                death();
+                if (player.get_shield() > 0) {
+                    player.decrease_shield();
+                    refresh_stats(info_win, player, coins);
+                } else {
+                    is_death = true;
+                    death();
+                }
             } else enemy_list_iterator = enemy_list_iterator->next;
         }
     }
@@ -538,8 +543,10 @@ void move_bullets() {
 }
 
 void start_game_loop() {
-    unsigned int tick = 0;
     const unsigned int ANIM_PERIOD = 1;
+
+    unsigned int tick = 0;
+    int move_player_enemies_tick;
 
     const unsigned int KEY_SPACEBAR = 32;
     int old_input_char = -1;
@@ -577,7 +584,7 @@ void start_game_loop() {
                     } else player.set_direction(LEFT);
                     break;
                 case KEY_SPACEBAR:
-                    if (player.get_is_moving())
+                    if (player.get_is_moving() && player.get_has_weapon())
                         create_bullet();
                     break;
                 case 27:
@@ -600,17 +607,33 @@ void start_game_loop() {
         }
 
         if (player.get_is_moving()) {
-            display_coins(game_win, current_coin_list);
-            move_enemies();
+            if (player.get_faster_bullet_speed())
+                move_player_enemies_tick = 2;
+            else move_player_enemies_tick = 1;
+
+            if (tick == move_player_enemies_tick) {
+                display_coins(game_win, current_coin_list);
+                move_enemies();
+            }
+
             move_bullets();
-            move_player();
-            display_player(game_win, player);
+
+            if (tick == move_player_enemies_tick) {
+                move_player();
+                display_player(game_win, player);
+            }
+
+            tick++;
+            if (tick > move_player_enemies_tick) tick = 0;
         }
 
         old_input_char = input_char;
 
         wrefresh(game_win);
-        napms(160);
+
+        if (player.get_faster_bullet_speed())
+            napms(53);
+        else napms(80);
     };
 
 }
