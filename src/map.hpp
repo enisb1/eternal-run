@@ -23,13 +23,28 @@ struct map {
 
 /* Methods */
 
-// adds coin to coin list
+// add coin to coin list
 void add_coin(coin_node* &head, int y, int x);
 
 // return the specified map's default coin list
 void get_default_coin_list(coin_node* &coin_list, int map_index);
 
-// create default_maps for the game and put them inside an array
-void create_maps(map *maps[]);
+// return the first map 
+map *create_map1();
+
+// return the second map
+map *create_map2();
+
+// return the third map
+map *create_map3();
+
+// return the fourth map
+map *create_map4();
+
+// return the fifth map
+map *create_map5();
+
+// return the sixth map
+map *create_map6();
 
 #endif

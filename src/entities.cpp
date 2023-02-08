@@ -2,7 +2,6 @@
 #include <cmath>
 #include <ncursesw/ncurses.h>
 
-#include "map.hpp"
 #include "entities.hpp"
 
 // Methods of class Entity

@@ -1,6 +1,10 @@
 #ifndef ENTITIES_HPP
 #define ENTITIES_HPP
 
+/* Includes */
+
+#include "map.hpp"
+
 /* Vars */
 
 const int DOWN = 0;

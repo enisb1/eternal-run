@@ -1042,22 +1042,6 @@ coin_node *create_coin_list_map6() {
 	return head;
 }
 
-void create_maps(map *maps[]) {
-    map *map1 = create_map1();
-    map *map2 = create_map2();
-    map *map3 = create_map3();
-	map *map4 = create_map4();
-	map *map5 = create_map5();
-	map *map6 = create_map6();
-
-    maps[0] = map1;
-    maps[1] = map2;
-    maps[2] = map3;
-    maps[3] = map4;
-    maps[4] = map5;
-    maps[5] = map6;
-}
-
 void get_default_coin_list(coin_node* &coin_list, int map_index) {
     switch (map_index) {
         case 0:
