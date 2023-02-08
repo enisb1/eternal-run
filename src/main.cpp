@@ -171,6 +171,7 @@ void new_game() {
     // initialize vars
     coins = 0;
     level = 0;
+    max_level = 0;
 
     // create player
     player = Player(
@@ -182,8 +183,6 @@ void new_game() {
 
     refresh_title(info_win, level, true);
     refresh_stats(info_win, player, coins);
-    int coins_2 = 170;
-    show_market_screen(game_win, info_win, &player, coins_2);
 
     load_next_level();
     
