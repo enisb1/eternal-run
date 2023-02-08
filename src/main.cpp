@@ -87,15 +87,18 @@ void delete_coin_list() {
 }
 
 void load_saved_map(bool is_entering_level) {
-    current_map_index = get_stored_map_index(level);
-    current_coin_list = get_stored_coin_list(level);
+    delete_coin_list();
 
+    current_coin_list = get_stored_coin_list(level);
+    display_coins(game_win, current_coin_list);
+
+    current_map_index = get_stored_map_index(level);
     display_map(game_win, default_maps[current_map_index], current_coin_list);
+    
     set_player_starting_properties(is_entering_level);
     display_player(game_win, player);
 
-    // TODO: display saved enemies
-    create_enemy_list(default_maps[current_map_index], player, current_enemy_list, level);
+    current_enemy_list = get_stored_enemy_list(default_maps[current_map_index], player, level);
     display_enemies(game_win, current_enemy_list);
 }
 
@@ -133,13 +136,14 @@ void load_random_map(bool is_entering_level, bool is_death) {
 }
 
 void load_next_level() {
-    level = 10;
+    level++;
     refresh_title(info_win, level, false);
 
     // store level's data in files
     if (level > 1) {
         store_map_index(level - 1, current_map_index);
         store_coins(level - 1, current_coin_list);
+        store_enemies(level - 1, current_enemy_list);
     }
 
     // checks if it's a new level or not
@@ -155,6 +159,7 @@ void load_previous_level() {
     // store level's data in files
     store_map_index(level, current_map_index);
     store_coins(level, current_coin_list);
+    store_enemies(level, current_enemy_list);
 
     level--;
     refresh_title(info_win, level, false);
@@ -646,7 +651,7 @@ void start_game_loop() {
 
         if (player.get_faster_bullet_speed())
             napms(53);
-        else napms(80);
+        else napms(20);
     };
 
 }
