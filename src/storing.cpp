@@ -1,7 +1,6 @@
 /* Includes */
 
 #include <fstream>
-#include <iostream>
 #include <cstring>
 #include <dirent.h>
 
