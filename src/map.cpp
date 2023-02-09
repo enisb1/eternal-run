@@ -666,7 +666,6 @@ coin_node *create_coin_list_map4() {
 	add_coin(head, 5, 57);
 	add_coin(head, 18, 56);
 	add_coin(head, 17, 51);
-	add_coin(head, 14, 52);
 	add_coin(head, 14, 55);
 	add_coin(head, 10, 57);
 	add_coin(head, 12, 48);

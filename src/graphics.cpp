@@ -513,7 +513,7 @@ void display_map_with_anim(WINDOW *game_win, map *map, coin_node *coin_list) {
 
         row--;
 
-        napms(100);
+        napms(200);
     }
     
     display_coins(game_win, coin_list);
@@ -521,24 +521,16 @@ void display_map_with_anim(WINDOW *game_win, map *map, coin_node *coin_list) {
 
 void destroy_map_with_animation(WINDOW *game_win) {
     // destroy the map with an animation (row after row)
-    unsigned int tick = 0;
-    const unsigned int ANIM_PERIOD = 10;
     int row = 1;
 
     while (row < 19) {
-        if (tick == ANIM_PERIOD) {
-            // destroy current line
-            mvwprintw(game_win, row, 1, "                                                          ");
-            wrefresh(game_win);
+        // destroy current line
+        mvwprintw(game_win, row, 1, "                                                          ");
+        wrefresh(game_win);
 
-            row++;
-        }
+        row++;
 
-        // increment tick
-        if (tick >= ANIM_PERIOD) tick = 0;
-        else tick++;
-
-        napms(1);
+        napms(200);
     }
 }
 
