@@ -499,7 +499,9 @@ void start_game_loop(WINDOW *game_win, WINDOW *info_win) {
     int old_input_char = -1;
 
     while (1) {
-        int input_char = wgetch(game_win);
+        int input_char;
+        if (tick == move_player_enemies_tick)
+            input_char = wgetch(game_win);
 
         if (input_char != -1) {
             while (input_char == old_input_char)
