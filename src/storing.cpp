@@ -2,6 +2,7 @@
 
 #include <fstream>
 #include <iostream>
+#include <filesystem>
 
 #include "storing.hpp"
 
@@ -101,4 +102,9 @@ enemy_node *get_stored_enemy_list(map *map, Player player, int level) {
     inputFile.close();
 
     return enemy_list;
+}
+
+void delete_files() {
+    for (auto& entry : std::filesystem::directory_iterator("storing_files/")) 
+        std::filesystem::remove_all(entry.path());
 }

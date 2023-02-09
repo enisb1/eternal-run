@@ -131,6 +131,9 @@ void load_previous_level(WINDOW *game_win, WINDOW *info_win) {
 }
 
 void new_game(WINDOW *game_win, WINDOW *info_win) {
+    // delete storing files in case user previously left before game over
+    delete_files();
+
     // initialize vars
     coins = 0;
     level = 0;
@@ -242,6 +245,9 @@ void death(WINDOW *game_win, WINDOW *info_win) {
         wrefresh(game_win);
     } else {
         // game over
+        // delete storage files
+        delete_files();
+
         switch (show_game_over_screen(game_win)) {
             case 0:
                 new_game(game_win, info_win);
@@ -251,6 +257,7 @@ void death(WINDOW *game_win, WINDOW *info_win) {
                 exit(0);
                 break;
         }
+        
     }
 }
 
@@ -534,6 +541,8 @@ void start_game_loop(WINDOW *game_win, WINDOW *info_win) {
                     // esc
                     switch (show_esc_screen(game_win)) {
                         case 0:
+                            // delete storage files and quit the game
+                            delete_files();
                             endwin();
                             exit(0);
                             break;

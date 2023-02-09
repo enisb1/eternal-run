@@ -2,15 +2,10 @@
 
 #include <ncursesw/ncurses.h>
 
-#include <stdlib.h>
-#include <cstring>
 #include <ctime>
 #include <cstdlib>
 
 #include "graphics.hpp"
-#include "map.hpp"
-#include "entities.hpp"
-#include "storing.hpp"
 #include "game.hpp"
 
 using namespace std; 

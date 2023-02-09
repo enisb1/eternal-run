@@ -26,4 +26,7 @@ coin_node *get_stored_coin_list(int level);
 // return the level's stored enemy list
 enemy_node *get_stored_enemy_list(map *map, Player player, int level);
 
+// delete the files saved in the specific storing files directory
+void delete_files();
+
 #endif
