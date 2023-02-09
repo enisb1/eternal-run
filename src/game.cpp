@@ -141,14 +141,6 @@ void new_game(WINDOW *game_win, WINDOW *info_win) {
     level = 0;
     max_level = 0;
 
-    // refresh info window
-    wclear(info_win);
-    box(info_win, 0, 0);
-    mvwprintw(info_win, 2, 1, "----------------");
-    mvwprintw(info_win, 6, 1, "----------------");
-    refresh_stats(info_win, player, coins);
-    refresh_title(info_win, level, false);
-
     // create player
     player = Player(
         maps[current_map_index]->entrance_exit_positions[0],
@@ -156,6 +148,14 @@ void new_game(WINDOW *game_win, WINDOW *info_win) {
         get_player_starting_direction(true, maps, current_map_index), 
         false, 3, 0
     );
+
+    // refresh info window
+    wclear(info_win);
+    box(info_win, 0, 0);
+    mvwprintw(info_win, 2, 1, "----------------");
+    mvwprintw(info_win, 6, 1, "----------------");
+    refresh_stats(info_win, player, coins);
+    refresh_title(info_win, level, false);
 
     load_next_level(game_win, info_win);
 }
