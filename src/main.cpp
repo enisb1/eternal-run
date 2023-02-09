@@ -46,7 +46,7 @@ int main() {
 
     create_maps();
 
-    // start game
+    // start game 
     game_win = create_game_window();
     info_win = create_info_window(game_win);
 

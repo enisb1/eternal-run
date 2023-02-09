@@ -38,7 +38,8 @@ void show_market_screen(
     WINDOW *game_win, 
     WINDOW *info_win, 
     Player *player, 
-    int &coins
+    int &coins,
+    bool is_next_level
 );
 
 // show the game over screen,

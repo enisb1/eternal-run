@@ -199,24 +199,40 @@ void refresh_market_options(menu_option market_options[], Player player, int coi
     else  market_options[4].valid = true;
 }
 
-void show_market_screen(WINDOW *game_win, WINDOW *info_win, Player *player, int &coins) {
+void show_market_screen(
+    WINDOW *game_win, 
+    WINDOW *info_win, 
+    Player *player, 
+    int &coins, 
+    bool is_next_level
+) {
     wclear(game_win);
     box(game_win, 0, 0);
 
     // create menu options array
     menu_option option_1;
     strcpy(option_1.name, "- Pozione vita (+1)       30M");
+
     menu_option option_2;
     strcpy(option_2.name, "- Pozione scudo (+1)      40M");
+
     menu_option option_3;
     strcpy(option_3.name, "- Pistola                 50M");
+
     menu_option option_4;
     strcpy(option_4.name, "- Velocita' proiettili    100M");
+
     menu_option option_5;
 
+    menu_option option_6;
+    option_6.valid = true;
+    if (is_next_level) strcpy(option_6.name, "Prossimo livello ->");
+    else strcpy(option_6.name, "Livello precedente ->");
+
+
     menu_option market_options[6] = {
-        option_1, option_2, option_3, option_4,
-        option_5, {"Prossimo livello ->", true}
+        option_1, option_2, option_3,
+        option_4,option_5, option_6
     };
 
     refresh_market_options(market_options, *player, coins);
@@ -469,43 +485,35 @@ void display_map_with_anim(WINDOW *game_win, map *map, coin_node *coin_list) {
     wattroff(game_win, COLOR_PAIR(WALL_PAIR));
 
     // display the map with an animation (row after row)
-    unsigned int tick = 0;
-    const unsigned int ANIM_PERIOD = 10;
     int row = 19;
 
     while (row >= 0) {
-        if (tick == ANIM_PERIOD) {
-            // display current row
-            for (int col = 0; col < 60; col++) {
-                int current_block = (map -> blocks)[row][col];
+        // display current row
+        for (int col = 0; col < 60; col++) {
+            int current_block = (map -> blocks)[row][col];
 
-                if (current_block != EMPTY_BLOCK) {
-                    switch (current_block) {
-                        case WALL_BLOCK:
-                            wattron(game_win, COLOR_PAIR(WALL_PAIR));
-                            mvwaddch(game_win, row, col, '#');
-                            wattroff(game_win, COLOR_PAIR(WALL_PAIR));
-                            break;
-                        case ENTRANCE_BLOCK:
-                            set_blank_char(game_win, row, col);
-                            break;
-                        case EXIT_BLOCK:
-                            set_blank_char(game_win, row, col);
-                            break;
-                    }
+            if (current_block != EMPTY_BLOCK) {
+                switch (current_block) {
+                    case WALL_BLOCK:
+                        wattron(game_win, COLOR_PAIR(WALL_PAIR));
+                        mvwaddch(game_win, row, col, '#');
+                        wattroff(game_win, COLOR_PAIR(WALL_PAIR));
+                        break;
+                    case ENTRANCE_BLOCK:
+                        set_blank_char(game_win, row, col);
+                        break;
+                    case EXIT_BLOCK:
+                        set_blank_char(game_win, row, col);
+                        break;
                 }
             }
-
-            wrefresh(game_win);
-
-            row--;
         }
 
-        // increment tick
-        if (tick >= ANIM_PERIOD) tick = 0;
-        else tick++;
+        wrefresh(game_win);
 
-        napms(1);
+        row--;
+
+        napms(100);
     }
     
     display_coins(game_win, coin_list);

@@ -215,13 +215,22 @@ void move_player(WINDOW *game_win, WINDOW *info_win) {
                 && level > 1) {
                 // previous level
                 player.set_is_moving(false);
-                load_previous_level(game_win, info_win);
-            } else if (maps[current_map_index]->blocks[next_y][next_x] == EXIT_BLOCK) {
-                // next level
-                if (level % 2 == 0 && max_level == level) {
+                if (level % 2 == 1) {
                     // market level
                     refresh_title(info_win, level, true);
-                    show_market_screen(game_win, info_win, &player, coins);
+                    show_market_screen(game_win, info_win, 
+                        &player, coins, false);
+
+                    load_previous_level(game_win, info_win);
+                } else load_previous_level(game_win, info_win);
+            } else if (maps[current_map_index]->blocks[next_y][next_x] == EXIT_BLOCK) {
+                // next level
+                player.set_is_moving(false);
+                if (level % 2 == 0) {
+                    // market level
+                    refresh_title(info_win, level, true);
+                    show_market_screen(game_win, info_win, 
+                        &player, coins, true);
 
                     load_next_level(game_win, info_win);
                 } else load_next_level(game_win, info_win);
@@ -498,8 +507,8 @@ void start_game_loop(WINDOW *game_win, WINDOW *info_win) {
     const unsigned int KEY_SPACEBAR = 32;
     int old_input_char = -1;
 
+    int input_char;
     while (1) {
-        int input_char;
         if (tick == move_player_enemies_tick)
             input_char = wgetch(game_win);
 
@@ -572,14 +581,16 @@ void start_game_loop(WINDOW *game_win, WINDOW *info_win) {
 
             if (tick == move_player_enemies_tick)
                 display_player(game_win, player);
-
-            tick++;
-            if (tick > move_player_enemies_tick) tick = 0;
         }
 
+        // save input
         old_input_char = input_char;
 
         wrefresh(game_win);
+
+        // increment tick and sleep before other tick
+        tick++;
+        if (tick > move_player_enemies_tick) tick = 0;
 
         if (player.get_faster_bullet_speed())
             napms(53);

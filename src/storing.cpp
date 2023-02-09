@@ -114,5 +114,6 @@ void delete_files() {
         strcat(strcpy(file_path, "storing_files/"), child->d_name);
         remove(file_path);
     }
+    
     closedir(dir);
 }
