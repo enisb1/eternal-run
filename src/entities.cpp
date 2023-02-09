@@ -232,22 +232,40 @@ int get_random_enemy_direction(map *map, int y, int x) {
     return new_direction;
 }
 
+Enemy get_new_enemy(map *map, Player player, int enemy_level) {
+    int y, x;
+    get_random_enemy_position(map, player, y, x);
+
+    return Enemy(
+        y, x, 
+        get_random_enemy_direction(map, y, x), 
+        enemy_level
+    );
+}
+
 void create_enemy_list(map *map, Player player, enemy_node* &head, int level) {
     if (head != NULL) delete_enemy_list(head);
 
+    int max_enemy_level = 1;
     for (int i = 1; i <= level; i++) {
-        int y;
-        int x;
         int enemy_level = i/2;
         
         if (enemy_level < 1) enemy_level = 1;
         if (enemy_level > 9) enemy_level = 9;
+
+        if (enemy_level > max_enemy_level)
+            max_enemy_level = enemy_level;
         
-        get_random_enemy_position(map, player, y, x);
-        
-        Enemy new_enemy = Enemy(y, x, get_random_enemy_direction(map, y, x), enemy_level);
-        add_enemy(head, new_enemy);
+        add_enemy(head, get_new_enemy(map, player, enemy_level));
     }
+
+    // add more enemies based on upgrades
+    if (player.get_has_weapon())
+        add_enemy(head, get_new_enemy(map, player, max_enemy_level));
+    if (player.get_faster_bullet_speed())
+        add_enemy(head, get_new_enemy(map, player, max_enemy_level));
+    if (player.get_bullet_damage() > 1)
+        add_enemy(head, get_new_enemy(map, player, max_enemy_level));
 }
 
 /* Struct bullet methods */

@@ -310,7 +310,14 @@ void show_market_screen(
                             break;
                     }
 
+                    // refresh info win
+                    wclear(info_win);
                     refresh_stats(info_win, *player, coins);
+                    refresh_title(info_win, -1, true);
+                    mvwprintw(info_win, 2, 1, "----------------");
+                    mvwprintw(info_win, 6, 1, "----------------");
+
+                    // refresh market
                     refresh_market_options(market_options, *player, coins);
                     selected_option = get_next_valid_option(
                         market_options, 6, selected_option
@@ -348,7 +355,7 @@ int show_game_over_screen(WINDOW *game_win) {
     // show menu and start menu loop
     int selected_option = 0;
     show_menu(game_win, menu_options, 
-        2, 12, selected_option, false);
+        2, 10, selected_option, false);
 
     bool exit_game_over_screen = false;
     while (!exit_game_over_screen) {
@@ -362,14 +369,14 @@ int show_game_over_screen(WINDOW *game_win) {
                     if (selected_option < 1) selected_option++;
                     else selected_option = 0;
                     show_menu(game_win, menu_options, 
-                        2, 12, selected_option, false);
+                        2, 10, selected_option, false);
                     break;
                 case 3:
                     // decrease selected option
                     if (selected_option > 0) selected_option--;
                     else selected_option = 1;
                     show_menu(game_win, menu_options, 
-                        2, 12, selected_option, false);
+                        2, 10, selected_option, false);
                     break;
                 case 10:
                     // enter option

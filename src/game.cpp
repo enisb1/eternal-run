@@ -96,6 +96,11 @@ void load_random_map(WINDOW *game_win, bool is_entering_level, bool is_death) {
     // create enemy list and display it
     create_enemy_list(maps[current_map_index], player, current_enemy_list, level);
     display_enemies(game_win, current_enemy_list);
+
+    // consume inputs
+    char input_char = wgetch(game_win);
+    while (input_char != -1)
+        input_char = wgetch(game_win);
 }
 
 void load_next_level(WINDOW *game_win, WINDOW *info_win) {
@@ -136,19 +141,6 @@ void new_game(WINDOW *game_win, WINDOW *info_win) {
     level = 0;
     max_level = 0;
 
-    // create player
-    player = Player(
-        maps[current_map_index]->entrance_exit_positions[0],
-        maps[current_map_index]->entrance_exit_positions[1],
-        get_player_starting_direction(true, maps, current_map_index), false,
-        3, 0
-    );
-
-    refresh_title(info_win, level, true);
-    refresh_stats(info_win, player, coins);
-
-    load_next_level(game_win, info_win);
-    
     // refresh info window
     wclear(info_win);
     box(info_win, 0, 0);
@@ -156,6 +148,16 @@ void new_game(WINDOW *game_win, WINDOW *info_win) {
     mvwprintw(info_win, 6, 1, "----------------");
     refresh_stats(info_win, player, coins);
     refresh_title(info_win, level, false);
+
+    // create player
+    player = Player(
+        maps[current_map_index]->entrance_exit_positions[0],
+        maps[current_map_index]->entrance_exit_positions[1],
+        get_player_starting_direction(true, maps, current_map_index), 
+        false, 3, 0
+    );
+
+    load_next_level(game_win, info_win);
 }
 
 bool collect_coin(WINDOW *info_win, int y, int x) {
@@ -217,7 +219,7 @@ void move_player(WINDOW *game_win, WINDOW *info_win) {
                 player.set_is_moving(false);
                 if (level % 2 == 1) {
                     // market level
-                    refresh_title(info_win, level, true);
+                    refresh_title(info_win, -1, true);
                     show_market_screen(game_win, info_win, 
                         &player, coins, false);
 
@@ -228,7 +230,7 @@ void move_player(WINDOW *game_win, WINDOW *info_win) {
                 player.set_is_moving(false);
                 if (level % 2 == 0) {
                     // market level
-                    refresh_title(info_win, level, true);
+                    refresh_title(info_win, -1, true);
                     show_market_screen(game_win, info_win, 
                         &player, coins, true);
 
@@ -242,6 +244,7 @@ void move_player(WINDOW *game_win, WINDOW *info_win) {
 
 void death(WINDOW *game_win, WINDOW *info_win) {
     player.set_is_moving(false);
+
     player.decrease_life();
     refresh_stats(info_win, player, coins);
 
@@ -263,7 +266,6 @@ void death(WINDOW *game_win, WINDOW *info_win) {
                 exit(0);
                 break;
         }
-        
     }
 }
 
@@ -519,8 +521,6 @@ void move_bullets(WINDOW *game_win, WINDOW *info_win) {
 }
 
 void start_game_loop(WINDOW *game_win, WINDOW *info_win) {
-    player.set_has_weapon();
-
     const unsigned int ANIM_PERIOD = 1;
 
     unsigned int tick = 0;
