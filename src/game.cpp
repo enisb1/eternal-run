@@ -343,7 +343,7 @@ void move_enemies(WINDOW *game_win, WINDOW *info_win) {
             if (can_cross) current_enemy->reset_blocks_traveled();
             else {
                 // change enemy direction randomically
-                // if player can't move to next block
+                // if enemy can't move to next block
                 // and get next block position
                 if (!can_move_in_block(next_y, next_x, maps, current_map_index)) {
                     current_enemy->set_direction(
@@ -387,8 +387,10 @@ void move_enemies(WINDOW *game_win, WINDOW *info_win) {
                     is_death = true;
                     death(game_win, info_win);
                 }
-            } else enemy_list_iterator = enemy_list_iterator->next;
+            }
         }
+
+        enemy_list_iterator = enemy_list_iterator->next;
     }
 }
 
