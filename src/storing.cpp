@@ -2,7 +2,8 @@
 
 #include <fstream>
 #include <iostream>
-#include <filesystem>
+#include <cstring>
+#include <dirent.h>
 
 #include "storing.hpp"
 
@@ -105,6 +106,13 @@ enemy_node *get_stored_enemy_list(map *map, Player player, int level) {
 }
 
 void delete_files() {
-    for (auto& entry : std::filesystem::directory_iterator("storing_files/")) 
-        std::filesystem::remove_all(entry.path());
+    DIR* dir = opendir("storing_files/");
+
+    struct dirent* child;
+    while ((child = readdir(dir)) != NULL) {
+        char file_path[50];
+        strcat(strcpy(file_path, "storing_files/"), child->d_name);
+        remove(file_path);
+    }
+    closedir(dir);
 }

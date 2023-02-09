@@ -131,9 +131,6 @@ void load_previous_level(WINDOW *game_win, WINDOW *info_win) {
 }
 
 void new_game(WINDOW *game_win, WINDOW *info_win) {
-    // delete storing files in case user previously left before game over
-    delete_files();
-
     // initialize vars
     coins = 0;
     level = 0;

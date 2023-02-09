@@ -7,6 +7,7 @@
 
 #include "graphics.hpp"
 #include "game.hpp"
+#include "storing.hpp"
 
 using namespace std; 
 
@@ -38,6 +39,9 @@ int main() {
     nodelay(stdscr, true); // don't stop the program on getch()
     create_colors(); // create color pairs
 
+    // delete storing files in case user previously left before game over
+    delete_files();
+    
     show_splash_screen();
 
     create_maps();
