@@ -239,7 +239,6 @@ void move_player(WINDOW *game_win, WINDOW *info_win) {
             }
         }
     }
-    
 }
 
 void death(WINDOW *game_win, WINDOW *info_win) {

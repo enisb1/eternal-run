@@ -85,8 +85,6 @@ class Player: public Entity {
 class Enemy: public Entity {
     protected:
         int level;
-        int life;
-        int damage;
         int blocks_traveled;
 
     public:
@@ -94,8 +92,6 @@ class Enemy: public Entity {
         Enemy(int y, int x, int direction, int level);
         
         // getter and setter
-        int get_life();
-        int get_damage();
         int get_level();
         int get_blocks_traveled();
 

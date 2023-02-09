@@ -128,20 +128,12 @@ void Player::increment_bullet_damage() {
 
 Enemy::Enemy() {};
 
-Enemy::Enemy(int y, int x, int direction, int level):Entity(y, x, direction) {
+Enemy::Enemy(
+    int y, int x, int direction, int level
+):Entity(y, x, direction) {
     this->level = level;
-    this->life = level;
-    this->damage = level;
     this->blocks_traveled = 0;
 };
-        
-int Enemy::get_life() {
-    return this->life; 
-}
-
-int Enemy::get_damage() {
-    return this->damage;
-}
 
 int Enemy::get_level() {
     return this->level;
@@ -152,9 +144,7 @@ int Enemy::get_blocks_traveled() {
 }
 
 void Enemy::decrease_level(int level_decrease) {
-    this->level -= level_decrease; 
-    this->life -= level_decrease; 
-    this->damage -= level_decrease;
+    this->level -= level_decrease;
 }
 
 void Enemy::increment_blocks_traveled() {
