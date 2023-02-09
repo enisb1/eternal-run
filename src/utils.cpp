@@ -29,13 +29,13 @@ void get_next_position(int direction, int &y, int &x) {
     }
 }
 
-bool can_move_in_block(int y, int x, map* maps[], int current_map_index) {
+bool can_move_in_block(int y, int x, map *maps[], int current_map_index) {
     return maps[current_map_index]->blocks[y][x] != WALL_BLOCK
         && maps[current_map_index]->blocks[y][x] != ENTRANCE_BLOCK
         && maps[current_map_index]->blocks[y][x] != EXIT_BLOCK;
 }
 
-bool can_move_in_next_two_blocks(int direction, int start_y, int start_x, map* maps[], int current_map_index) {
+bool can_move_in_next_two_blocks(int direction, int start_y, int start_x, map *maps[], int current_map_index) {
     int next_y1 = start_y;
     int next_x1 = start_x;
     get_next_position(direction, next_y1, next_x1);
@@ -64,7 +64,7 @@ void delete_bullet_list(bullet_node* &bullet_list) {
     }
 }
 
-int get_player_starting_direction(bool is_at_entrance, map* maps[], int current_map_index) {
+int get_player_starting_direction(bool is_at_entrance, map *maps[], int current_map_index) {
     int direction;
     int y; 
     int x;
@@ -85,7 +85,7 @@ int get_player_starting_direction(bool is_at_entrance, map* maps[], int current_
     return direction;
 }
 
-void set_player_starting_properties(bool is_at_entrance, Player *player, map* maps[], int current_map_index) {
+void set_player_starting_properties(bool is_at_entrance, Player *player, map *maps[], int current_map_index) {
     if (is_at_entrance) {
         player->set_y(maps[current_map_index]->entrance_exit_positions[0]);
         player->set_x(maps[current_map_index]->entrance_exit_positions[1]);

@@ -405,7 +405,7 @@ void create_bullet() {
     }
 }
 
-void move_bullets(WINDOW *game_win) {
+void move_bullets(WINDOW *game_win, WINDOW *info_win) {
     if (current_bullet_list != NULL) {
         bullet_node *new_bullet_list = NULL;
 
@@ -428,11 +428,22 @@ void move_bullets(WINDOW *game_win) {
                     valid_bullet = false;
                     
                     enemy_list_iterator->current_enemy.decrease_level(player.get_bullet_damage());
-                    if (enemy_list_iterator->current_enemy.get_level()>0) 
+                    if (enemy_list_iterator->current_enemy.get_level() > 0) {
+                        // enemy is still alive
                         add_enemy(
-                        new_enemy_list, 
-                        enemy_list_iterator->current_enemy
-                    );
+                            new_enemy_list, 
+                            enemy_list_iterator->current_enemy
+                        );
+                    } else {
+                        // enemy is death
+                        set_blank_char(
+                            game_win, 
+                            current_bullet->get_y(), 
+                            current_bullet->get_x()
+                        );
+                        coins += 10;
+                        refresh_stats(info_win, player, coins);
+                    }
                 }
                 else add_enemy(new_enemy_list, enemy_list_iterator->current_enemy);
 
@@ -466,14 +477,23 @@ void move_bullets(WINDOW *game_win) {
                     valid_bullet = false;
                     
                     new_enemy_list_after_moving->current_enemy.decrease_level(player.get_bullet_damage());
-                    if (new_enemy_list_after_moving->current_enemy.get_level()>0) 
+                    if (new_enemy_list_after_moving->current_enemy.get_level() > 0) {
+                        // enemy is still alive
                         add_enemy(
-                        new_enemy_list, 
-                        new_enemy_list_after_moving->current_enemy
+                            new_enemy_list, 
+                            new_enemy_list_after_moving->current_enemy
                         );
-                    else set_blank_char(game_win, current_bullet->get_y(), current_bullet->get_x());
-                }
-                else add_enemy(new_enemy_list, new_enemy_list_after_moving->current_enemy);
+                    } else {
+                        // enemy is death
+                        set_blank_char(
+                            game_win, 
+                            current_bullet->get_y(), 
+                            current_bullet->get_x()
+                        );
+                        coins += 10;
+                        refresh_stats(info_win, player, coins);
+                    }
+                } else add_enemy(new_enemy_list, new_enemy_list_after_moving->current_enemy);
 
                 enemy_node *tmp_enemy = new_enemy_list_after_moving;
                 new_enemy_list_after_moving = new_enemy_list_after_moving->next;
@@ -499,6 +519,8 @@ void move_bullets(WINDOW *game_win) {
 }
 
 void start_game_loop(WINDOW *game_win, WINDOW *info_win) {
+    player.set_has_weapon();
+
     const unsigned int ANIM_PERIOD = 1;
 
     unsigned int tick = 0;
@@ -555,11 +577,15 @@ void start_game_loop(WINDOW *game_win, WINDOW *info_win) {
                             exit(0);
                             break;
                         case 1:
+                            // resume game
                             display_map(
                                 game_win, 
                                 maps[current_map_index], 
                                 current_coin_list
                             );
+                            display_coins(game_win, current_coin_list);
+                            display_enemies(game_win, current_enemy_list);
+                            display_player(game_win, player);
                             break;
                     }
                     break;
@@ -577,7 +603,7 @@ void start_game_loop(WINDOW *game_win, WINDOW *info_win) {
                 move_enemies(game_win, info_win);
             }
 
-            move_bullets(game_win);
+            move_bullets(game_win, info_win);
 
             if (tick == move_player_enemies_tick)
                 display_player(game_win, player);

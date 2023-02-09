@@ -513,7 +513,7 @@ void display_map_with_anim(WINDOW *game_win, map *map, coin_node *coin_list) {
 
         row--;
 
-        napms(200);
+        napms(150);
     }
     
     display_coins(game_win, coin_list);
@@ -530,7 +530,7 @@ void destroy_map_with_animation(WINDOW *game_win) {
 
         row++;
 
-        napms(200);
+        napms(150);
     }
 }
 
@@ -571,7 +571,7 @@ void display_enemy(WINDOW *game_win, Enemy enemy) {
 }
 
 void display_enemies(WINDOW *game_win, enemy_node *current_enemy_list) {
-    enemy_node* iterator = current_enemy_list;
+    enemy_node *iterator = current_enemy_list;
     
     while (iterator!=NULL) {
         wattron(game_win, COLOR_PAIR(RED_PAIR));
