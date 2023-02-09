@@ -172,31 +172,30 @@ int get_previous_valid_option(
 }
 
 void refresh_market_options(menu_option market_options[], Player player, int coins) {
-    if (coins < 30 || player.get_life() >= 3) market_options[0].valid = false;
-    else  market_options[0].valid = true;
+    // life option
+    if (coins >= 30 && player.get_life() < 3)
+        market_options[0].valid = true;
+    else market_options[0].valid = false;
 
-    if (coins < 40) market_options[1].valid = false;
-    else  market_options[1].valid = true;
+    // shield option
+    if (coins >= 40) market_options[1].valid = true;
+    else  market_options[1].valid = false;
 
-    if (coins < 50) market_options[2].valid = false;
-    else  market_options[2].valid = true;
+    // pistol option
+    if (coins >= 50 && !player.get_has_pistol())
+        market_options[2].valid = true;
+    else  market_options[2].valid = false;
 
-    if (coins < 100 || !player.get_has_weapon())
-        market_options[3].valid = false;
-    else  market_options[3].valid = true;
+    // faster bullet speed option
+    if (coins >= 100 && player.get_has_pistol()
+        && !player.get_faster_bullet_speed())
+        market_options[3].valid = true;
+    else  market_options[3].valid = false;
 
-    int bullet_damage_coins_num;
-    if (player.get_bullet_damage() > 2) {
-        bullet_damage_coins_num = 180;
-        strcpy(market_options[4].name, "- Danno proiettili        180M");
-    } else {
-        bullet_damage_coins_num = 120;
-        strcpy(market_options[4].name, "- Danno proiettili        120M");
-    }
-
-    if (coins < bullet_damage_coins_num  || !player.get_has_weapon())
-        market_options[4].valid = false;
-    else  market_options[4].valid = true;
+    // bullet damage option
+    if (coins >= 120 && player.get_has_pistol())
+        market_options[4].valid = true;
+    else  market_options[4].valid = false;
 }
 
 void show_market_screen(
@@ -223,6 +222,7 @@ void show_market_screen(
     strcpy(option_4.name, "- Velocita' proiettili    100M");
 
     menu_option option_5;
+    strcpy(option_5.name, "- Danno proiettili    120M");
 
     menu_option option_6;
     option_6.valid = true;
@@ -292,17 +292,14 @@ void show_market_screen(
                             break;
                         case PISTOL:
                             coins -= 50;
-                            player->set_has_weapon();
+                            player->set_has_pistol();
                             break;
                         case BULLET_SPEED:
                             coins -= 100;
                             player->set_faster_bullet_speed();
                             break;
                         case BULLET_DAMAGE:
-                            if (player->get_bullet_damage() > 2)
-                                coins -= 180;
-                            else coins -= 120;
-
+                            coins -= 120;
                             player->increment_bullet_damage();
                             break;
                         case NEXT_LEVEL:
@@ -647,7 +644,7 @@ void refresh_stats(WINDOW *info_win, Player player, int coins) {
     // market upgrades
     wmove(info_win, 7, 0);
 
-    if (player.get_has_weapon()) {
+    if (player.get_has_pistol()) {
         wprintw(info_win, "  - Pistola\n  equipaggiata\n\n");
         wprintw(
             info_win, 

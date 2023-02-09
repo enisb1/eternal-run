@@ -40,7 +40,7 @@ class Player: public Entity {
         bool is_moving;
         int life;
         int shield;
-        bool has_weapon;
+        bool has_pistol;
         bool faster_bullet_speed;
         int bullet_damage;
 
@@ -61,8 +61,8 @@ class Player: public Entity {
         void set_shield(int shield);
         int get_shield();
 
-        void set_has_weapon();
-        int get_has_weapon();
+        void set_has_pistol();
+        int get_has_pistol();
 
         void set_faster_bullet_speed();
         int get_faster_bullet_speed();

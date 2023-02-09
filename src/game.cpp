@@ -564,7 +564,7 @@ void start_game_loop(WINDOW *game_win, WINDOW *info_win) {
                     } else player.set_direction(LEFT);
                     break;
                 case KEY_SPACEBAR:
-                    if (player.get_is_moving() && player.get_has_weapon())
+                    if (player.get_is_moving() && player.get_has_pistol())
                         create_bullet();
                     break;
                 case 27:

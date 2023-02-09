@@ -51,7 +51,7 @@ Player::Player(
     this->life = life;
     this->shield = shield;
 
-    this->has_weapon = false;
+    this->has_pistol = false;
     this->faster_bullet_speed = false;
     this->bullet_damage = 1;
 }
@@ -80,12 +80,12 @@ int Player::get_shield() {
     return this->shield; 
 }
 
-void Player::set_has_weapon() {
-    this->has_weapon = true;
+void Player::set_has_pistol() {
+    this->has_pistol = true;
 }
 
-int Player::get_has_weapon() {
-    return this->has_weapon;
+int Player::get_has_pistol() {
+    return this->has_pistol;
 }
 
 void Player::set_faster_bullet_speed() {
@@ -260,7 +260,7 @@ void create_enemy_list(map *map, Player player, enemy_node* &head, int level) {
     }
 
     // add more enemies based on upgrades
-    if (player.get_has_weapon())
+    if (player.get_has_pistol())
         add_enemy(head, get_new_enemy(map, player, max_enemy_level));
     if (player.get_faster_bullet_speed())
         add_enemy(head, get_new_enemy(map, player, max_enemy_level));
