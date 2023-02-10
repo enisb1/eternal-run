@@ -601,6 +601,7 @@ map *create_map4() {
 	add_block(map4, 15, 44, WALL_BLOCK);
 	add_block(map4, 16, 24, WALL_BLOCK);
 	add_block(map4, 16, 32, WALL_BLOCK);
+	add_block(map4, 16, 40, WALL_BLOCK);
 	add_blocks_horizontally(map4, 17, 16, 48, WALL_BLOCK);
 	add_blocks_horizontally(map4, 18, 16, 48, WALL_BLOCK);
 
