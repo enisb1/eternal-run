@@ -6,6 +6,7 @@
 #include <cstring>
 #include <ctime>
 #include <cstdlib>
+#include <dirent.h>
 
 #include "game.hpp"
 #include "entities.hpp"
@@ -216,15 +217,18 @@ void move_player(WINDOW *game_win, WINDOW *info_win) {
             if (maps[current_map_index]->blocks[next_y][next_x] == ENTRANCE_BLOCK
                 && level > 1) {
                 // previous level
-                player.set_is_moving(false);
-                if (level % 2 == 1) {
-                    // market level
-                    refresh_title(info_win, -1, true);
-                    show_market_screen(game_win, info_win, 
-                        &player, coins, false);
+                if (opendir("storing_files/")) {
+                    player.set_is_moving(false);
 
-                    load_previous_level(game_win, info_win);
-                } else load_previous_level(game_win, info_win);
+                    if (level % 2 == 1) {
+                        // market level
+                        refresh_title(info_win, -1, true);
+                        show_market_screen(game_win, info_win, 
+                            &player, coins, false);
+
+                        load_previous_level(game_win, info_win);
+                    } else load_previous_level(game_win, info_win);
+                }
             } else if (maps[current_map_index]->blocks[next_y][next_x] == EXIT_BLOCK) {
                 // next level
                 player.set_is_moving(false);

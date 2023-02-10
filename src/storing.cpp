@@ -13,7 +13,7 @@ using namespace std;
 
 // creates directory to store files if it doesn't exist
 void createDir(DIR* dir) {
-    if (!dir) mkdir("storing_files", 0777);
+    if (!dir) mkdir("storing_files");
 }
 
 void store_map_index(int level, int mapIndex) {
