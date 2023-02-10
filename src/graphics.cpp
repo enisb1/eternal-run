@@ -159,6 +159,8 @@ int get_next_valid_option(
     int options_num, 
     int selected_option
 ) {
+    // loop through the options by incrementing the index
+    // until a valid options it's found
     int next_valid_option = selected_option;
 
     while (!menu_options[next_valid_option].valid) {
@@ -174,6 +176,8 @@ int get_previous_valid_option(
     int options_num, 
     int selected_option
 ) {
+    // loop through the options by decreasing the index
+    // until a valid options it's found
     int previous_valid_option = selected_option;
 
     while (!menu_options[previous_valid_option].valid) {
@@ -185,6 +189,8 @@ int get_previous_valid_option(
 }
 
 void refresh_market_options(menu_option market_options[], Player player, int coins) {
+    // set true/false to valid property for market options
+    
     // life option
     if (coins >= 30 && player.get_life() < 3)
         market_options[0].valid = true;
@@ -450,7 +456,9 @@ int show_esc_screen(WINDOW *game_win) {
 }
 
 void display_coins(WINDOW *game_win, coin_node *coin_list) {
-    while (coin_list!=NULL) {
+    // loop through the coin list and for every coin
+    // print it to its current position
+    while (coin_list != NULL) {
 		wmove(game_win, coin_list->y, coin_list->x);
 		wattron(game_win, COLOR_PAIR(YELLOW_PAIR));
 		waddch(game_win, '*');
@@ -556,6 +564,8 @@ void set_blank_char(WINDOW *game_win, int y, int x) {
 }
 
 void display_player(WINDOW *game_win, Player player) {
+    // choose character to display
+    // based on player's position
     char player_char;
 
     switch (player.get_direction()) {
@@ -577,6 +587,8 @@ void display_player(WINDOW *game_win, Player player) {
 }
 
 void display_enemy(WINDOW *game_win, Enemy enemy) {
+    // display single enemy choosing
+    // the character based on its level
     wattron(game_win, COLOR_PAIR(RED_PAIR));
     mvwaddch(
         game_win, 
@@ -588,17 +600,12 @@ void display_enemy(WINDOW *game_win, Enemy enemy) {
 }
 
 void display_enemies(WINDOW *game_win, enemy_node *current_enemy_list) {
+    // loop through the enemy list and for every enemy
+    // print it to its current position
     enemy_node *iterator = current_enemy_list;
     
     while (iterator!=NULL) {
-        wattron(game_win, COLOR_PAIR(RED_PAIR));
-        mvwaddch(
-            game_win, 
-            iterator->current_enemy.get_y(), 
-            iterator->current_enemy.get_x(), 
-            iterator->current_enemy.get_level() + '0'
-        );
-        wattroff(game_win, COLOR_PAIR(RED_PAIR));
+        display_enemy(game_win, iterator->current_enemy);
         iterator = iterator->next;
     }
 }

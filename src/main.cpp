@@ -33,11 +33,12 @@ int main() {
     // delete storing files in case user previously left before game over
     delete_files();
     
+    // splash screen
     show_splash_screen();
 
+    // start game 
     create_maps();
 
-    // start game 
     game_win = create_game_window();
     info_win = create_info_window(game_win);
 

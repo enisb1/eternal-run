@@ -8,7 +8,7 @@
 #include "map.hpp"
 #include "entities.hpp"
 
-/* Vars */
+/* Constants */
 
 // pairs
 const int WALL_PAIR = 1;

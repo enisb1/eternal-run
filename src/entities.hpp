@@ -5,7 +5,7 @@
 
 #include "map.hpp"
 
-/* Vars */
+/* Constants */
 
 const int DOWN = 0;
 const int RIGHT = 1;

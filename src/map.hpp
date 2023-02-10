@@ -1,7 +1,7 @@
 #ifndef MAP_HPP
 #define MAP_HPP
 
-/* Vars */
+/* Constants */
 
 const int EMPTY_BLOCK = -1;
 const int ENTRANCE_BLOCK = 1;
