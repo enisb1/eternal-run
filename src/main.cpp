@@ -18,15 +18,6 @@ WINDOW *info_win;
 
 /* Methods */
 
-void create_colors() {
-    if (has_colors()) start_color();
-
-    init_pair(WALL_PAIR, COLOR_WHITE, COLOR_BLUE);
-    init_pair(RED_PAIR, COLOR_RED, 0);
-    init_pair(CYAN_PAIR, COLOR_CYAN, 0);
-    init_pair(YELLOW_PAIR, COLOR_YELLOW, 0);
-}
-
 /* Main method */
 
 int main() {

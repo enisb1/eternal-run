@@ -24,8 +24,14 @@ const int BULLET_SPEED = 3;
 const int BULLET_DAMAGE = 4;
 const int NEXT_LEVEL = 5;
 
+/* General */
+
+// start colors and create color pairs
+void create_colors();
+
 /* Standard screen */
 
+// show splash screen in stardard screen
 void show_splash_screen();
 
 /* Game window */
