@@ -11,8 +11,8 @@ using namespace std;
 
 /* Methods */
 
-// creates directory to store files if it doesn't exist
-void createDir(DIR* dir) {
+void create_dir(DIR* dir) {
+    // creates directory to store files if it doesn't exist
     if (!dir) mkdir("storing_files");
 }
 
@@ -20,7 +20,7 @@ void store_map_index(int level, int mapIndex) {
     ofstream outputFile;
 
     DIR* dir = opendir("storing_files/");
-    createDir(dir);
+    create_dir(dir);
 
     outputFile.open("storing_files/index_map_lvl" + to_string(level) + ".txt");
     outputFile << mapIndex;
@@ -33,7 +33,7 @@ void store_coins(int level, coin_node *coin_list) {
     ofstream outputFile;
     
     DIR* dir = opendir("storing_files/");
-    createDir(dir);
+    create_dir(dir);
 
     outputFile.open("storing_files/coins_map_lvl" + to_string(level) + ".txt");
 
@@ -50,7 +50,7 @@ void store_enemies(int level, enemy_node *enemy_list) {
     ofstream outputFile;
 
     DIR* dir = opendir("storing_files/");
-    createDir(dir);
+    create_dir(dir);
 
     outputFile.open("storing_files/enemies_map_lvl" + to_string(level) + ".txt");
 

@@ -26,9 +26,6 @@ struct map {
 // add coin to coin list
 void add_coin(coin_node* &head, int y, int x);
 
-// return the specified map's default coin list
-void get_default_coin_list(coin_node* &coin_list, int map_index);
-
 // return the first map 
 map *create_map1();
 
@@ -46,5 +43,8 @@ map *create_map5();
 
 // return the sixth map
 map *create_map6();
+
+// return the specified map's default coin list
+void get_default_coin_list(coin_node* &coin_list, int map_index);
 
 #endif

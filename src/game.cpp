@@ -29,6 +29,8 @@ map *maps[6];
 int current_map_index = 0;
 coin_node *current_coin_list = NULL;
 
+bool exit_game = false;
+
 /* Methods */
 
 void create_maps() {
@@ -48,6 +50,8 @@ void create_maps() {
 }
 
 void load_saved_map(WINDOW *game_win, bool is_entering_level) {
+    // load coin list, enemy list 
+    // and map infex from storing files
     delete_bullet_list(current_bullet_list);
 
     delete_coin_list(current_coin_list);
@@ -57,10 +61,12 @@ void load_saved_map(WINDOW *game_win, bool is_entering_level) {
     current_map_index = get_stored_map_index(level);
     display_map(game_win, maps[current_map_index], current_coin_list);
     
-    set_player_starting_properties(is_entering_level, &player, maps, current_map_index);
+    set_player_starting_properties(is_entering_level, 
+        &player, maps, current_map_index);
     display_player(game_win, player);
 
-    current_enemy_list = get_stored_enemy_list(maps[current_map_index], player, level);
+    current_enemy_list = get_stored_enemy_list(maps[current_map_index], 
+        player, level);
     display_enemies(game_win, current_enemy_list);
 }
 
@@ -266,7 +272,7 @@ void death(WINDOW *game_win, WINDOW *info_win) {
                 break;
             case 1:
                 endwin();
-                exit(0);
+                exit_game = true;
                 break;
         }
     }
@@ -532,10 +538,11 @@ void start_game_loop(WINDOW *game_win, WINDOW *info_win) {
     int move_player_enemies_tick;
 
     const unsigned int KEY_SPACEBAR = 32;
+    const unsigned int KEY_ESC = 27;
     int old_input_char = -1;
 
     int input_char;
-    while (1) {
+    while (!exit_game) {
         if (tick == move_player_enemies_tick)
             input_char = wgetch(game_win);
 
@@ -572,14 +579,14 @@ void start_game_loop(WINDOW *game_win, WINDOW *info_win) {
                     if (player.get_is_moving() && player.get_has_pistol())
                         create_bullet();
                     break;
-                case 27:
+                case KEY_ESC:
                     // esc
                     switch (show_esc_screen(game_win)) {
                         case 0:
                             // delete storage files and quit the game
                             delete_files();
                             endwin();
-                            exit(0);
+                            exit_game = true;
                             break;
                         case 1:
                             // resume game
@@ -597,7 +604,7 @@ void start_game_loop(WINDOW *game_win, WINDOW *info_win) {
             }
         }
 
-        if (player.get_is_moving()) {
+        if (player.get_is_moving() && !exit_game) {
             if (player.get_faster_bullet_speed())
                 move_player_enemies_tick = 2;
             else move_player_enemies_tick = 1;
@@ -608,16 +615,18 @@ void start_game_loop(WINDOW *game_win, WINDOW *info_win) {
                 move_enemies(game_win, info_win);
             }
 
-            move_bullets(game_win, info_win);
+            if (!exit_game) {
+                move_bullets(game_win, info_win);
 
-            if (tick == move_player_enemies_tick)
-                display_player(game_win, player);
+                if (tick == move_player_enemies_tick)
+                    display_player(game_win, player);
+                    
+                wrefresh(game_win);
+            }
         }
 
         // save input
         old_input_char = input_char;
-
-        wrefresh(game_win);
 
         // increment tick and sleep before other tick
         tick++;

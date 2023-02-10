@@ -4,6 +4,8 @@
 
 #include "entities.hpp"
 
+/* Classes */
+
 // Methods of class Entity
 
 Entity::Entity() {};
@@ -165,9 +167,10 @@ void add_enemy(enemy_node* &head, Enemy new_enemy) {
 }
 
 void delete_enemy_list(enemy_node* &head) {
+    // delete all the nodes of the enemy list
     enemy_node *iterator = head; 
 
-    while (iterator!=NULL) {
+    while (iterator != NULL) {
         enemy_node *tmp = iterator; 
         iterator = iterator->next; 
         delete tmp; 
@@ -177,18 +180,25 @@ void delete_enemy_list(enemy_node* &head) {
 }
 
 void get_random_enemy_position(map *map, Player player, int &y, int &x) {
+    // generate random numbers until
+    // the position is valid in the map
     bool valid = false;
 
     while (!valid) {
         y = (rand() % 19) + 1;
         x = (rand() % 59) + 1;
 
-        if (map->blocks[y][x] != WALL_BLOCK && (abs(player.get_y() - y)>=10 
-        || abs(player.get_x() - x) >= 10)) valid = true; 
+        if (
+            map->blocks[y][x] != WALL_BLOCK 
+            && (abs(player.get_y() - y)>=10 
+            || abs(player.get_x() - x) >= 10)
+        ) valid = true; 
     }
 }
 
 int get_random_enemy_direction(map *map, int y, int x) {
+    // get random enemy direction based
+    // on the position of walls
     bool valid = false;
     int new_direction = (rand() + 1) % 4;
 
@@ -223,6 +233,7 @@ int get_random_enemy_direction(map *map, int y, int x) {
 }
 
 Enemy get_new_enemy(map *map, Player player, int enemy_level) {
+    // create and return a new enemy
     int y, x;
     get_random_enemy_position(map, player, y, x);
 
@@ -236,6 +247,7 @@ Enemy get_new_enemy(map *map, Player player, int enemy_level) {
 void create_enemy_list(map *map, Player player, enemy_node* &head, int level) {
     if (head != NULL) delete_enemy_list(head);
 
+    // add enemies based on current level
     int max_enemy_level = 1;
     for (int i = 1; i <= level; i++) {
         int enemy_level = i/2;
