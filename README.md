@@ -7,7 +7,7 @@ Eternal Run è un gioco con grafica ASCII creato tramite la libreria Ncurses.
 
 ## Descrizione
 Lo scopo del gioco è scappare dai nemici, o ucciderli, per raggiungere il livello successivo. Ogni livello corrisponde ad una mappa,
-presa randomicamente da un set di 6 mappe. Il giocatore muove il protagonista e di livello in livello raccoglie monete dalla mappa, che
+selezionata randomicamente da un set di 6 mappe. Il giocatore muove il protagonista e di livello in livello raccoglie monete dalla mappa che
 potrà usare al mercato per acquistare un'arma o altri potenziamenti. Questi potenziamenti, oltre che al livello al quale si è giunti, denotano la
 difficoltà e il numero dei nemici.
 
