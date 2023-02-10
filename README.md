@@ -1,4 +1,6 @@
-![alt text](https://github.com/LoMbiChh/ncurses-game/blob/main/assets/header_image.png?raw=true)
+<div align="center">
+    <img src="/readme_assets/header_image.png">
+</div>
 
 # Eternal Run
 Eternal Run è un gioco con grafica ASCII creato tramite la libreria Ncurses.
