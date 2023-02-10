@@ -3,6 +3,7 @@
 #include <fstream>
 #include <cstring>
 #include <dirent.h>
+#include <sys/stat.h>
 
 #include "storing.hpp"
 
@@ -10,15 +11,30 @@ using namespace std;
 
 /* Methods */
 
+// creates directory to store files if it doesn't exist
+void createDir(DIR* dir) {
+    if (!dir) mkdir("storing_files", 0777);
+}
+
 void store_map_index(int level, int mapIndex) {
     ofstream outputFile;
+
+    DIR* dir = opendir("storing_files/");
+    createDir(dir);
+
     outputFile.open("storing_files/index_map_lvl" + to_string(level) + ".txt");
     outputFile << mapIndex;
+
+    closedir(dir);
     outputFile.close();
 }
 
 void store_coins(int level, coin_node *coin_list) {
     ofstream outputFile;
+    
+    DIR* dir = opendir("storing_files/");
+    createDir(dir);
+
     outputFile.open("storing_files/coins_map_lvl" + to_string(level) + ".txt");
 
     while (coin_list!=NULL) {
@@ -26,11 +42,16 @@ void store_coins(int level, coin_node *coin_list) {
         coin_list = coin_list->next;
     }
 
+    closedir(dir);
     outputFile.close();
 }
 
 void store_enemies(int level, enemy_node *enemy_list) {
     ofstream outputFile;
+
+    DIR* dir = opendir("storing_files/");
+    createDir(dir);
+
     outputFile.open("storing_files/enemies_map_lvl" + to_string(level) + ".txt");
 
     while (enemy_list!=NULL) {
@@ -38,6 +59,7 @@ void store_enemies(int level, enemy_node *enemy_list) {
         enemy_list = enemy_list->next;
     }
 
+    closedir(dir);
     outputFile.close();
 }
 
