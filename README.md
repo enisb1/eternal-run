@@ -3,15 +3,14 @@
 </div>
 
 # Eternal Run
-Eternal Run è un gioco con grafica ASCII creato tramite la libreria Ncurses.
+Eternal Run is an ASCII graphics game created using the Ncurses library.
 
-## Descrizione
-Lo scopo del gioco è scappare dai nemici, o ucciderli, per raggiungere il livello successivo. Ogni livello corrisponde ad una mappa,
-selezionata randomicamente da un set di 6 mappe. Il giocatore muove il protagonista e di livello in livello raccoglie monete dalla mappa che
-potrà usare al mercato per acquistare un'arma o altri potenziamenti. Questi potenziamenti, oltre che al livello al quale si è giunti, denotano la
-difficoltà e il numero dei nemici.
+## Description
+The aim of the game is to escape from enemies, or kill them, to reach the next level. Each level corresponds to a map,
+randomly selected from a set of 6 maps. The player moves the protagonist and from level to level collects coins from the map
+you can use it at the market to purchase a weapon or other upgrades. These upgrades, as well as the level reached, denote the
+difficulty and number of enemies.
 
-## Come giocare
-Scaricare la libreria Ncurses. Dopodiché, nel terminale, basterà portarsi nel percorso del progetto ed eseguire il comando make.
-Questo creerà l'eseguibile "eternal_run.exe". Eseguire il gioco con comando "./eternal_run" oppure "eternal_run", nel caso questi comandi 
-non funzionassero provare ad eseguire il programma facendo doppio click sull'eseguibile.
+## How to play
+Download the Ncurses library. Then, in the terminal, simply go to the project path and execute the make command.
+This will create the executable "eternal_run.exe". Run the game with command "./eternal_run", "eternal_run" or by double clicking on the executable.
